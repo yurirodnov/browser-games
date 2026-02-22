@@ -1,13 +1,19 @@
 // 01_space_invasion/src/main.ts
 
-import { AssetsLoader } from "./utils/assetsLoader";
-import { Background } from "./entities/background";
+import { AssetsLoader } from "./utils/AssetsLoader";
+import type { Assets, Constants } from "./types/types";
+import { Game } from "./entities/Game";
 
 // set game constants
-const WIDTH = 400;
-const HEIGHT = 600;
 
-// Get app element and set canvas
+const constants: Constants = {
+  canvasWidth: 400,
+  canvasHeight: 600,
+};
+// const WIDTH = 400;
+// const HEIGHT = 600;
+
+// init DOM elements
 document.querySelector<HTMLDivElement>("#app")!.innerHTML =
   `<canvas id="canvas"></canvas>`;
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
@@ -15,40 +21,27 @@ const ctx = canvas.getContext("2d");
 if (!ctx) {
   throw new Error("No 2D context");
 }
-canvas.width = WIDTH;
-canvas.height = HEIGHT;
-
-// init entities
-let background: Background;
+canvas.width = constants.canvasWidth;
+canvas.height = constants.canvasHeight;
 
 // create init function
-const init = async () => {
-  // async load assets
+const main = async () => {
+  // load assets into memory
   await Promise.all([
     AssetsLoader.loadAsset("background", "assets/background.jpg"),
+    AssetsLoader.loadAsset("spaceship", "assets/spaceship.png"),
   ]);
 
-  // create entities
-  background = new Background(0, 0, WIDTH, HEIGHT, "background");
+  // create assets object
+  const assets: Assets = {
+    background: AssetsLoader.getAsset("background"),
+    spaceship: AssetsLoader.getAsset("spaceship"),
+  };
 
-  // set handlers and listeners
-
-  // start game loop
-  gameLoop();
-};
-
-const gameLoop = () => {
-  // clear screen
-  ctx.clearRect(0, 0, WIDTH, HEIGHT);
-
-  // update logic
-
-  // update screen
-  background.draw(ctx);
-
-  // call gameLoop endlessly
-  requestAnimationFrame(gameLoop);
+  // create game instance
+  const game = new Game(ctx, assets, constants);
+  game.start();
 };
 
 // call init function
-init();
+main();
