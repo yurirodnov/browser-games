@@ -4,6 +4,7 @@ import type { Assets, Constants } from "../types/types";
 import { Background } from "./Background";
 import { Spaceship } from "./Spaceship";
 import { Projectile } from "./Projectile";
+import { Enemy } from "./Enemy";
 
 export class Game {
   // game assets
@@ -16,12 +17,19 @@ export class Game {
   private canvasWidth: number;
   private canvasHeight: number;
   private frameCount: number = 0;
-  private shootInterval: number = 40;
+  private shootInterval: number = 30;
+  private enemySpawnInterwal: number = 30;
 
   // game entities
   private background: Background;
   private spaceship: Spaceship;
   private projectiles: Projectile[] = [];
+  private enemies: Enemy[] = [];
+
+  // enemy spawn grid
+  private columsCount: number = 10;
+  private columnWidth: number = 0;
+  private occupiedColumns: boolean[] = [];
 
   // game keyboard
   private keys = {
@@ -55,6 +63,12 @@ export class Game {
       50,
     );
 
+    // calculate column with
+    this.columnWidth = this.canvasWidth / this.columsCount;
+
+    // init all columns with false
+    this.occupiedColumns = new Array(this.columsCount).fill(false);
+
     window.addEventListener("keydown", (e) => {
       if (e.code === "ArrowLeft" || e.code === "ArrowRight") {
         this.keys[e.code as keyof typeof this.keys] = true;
@@ -82,9 +96,12 @@ export class Game {
 
   restart(): void {
     this.stop();
-    this.start();
+
     this.projectiles = [];
+    this.enemies = [];
     this.frameCount = 0;
+    this.occupiedColumns.fill(false);
+    this.start();
   }
 
   private shoot(): void {
@@ -98,6 +115,31 @@ export class Game {
       30,
     );
     this.projectiles.push(projectile);
+  }
+
+  private spawnEnemy(): void {
+    const freeColumns: number[] = [];
+    this.occupiedColumns.forEach((isOccupied, index) => {
+      if (!isOccupied) {
+        freeColumns.push(index);
+      }
+    });
+
+    if (freeColumns.length === 0) {
+      return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * freeColumns.length);
+    const chosenColumn = freeColumns[randomIndex];
+
+    // calculate coords
+    const enemyWidth = this.columnWidth;
+    const enemyHeight = this.columnWidth;
+    const x = chosenColumn * this.columnWidth;
+    const y = -enemyHeight;
+
+    const enemy = new Enemy(this.assets.enemy, x, y, enemyWidth, enemyHeight);
+    this.enemies.push(enemy);
   }
 
   // endless game loop method
@@ -115,8 +157,8 @@ export class Game {
     //  draw objects
     this.background.draw(this.ctx);
     this.spaceship.draw(this.ctx);
-
     this.projectiles.forEach((p) => p.draw(this.ctx));
+    this.enemies.forEach((e) => e.draw(this.ctx));
 
     // auto-shoot
     this.frameCount += 1;
@@ -125,10 +167,27 @@ export class Game {
       this.frameCount = 0;
     }
 
+    // spawn enemy
+    if (this.frameCount % this.enemySpawnInterwal === 0) {
+      this.spawnEnemy();
+    }
+
     this.projectiles = this.projectiles.filter((p) => {
-      p.update(); // Сначала обновляем позицию
-      return !p.isOffScreen(); // Возвращаем true, если пуля должна ОСТАТЬСЯ (не offScreen)
+      p.update();
+      return !p.isOffScreen();
     });
+
+    for (let i = this.enemies.length - 1; i >= 0; i--) {
+      const enemy = this.enemies[i];
+      enemy.update();
+
+      if (enemy.isOffScreen(this.canvasHeight)) {
+        console.log("GAME OVER!");
+        alert("Игра окончена! Враг прорвался!");
+        this.restart();
+        return;
+      }
+    }
 
     this.animationId = requestAnimationFrame(this.loop);
   };

@@ -6,7 +6,7 @@ export class Spaceship {
   private coordY: number;
   private width: number;
   private height: number;
-  private speed: number = 3;
+  private speed: number = 5;
 
   constructor(
     image: HTMLImageElement,
