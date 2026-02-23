@@ -30,12 +30,14 @@ const main = async () => {
   await Promise.all([
     AssetsLoader.loadAsset("background", "assets/background.jpg"),
     AssetsLoader.loadAsset("spaceship", "assets/spaceship.png"),
+    AssetsLoader.loadAsset("projectile", "assets/projectile.png"),
   ]);
 
   // create assets object
   const assets: Assets = {
     background: AssetsLoader.getAsset("background"),
     spaceship: AssetsLoader.getAsset("spaceship"),
+    projectile: AssetsLoader.getAsset("projectile"),
   };
 
   // create game instance

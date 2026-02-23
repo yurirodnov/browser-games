@@ -1,3 +1,5 @@
+// 01_space_invasion/src/entities/Spaceship.ts
+
 export class Spaceship {
   private image: HTMLImageElement;
   private coordX: number;
@@ -18,6 +20,22 @@ export class Spaceship {
     this.coordY = canvasHeight - h - 15;
     this.width = w;
     this.height = h;
+  }
+
+  getCoordX() {
+    return this.coordX;
+  }
+
+  getCoordY() {
+    return this.coordY;
+  }
+
+  getSizeX() {
+    return this.width;
+  }
+
+  getSizeY() {
+    return this.height;
   }
 
   draw(ctx: CanvasRenderingContext2D) {

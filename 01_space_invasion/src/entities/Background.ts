@@ -1,3 +1,5 @@
+// 01_space_invasion/src/entities/Background.ts
+
 export class Background {
   private image: HTMLImageElement;
   private coordX: number;
