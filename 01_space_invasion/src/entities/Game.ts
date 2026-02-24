@@ -5,6 +5,7 @@ import { Background } from "./Background";
 import { Spaceship } from "./Spaceship";
 import { Projectile } from "./Projectile";
 import { Enemy } from "./Enemy";
+import { Explosion } from "./Explosion";
 import { Stats } from "./Stats";
 
 export class Game {
@@ -19,14 +20,15 @@ export class Game {
   private canvasHeight: number;
   private shootFrameCount: number = 0;
   private enemyFrameCount: number = 0;
-  private shootInterval: number = 30;
-  private enemySpawnInterwal: number = 40;
+  private shootInterval: number = 40;
+  private enemySpawnInterwal: number = 30;
 
   // game entities
   private background: Background;
   private spaceship: Spaceship;
   private projectiles: Projectile[] = [];
   private enemies: Enemy[] = [];
+  private explosions: Explosion[] = [];
   private stats: Stats;
 
   // enemy spawn grid
@@ -122,6 +124,10 @@ export class Game {
     this.projectiles.push(projectile);
   }
 
+  // private showExplosison(): void {
+  //   const explosion = new Explosion(this.assets.explosion, th);
+  // }
+
   private checkCollision(p: Projectile, e: Enemy): boolean {
     return (
       p.getCoordY() + p.getHeight() > e.getCoordY() &&
@@ -211,6 +217,15 @@ export class Game {
           bullet.setDead();
           enemy.setDead();
 
+          const explosion = new Explosion(
+            this.assets.explosion,
+            enemy.getCoordX(),
+            enemy.getCoordY(),
+            enemy.getWidth(),
+            enemy.getHeight(),
+          );
+          this.explosions.push(explosion);
+
           if (this.stats.getScore() < this.stats.getHighScore()) {
             this.stats.addScore(10);
           } else {
@@ -228,18 +243,22 @@ export class Game {
     this.enemies = this.enemies.filter(
       (e) => e.getAlive() && !e.isOffScreen(this.canvasHeight),
     );
+    this.explosions.forEach((explosion) => explosion.startTimer());
+    this.explosions = this.explosions.filter((e) => e.getTimer() > 0);
 
     //  draw objects
     this.background.draw(this.ctx);
     this.spaceship.draw(this.ctx);
     this.projectiles.forEach((p) => p.draw(this.ctx));
     this.enemies.forEach((e) => e.draw(this.ctx));
+    this.explosions.forEach((e) => e.draw(this.ctx));
 
     this.ctx.fillStyle = "white";
     this.ctx.font = "20px Arial";
     this.ctx.fillText(`Score: ${this.stats.getScore()}`, 10, 30);
     this.ctx.fillText(`Best: ${this.stats.getHighScore()}`, 10, 60);
 
+    console.log(this.projectiles);
     this.animationId = requestAnimationFrame(this.loop);
   };
 }
