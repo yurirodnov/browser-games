@@ -7,6 +7,7 @@ export class Projectile {
   private width: number;
   private height: number;
   private speed: number = 7;
+  private alive: boolean;
 
   constructor(
     image: HTMLImageElement,
@@ -22,6 +23,32 @@ export class Projectile {
     this.coordY = spaceShipCoordY - spaceShipHeight / 2;
     this.width = w;
     this.height = h;
+
+    this.alive = true;
+  }
+
+  getHeight(): number {
+    return this.height;
+  }
+
+  getWidth(): number {
+    return this.width;
+  }
+
+  getCoordX(): number {
+    return this.coordX;
+  }
+
+  getCoordY(): number {
+    return this.coordY;
+  }
+
+  getAlive(): boolean {
+    return this.alive;
+  }
+
+  setDead(): void {
+    this.alive = false;
   }
 
   isOffScreen() {

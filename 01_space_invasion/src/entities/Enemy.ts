@@ -5,7 +5,7 @@ export class Enemy {
   private width: number;
   private height: number;
   private speed: number = 1;
-  private isAlive: boolean = true;
+  private alive: boolean;
 
   constructor(
     image: HTMLImageElement,
@@ -19,6 +19,32 @@ export class Enemy {
     this.coordY = y;
     this.width = w;
     this.height = h;
+
+    this.alive = true;
+  }
+
+  getHeight(): number {
+    return this.height;
+  }
+
+  getWidth(): number {
+    return this.width;
+  }
+
+  getCoordX(): number {
+    return this.coordX;
+  }
+
+  getCoordY(): number {
+    return this.coordY;
+  }
+
+  getAlive(): boolean {
+    return this.alive;
+  }
+
+  setDead(): void {
+    this.alive = false;
   }
 
   update() {

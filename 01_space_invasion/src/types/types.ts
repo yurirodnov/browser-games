@@ -3,6 +3,7 @@ export interface Assets {
   spaceship: HTMLImageElement;
   projectile: HTMLImageElement;
   enemy: HTMLImageElement;
+  explosion: HTMLImageElement;
 }
 
 export interface Constants {

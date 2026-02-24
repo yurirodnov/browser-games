@@ -5,6 +5,7 @@ import { Background } from "./Background";
 import { Spaceship } from "./Spaceship";
 import { Projectile } from "./Projectile";
 import { Enemy } from "./Enemy";
+import { Stats } from "./Stats";
 
 export class Game {
   // game assets
@@ -16,18 +17,20 @@ export class Game {
   private ctx: CanvasRenderingContext2D;
   private canvasWidth: number;
   private canvasHeight: number;
-  private frameCount: number = 0;
+  private shootFrameCount: number = 0;
+  private enemyFrameCount: number = 0;
   private shootInterval: number = 30;
-  private enemySpawnInterwal: number = 30;
+  private enemySpawnInterwal: number = 40;
 
   // game entities
   private background: Background;
   private spaceship: Spaceship;
   private projectiles: Projectile[] = [];
   private enemies: Enemy[] = [];
+  private stats: Stats;
 
   // enemy spawn grid
-  private columsCount: number = 10;
+  private columsCount: number = 8;
   private columnWidth: number = 0;
   private occupiedColumns: boolean[] = [];
 
@@ -69,6 +72,8 @@ export class Game {
     // init all columns with false
     this.occupiedColumns = new Array(this.columsCount).fill(false);
 
+    this.stats = new Stats();
+
     window.addEventListener("keydown", (e) => {
       if (e.code === "ArrowLeft" || e.code === "ArrowRight") {
         this.keys[e.code as keyof typeof this.keys] = true;
@@ -96,10 +101,10 @@ export class Game {
 
   restart(): void {
     this.stop();
-
+    this.stats.resetScore();
     this.projectiles = [];
     this.enemies = [];
-    this.frameCount = 0;
+    this.shootFrameCount = 0;
     this.occupiedColumns.fill(false);
     this.start();
   }
@@ -111,10 +116,19 @@ export class Game {
       this.spaceship.getCoordY(),
       this.spaceship.getSizeX(),
       this.spaceship.getSizeY(),
-      30,
-      30,
+      10,
+      18,
     );
     this.projectiles.push(projectile);
+  }
+
+  private checkCollision(p: Projectile, e: Enemy): boolean {
+    return (
+      p.getCoordY() + p.getHeight() > e.getCoordY() &&
+      p.getCoordY() < e.getCoordY() + e.getHeight() &&
+      p.getCoordX() + p.getWidth() > e.getCoordX() &&
+      p.getCoordX() < e.getCoordX() + e.getWidth()
+    );
   }
 
   private spawnEnemy(): void {
@@ -139,12 +153,14 @@ export class Game {
     const y = -enemyHeight;
 
     const enemy = new Enemy(this.assets.enemy, x, y, enemyWidth, enemyHeight);
+    console.log(enemy);
     this.enemies.push(enemy);
   }
 
   // endless game loop method
   private loop = (): void => {
     if (!this.isRunning) return;
+
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
     // update objects
@@ -154,21 +170,17 @@ export class Game {
       this.canvasWidth,
     );
 
-    //  draw objects
-    this.background.draw(this.ctx);
-    this.spaceship.draw(this.ctx);
-    this.projectiles.forEach((p) => p.draw(this.ctx));
-    this.enemies.forEach((e) => e.draw(this.ctx));
-
     // auto-shoot
-    this.frameCount += 1;
-    if (this.frameCount >= this.shootInterval) {
+    this.shootFrameCount += 1;
+    if (this.shootFrameCount >= this.shootInterval) {
       this.shoot();
-      this.frameCount = 0;
+      this.shootFrameCount = 0;
     }
 
     // spawn enemy
-    if (this.frameCount % this.enemySpawnInterwal === 0) {
+    this.enemyFrameCount += 1;
+    if (this.enemyFrameCount % this.enemySpawnInterwal === 0) {
+      console.log(this.enemyFrameCount);
       this.spawnEnemy();
     }
 
@@ -183,11 +195,50 @@ export class Game {
 
       if (enemy.isOffScreen(this.canvasHeight)) {
         console.log("GAME OVER!");
-        alert("Игра окончена! Враг прорвался!");
+        alert("YOU DIED");
         this.restart();
         return;
       }
     }
+
+    for (const bullet of this.projectiles) {
+      if (!bullet.getAlive()) continue;
+
+      for (const enemy of this.enemies) {
+        if (!enemy.getAlive()) continue;
+
+        if (this.checkCollision(bullet, enemy)) {
+          bullet.setDead();
+          enemy.setDead();
+
+          if (this.stats.getScore() < this.stats.getHighScore()) {
+            this.stats.addScore(10);
+          } else {
+            this.stats.addScore(10);
+            this.stats.setHighScore();
+            this.stats.saveHighScore();
+          }
+        }
+      }
+    }
+
+    this.projectiles = this.projectiles.filter(
+      (p) => p.getAlive() && !p.isOffScreen(),
+    );
+    this.enemies = this.enemies.filter(
+      (e) => e.getAlive() && !e.isOffScreen(this.canvasHeight),
+    );
+
+    //  draw objects
+    this.background.draw(this.ctx);
+    this.spaceship.draw(this.ctx);
+    this.projectiles.forEach((p) => p.draw(this.ctx));
+    this.enemies.forEach((e) => e.draw(this.ctx));
+
+    this.ctx.fillStyle = "white";
+    this.ctx.font = "20px Arial";
+    this.ctx.fillText(`Score: ${this.stats.getScore()}`, 10, 30);
+    this.ctx.fillText(`Best: ${this.stats.getHighScore()}`, 10, 60);
 
     this.animationId = requestAnimationFrame(this.loop);
   };

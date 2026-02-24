@@ -32,6 +32,7 @@ const main = async () => {
     AssetsLoader.loadAsset("spaceship", "assets/spaceship.png"),
     AssetsLoader.loadAsset("projectile", "assets/projectile.png"),
     AssetsLoader.loadAsset("enemy", "assets/enemy.png"),
+    AssetsLoader.loadAsset("explosion", "assets/explosion.png"),
   ]);
 
   // create assets object
@@ -40,6 +41,7 @@ const main = async () => {
     spaceship: AssetsLoader.getAsset("spaceship"),
     projectile: AssetsLoader.getAsset("projectile"),
     enemy: AssetsLoader.getAsset("enemy"),
+    explosion: AssetsLoader.getAsset("explosion"),
   };
 
   // create game instance
