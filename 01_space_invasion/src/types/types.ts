@@ -4,6 +4,9 @@ export interface Assets {
   projectile: HTMLImageElement;
   enemy: HTMLImageElement;
   explosion: HTMLImageElement;
+  redAlien: HTMLImageElement;
+  yellowAlien: HTMLImageElement;
+  greenAlien: HTMLImageElement;
 }
 
 export interface Constants {

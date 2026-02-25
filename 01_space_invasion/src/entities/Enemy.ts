@@ -6,6 +6,7 @@ export class Enemy {
   private height: number;
   private speed: number = 1;
   private alive: boolean;
+  private points: number = 0;
 
   constructor(
     image: HTMLImageElement,
@@ -13,13 +14,14 @@ export class Enemy {
     y: number,
     w: number,
     h: number,
+    points: number,
   ) {
     this.image = image;
     this.coordX = x;
     this.coordY = y;
     this.width = w;
     this.height = h;
-
+    this.points = points;
     this.alive = true;
   }
 
@@ -45,6 +47,10 @@ export class Enemy {
 
   setDead(): void {
     this.alive = false;
+  }
+
+  getPoints(): number {
+    return this.points;
   }
 
   update() {

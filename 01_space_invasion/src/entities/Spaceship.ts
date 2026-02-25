@@ -6,18 +6,18 @@ export class Spaceship {
   private coordY: number;
   private width: number;
   private height: number;
-  private speed: number = 5;
+  private speed: number = 6;
 
   constructor(
     image: HTMLImageElement,
-    canvasWidth: number,
-    canvasHeight: number,
+    x: number,
+    y: number,
     w: number,
     h: number,
   ) {
     this.image = image;
-    this.coordX = canvasWidth / 2 - w / 2;
-    this.coordY = canvasHeight - h - 15;
+    this.coordX = x / 2 - w / 2;
+    this.coordY = y - h - 15;
     this.width = w;
     this.height = h;
   }

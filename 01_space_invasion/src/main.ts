@@ -7,8 +7,8 @@ import { Game } from "./entities/Game";
 // set game constants
 
 const constants: Constants = {
-  canvasWidth: 400,
-  canvasHeight: 600,
+  canvasWidth: 480,
+  canvasHeight: 680,
 };
 // const WIDTH = 400;
 // const HEIGHT = 600;
@@ -33,6 +33,9 @@ const main = async () => {
     AssetsLoader.loadAsset("projectile", "assets/projectile.png"),
     AssetsLoader.loadAsset("enemy", "assets/enemy.png"),
     AssetsLoader.loadAsset("explosion", "assets/explosion.png"),
+    AssetsLoader.loadAsset("redAlien", "assets/red_alien.png"),
+    AssetsLoader.loadAsset("yellowAlien", "assets/yellow_alien.png"),
+    AssetsLoader.loadAsset("greenAlien", "assets/green_alien.png"),
   ]);
 
   // create assets object
@@ -42,6 +45,9 @@ const main = async () => {
     projectile: AssetsLoader.getAsset("projectile"),
     enemy: AssetsLoader.getAsset("enemy"),
     explosion: AssetsLoader.getAsset("explosion"),
+    redAlien: AssetsLoader.getAsset("redAlien"),
+    yellowAlien: AssetsLoader.getAsset("yellowAlien"),
+    greenAlien: AssetsLoader.getAsset("greenAlien"),
   };
 
   // create game instance

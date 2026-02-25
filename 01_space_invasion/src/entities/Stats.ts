@@ -21,7 +21,7 @@ export class Stats {
     this.score = 0;
   }
 
-  setHighScore(): void {
+  addHighScore(): void {
     this.highScore = this.score;
   }
 

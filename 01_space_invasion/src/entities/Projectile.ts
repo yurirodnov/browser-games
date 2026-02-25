@@ -11,16 +11,15 @@ export class Projectile {
 
   constructor(
     image: HTMLImageElement,
-    spaceshipCoordX: number,
-    spaceShipCoordY: number,
-    spaceShipWidth: number,
-    spaceShipHeight: number,
+    coordX: number,
+    coordY: number,
+
     w: number,
     h: number,
   ) {
     this.image = image;
-    this.coordX = spaceshipCoordX + spaceShipWidth / 4.5;
-    this.coordY = spaceShipCoordY - spaceShipHeight / 2;
+    this.coordX = coordX;
+    this.coordY = coordY;
     this.width = w;
     this.height = h;
 
