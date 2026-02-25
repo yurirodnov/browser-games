@@ -11,7 +11,6 @@ import { Stats } from "./Stats";
 export class Game {
   // game assets
   private assets: Assets;
-
   // game state
   private isRunning: boolean = false;
   private animationId: number | null = null;
@@ -21,8 +20,7 @@ export class Game {
   private shootFrameCount: number = 0;
   private enemyFrameCount: number = 0;
   private shootInterval: number = 40;
-  private enemySpawnInterwal: number = 30;
-
+  private enemySpawnInterwal: number = 45;
   // game entities
   private background: Background;
   private spaceship: Spaceship;
@@ -40,6 +38,7 @@ export class Game {
   private keys = {
     ArrowLeft: false,
     ArrowRight: false,
+    Space: false,
   };
 
   constructor(
@@ -47,6 +46,7 @@ export class Game {
     assets: Assets,
     constants: Constants,
   ) {
+    // init game entities
     this.ctx = ctx;
     this.canvasWidth = constants.canvasWidth;
     this.canvasHeight = constants.canvasHeight;
@@ -67,15 +67,13 @@ export class Game {
       50,
       50,
     );
-
-    // calculate column with
-    this.columnWidth = this.canvasWidth / this.columsCount;
-
-    // init all columns with false
-    this.occupiedColumns = new Array(this.columsCount).fill(false);
-
     this.stats = new Stats();
 
+    // init enemies columns
+    this.columnWidth = this.canvasWidth / this.columsCount;
+    this.occupiedColumns = new Array(this.columsCount).fill(false);
+
+    // init keys listeners
     window.addEventListener("keydown", (e) => {
       if (e.code === "ArrowLeft" || e.code === "ArrowRight") {
         this.keys[e.code as keyof typeof this.keys] = true;
@@ -86,6 +84,24 @@ export class Game {
         this.keys[e.code as keyof typeof this.keys] = false;
       }
     });
+    window.addEventListener("keyup", (e) => {
+      if (e.code === "Space") {
+        this.shoot();
+      }
+    });
+  }
+
+  private shoot(): void {
+    const projectile = new Projectile(
+      this.assets.projectile,
+      this.spaceship.getCoordX(),
+      this.spaceship.getCoordY(),
+      this.spaceship.getSizeX(),
+      this.spaceship.getSizeY(),
+      10,
+      18,
+    );
+    this.projectiles.push(projectile);
   }
 
   start(): void {
@@ -110,23 +126,6 @@ export class Game {
     this.occupiedColumns.fill(false);
     this.start();
   }
-
-  private shoot(): void {
-    const projectile = new Projectile(
-      this.assets.projectile,
-      this.spaceship.getCoordX(),
-      this.spaceship.getCoordY(),
-      this.spaceship.getSizeX(),
-      this.spaceship.getSizeY(),
-      10,
-      18,
-    );
-    this.projectiles.push(projectile);
-  }
-
-  // private showExplosison(): void {
-  //   const explosion = new Explosion(this.assets.explosion, th);
-  // }
 
   private checkCollision(p: Projectile, e: Enemy): boolean {
     return (
@@ -177,11 +176,11 @@ export class Game {
     );
 
     // auto-shoot
-    this.shootFrameCount += 1;
-    if (this.shootFrameCount >= this.shootInterval) {
-      this.shoot();
-      this.shootFrameCount = 0;
-    }
+    // this.shootFrameCount += 1;
+    // if (this.shootFrameCount >= this.shootInterval) {
+    //   this.shoot();
+    //   this.shootFrameCount = 0;
+    // }
 
     // spawn enemy
     this.enemyFrameCount += 1;
