@@ -306,6 +306,7 @@ export class Game {
     this.enemies.forEach((e) => e.draw(this.ctx));
     this.explosions.forEach((e) => e.draw(this.ctx));
 
+    // draw scores
     this.ctx.fillStyle = "white";
     this.ctx.font = "20px Arial";
     this.ctx.fillText(`Score: ${this.stats.getScore()}`, 10, 30);
