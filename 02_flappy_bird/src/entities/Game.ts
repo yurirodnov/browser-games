@@ -2,6 +2,7 @@
 
 import type { Assets, Constants } from "../types/types";
 import { Background } from "./Background";
+import { Bird } from "./Bird";
 
 export class Game {
   // game state
@@ -25,6 +26,7 @@ export class Game {
 
     // create classes instnces
     this.background = new Background(this.assets.background, 0, 0, 600, 1200);
+    this.bird = new Bird(this.assets.bird, 100, 300, 60, 60);
   }
 
   private loop = (): void => {
@@ -37,6 +39,7 @@ export class Game {
 
     // draw objects
     this.background.draw(this.ctx);
+    this.bird.draw(this.ctx);
 
     // endless game loop
     this.animationID = requestAnimationFrame(this.loop);

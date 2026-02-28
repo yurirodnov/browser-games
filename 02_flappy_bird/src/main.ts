@@ -24,11 +24,13 @@ canvas.height = constants.canvasHeight;
 
 const main = async () => {
   await Promise.all([
-    AssetsLoader.loadAsset("background", "assets/background2.jpg"),
+    AssetsLoader.loadAsset("background", "assets/background.jpg"),
+    AssetsLoader.loadAsset("bird", "assets/bird.gif"),
   ]);
 
   const assets: Assets = {
     background: AssetsLoader.getAsset("background"),
+    bird: AssetsLoader.getAsset("bird"),
   };
 
   const game = new Game(ctx, assets, constants);

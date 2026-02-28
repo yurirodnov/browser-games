@@ -1,5 +1,6 @@
 export interface Assets {
   background: HTMLImageElement;
+  bird: HTMLImageElement;
 }
 
 export interface Constants {
