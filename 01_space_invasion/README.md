@@ -7,6 +7,10 @@
 - **Enemies:** Different enemies with different characteristics
 - **Powerups:** Randomly droped after enemie's death
 
-## 🕹️ About project
+## 🕹️ Controls
+
+**Space** - shooting, **Left** and **Right** arrows - moving
+
+## :book: About project
 
 https://github.com/yurirodnov/browser-games/tree/main
