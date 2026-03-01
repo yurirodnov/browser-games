@@ -11,6 +11,7 @@ export class Game {
   private constants: Constants;
   private isRunning: boolean = false;
   private animationID: number | null = null;
+  private lastFrameTime: number = 0;
   private dayDuration: number;
   private nightDuration: number;
   private lastDaySwitchedTime: number = 0;
@@ -44,11 +45,27 @@ export class Game {
     // this.bird = new Bird(this.assets.bird, 100, 300, 60, 60);
   }
 
-  private loop = (): void => {
+  private loop = (timestamp: number): void => {
     if (!this.isRunning) {
       return;
     }
 
+    // CALCULATE DELTA
+    if (this.lastFrameTime === 0) {
+      this.lastFrameTime = timestamp;
+      this.animationID = requestAnimationFrame(this.loop);
+      return;
+    }
+
+    const deltaTimeMs: number = timestamp - this.lastFrameTime;
+
+    let deltaTime: number = deltaTimeMs / 1000;
+
+    if (deltaTime > 0.1) {
+      deltaTime = 0.1;
+    }
+
+    this.lastFrameTime = deltaTime;
     // CLEAR CANVAS
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
@@ -89,6 +106,7 @@ export class Game {
   public start(): void {
     if (this.isRunning) return;
     this.isRunning = true;
-    this.loop();
+    this.lastFrameTime = 0;
+    this.loop(0);
   }
 }
