@@ -5,14 +5,18 @@ import { Background } from "./Background";
 import { Bird } from "./Bird";
 
 export class Game {
-  // game state
+  // GAME STATE
   private ctx: CanvasRenderingContext2D;
   private assets: Assets;
   private constants: Constants;
   private isRunning: boolean = false;
   private animationID: number | null = null;
+  private dayDuration: number;
+  private nightDuration: number;
+  private lastDaySwitchedTime: number = 0;
+  private isDay: boolean = false;
 
-  // game entitens
+  // GAME ENTITIES
   private background: Background;
 
   constructor(
@@ -24,9 +28,20 @@ export class Game {
     this.assets = assets;
     this.constants = constants;
 
-    // create classes instnces
-    this.background = new Background(this.assets.background, 0, 0, 600, 1200);
-    this.bird = new Bird(this.assets.bird, 100, 300, 60, 60);
+    this.dayDuration = constants.dayDurationMs;
+    this.nightDuration = constants.nightDurationMs;
+
+    // create classes instances
+    this.background = new Background(
+      this.assets.backgroundDay,
+      0,
+      0,
+      this.constants.canvasWidth,
+      this.constants.canvasHeight,
+    );
+
+    // this.base = new Base();
+    // this.bird = new Bird(this.assets.bird, 100, 300, 60, 60);
   }
 
   private loop = (): void => {
@@ -34,14 +49,39 @@ export class Game {
       return;
     }
 
-    // clear canvas
+    // CLEAR CANVAS
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-    // draw objects
-    this.background.draw(this.ctx);
-    this.bird.draw(this.ctx);
+    // DRAW OBJECTS
+    const now = Date.now();
 
-    // endless game loop
+    console.log("Now", now);
+
+    // DAY SWITCHING LOGIC
+    if (!this.isDay && now - this.lastDaySwitchedTime > this.dayDuration) {
+      this.isDay = true;
+      this.lastDaySwitchedTime = now;
+    } else if (
+      this.isDay &&
+      now - this.lastDaySwitchedTime > this.nightDuration
+    ) {
+      this.isDay = false;
+      this.lastDaySwitchedTime = now;
+    }
+
+    // SWITCHING DAY/NIGHT BACKGROUND IMAGE
+    if (this.isDay) {
+      this.background.setImage(this.assets.backgroundDay);
+    } else {
+      this.background.setImage(this.assets.backgroundNight);
+    }
+
+    this.background.draw(this.ctx);
+
+    // this.base.draw(this.ctx);
+    // this.bird.draw(this.ctx);
+
+    // ENDLESS GAME LOOP
     this.animationID = requestAnimationFrame(this.loop);
   };
 

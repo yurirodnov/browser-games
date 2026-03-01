@@ -19,17 +19,19 @@ export class Background {
     this.height = h;
   }
 
+  setImage(img: HTMLImageElement): void {
+    this.image = img;
+  }
+
   update() {}
 
   draw(ctx: CanvasRenderingContext2D) {
     const canvasWidth = ctx.canvas.width;
     const canvasHeight = ctx.canvas.height;
 
-    // Реальные размеры картинки
     const imgWidth = this.image.width;
     const imgHeight = this.image.height;
 
-    // Вычисляем соотношения сторон
     const imgRatio = imgWidth / imgHeight;
     const canvasRatio = canvasWidth / canvasHeight;
 
@@ -38,22 +40,28 @@ export class Background {
     let x: number;
     let y: number;
 
-    // Подбираем размеры, чтобы заполнить весь экран (как object-fit: cover в CSS)
     if (canvasRatio > imgRatio) {
-      // Канвас шире картинки -> растягиваем по ширине, обрезаем высоту
       finalWidth = canvasWidth;
       finalHeight = canvasWidth / imgRatio;
       x = 0;
-      y = (canvasHeight - finalHeight) / 2; // Центрируем по вертикали
+      y = (canvasHeight - finalHeight) / 2;
     } else {
-      // Канвас уже картинки -> растягиваем по высоте, обрезаем ширину
       finalHeight = canvasHeight;
       finalWidth = canvasHeight * imgRatio;
-      x = (canvasWidth - finalWidth) / 2; // Центрируем по горизонтали
+      x = (canvasWidth - finalWidth) / 2;
       y = 0;
     }
 
-    // Рисуем с рассчитанными координатами и размерами
     ctx.drawImage(this.image, x, y, finalWidth, finalHeight);
   }
+
+  // draw(ctx: CanvasRenderingContext2D) {
+  //   ctx.drawImage(
+  //     this.image,
+  //     this.coordX,
+  //     this.coordY,
+  //     this.width,
+  //     this.height,
+  //   );
+  // }
 }

@@ -9,6 +9,8 @@ import "./style.css";
 const constants: Constants = {
   canvasWidth: 480,
   canvasHeight: 680,
+  dayDurationMs: 5_000,
+  nightDurationMs: 5_000,
 };
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML =
@@ -24,12 +26,20 @@ canvas.height = constants.canvasHeight;
 
 const main = async () => {
   await Promise.all([
-    AssetsLoader.loadAsset("background", "assets/background.jpg"),
+    AssetsLoader.loadAsset(
+      "backgroundDay",
+      "assets/sprites/background-day.png",
+    ),
+    AssetsLoader.loadAsset(
+      "backgroundNight",
+      "assets/sprites/background-night.png",
+    ),
     AssetsLoader.loadAsset("bird", "assets/bird.gif"),
   ]);
 
   const assets: Assets = {
-    background: AssetsLoader.getAsset("background"),
+    backgroundDay: AssetsLoader.getAsset("backgroundDay"),
+    backgroundNight: AssetsLoader.getAsset("backgroundNight"),
     bird: AssetsLoader.getAsset("bird"),
   };
 
