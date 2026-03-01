@@ -4,8 +4,8 @@
 
 - **Free assets:** All assets are taken from search engines pics
 - **Score:** High scores are saved to browser local storage
-- **Enemies:** Different enemies with different characteristics
-- **Powerups:** Randomly droped after enemie's death
+- **Enemies:** Different enemies with different characteristics _(in progress)_
+- **Powerups:** Randomly droped after enemie's death _(in progress)_
 
 ## 🕹️ Controls
 
