@@ -9,7 +9,7 @@
 
 ## 🕹️ Controls
 
-**Space** - shooting, **Left** and **Right** arrows - moving
+**Space** - shooting, **Left** and **Right** keys - moving
 
 ## :book: About project
 
