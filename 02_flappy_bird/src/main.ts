@@ -9,8 +9,8 @@ import "./style.css";
 const constants: Constants = {
   canvasWidth: 480,
   canvasHeight: 680,
-  dayDurationMs: 5_000,
-  nightDurationMs: 5_000,
+  dayDurationMs: 15_000,
+  nightDurationMs: 15_000,
 };
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML =

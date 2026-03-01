@@ -19,7 +19,7 @@ export class Background {
     this.height = h;
   }
 
-  setImage(img: HTMLImageElement): void {
+  public setImage(img: HTMLImageElement): void {
     this.image = img;
   }
 

@@ -13,7 +13,8 @@ export class Game {
   private assets: Assets;
   // game state
   private isRunning: boolean = false;
-  private animationId: number | null = null;
+  private animationID: number | null = null;
+  private lastTime: number = 0;
   private ctx: CanvasRenderingContext2D;
   private canvasWidth: number;
   private canvasHeight: number;
@@ -97,7 +98,7 @@ export class Game {
     });
   }
 
-  private shoot(): void {
+  public shoot(): void {
     const projectileWidth = 15;
     const projectileHeight = 30;
 
@@ -113,20 +114,21 @@ export class Game {
     this.projectiles.push(projectile);
   }
 
-  start(): void {
+  public start(): void {
     if (this.isRunning) return;
     this.isRunning = true;
-    this.loop();
+    this.lastTime = 0;
+    this.loop(0);
   }
 
-  stop(): void {
+  public stop(): void {
     this.isRunning = false;
-    if (this.animationId !== null) {
-      cancelAnimationFrame(this.animationId);
+    if (this.animationID !== null) {
+      cancelAnimationFrame(this.animationID);
     }
   }
 
-  restart(): void {
+  public restart(): void {
     this.stop();
     this.stats.resetScore();
     this.projectiles = [];
@@ -208,16 +210,31 @@ export class Game {
   }
 
   // endless game loop method
-  private loop = (): void => {
+  private loop = (timestamp: number): void => {
     if (!this.isRunning) return;
 
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+
+    // CALCULATE DELTA
+    if (this.lastTime === 0) {
+      this.lastTime = timestamp;
+      this.animationID = requestAnimationFrame(this.loop);
+      return;
+    }
+    const deltaTimeMS: number = timestamp - this.lastTime;
+    let deltaTime = deltaTimeMS / 1000;
+    this.lastTime = timestamp;
+    // DELTA CAP
+    if (deltaTime > 0.1) {
+      deltaTime = 0.1;
+    }
 
     // update objects
     this.spaceship.update(
       this.keys.ArrowLeft,
       this.keys.ArrowRight,
       this.canvasWidth,
+      deltaTime,
     );
 
     // shoot
@@ -242,13 +259,13 @@ export class Game {
     }
 
     this.projectiles = this.projectiles.filter((p) => {
-      p.update();
+      p.update(deltaTime);
       return !p.isOffScreen();
     });
 
     for (let i = this.enemies.length - 1; i >= 0; i--) {
       const enemy = this.enemies[i];
-      enemy.update();
+      enemy.update(deltaTime);
 
       if (enemy.isOffScreen(this.canvasHeight)) {
         alert("Y O U   D I E D");
@@ -314,6 +331,6 @@ export class Game {
     this.ctx.fillText(`Kills: ${this.killsCounter}`, 10, 90);
 
     // console.log(this.projectiles);
-    this.animationId = requestAnimationFrame(this.loop);
+    this.animationID = requestAnimationFrame(this.loop);
   };
 }

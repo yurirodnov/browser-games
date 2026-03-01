@@ -6,7 +6,7 @@ export class Projectile {
   private coordY: number;
   private width: number;
   private height: number;
-  private speed: number = 7;
+  private speed: number = 400;
   private alive: boolean;
 
   constructor(
@@ -54,8 +54,8 @@ export class Projectile {
     return this.coordY + this.height < 0;
   }
 
-  update(): void {
-    this.coordY -= this.speed;
+  update(delta: number): void {
+    this.coordY -= this.speed * delta;
   }
 
   draw(ctx: CanvasRenderingContext2D): void {

@@ -6,7 +6,7 @@ export class Spaceship {
   private coordY: number;
   private width: number;
   private height: number;
-  private speed: number = 6;
+  private speed: number = 300;
 
   constructor(
     image: HTMLImageElement,
@@ -48,12 +48,17 @@ export class Spaceship {
     );
   }
 
-  update(leftArrow: boolean, rightArrow: boolean, canvasWidth: number) {
+  update(
+    leftArrow: boolean,
+    rightArrow: boolean,
+    canvasWidth: number,
+    delta: number,
+  ) {
     if (leftArrow) {
-      this.coordX -= this.speed;
+      this.coordX -= this.speed * delta;
     }
     if (rightArrow) {
-      this.coordX += this.speed;
+      this.coordX += this.speed * delta;
     }
 
     if (this.coordX < 0) {

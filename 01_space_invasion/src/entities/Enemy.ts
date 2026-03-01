@@ -4,7 +4,7 @@ export class Enemy {
   private coordY: number;
   private width: number;
   private height: number;
-  private speed: number = 1;
+  private speed: number = 100;
   private alive: boolean;
   private points: number = 0;
 
@@ -53,8 +53,8 @@ export class Enemy {
     return this.points;
   }
 
-  update() {
-    this.coordY += this.speed;
+  update(delta: number) {
+    this.coordY += this.speed * delta;
   }
 
   isOffScreen(canvasHeight: number) {

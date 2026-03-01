@@ -31,7 +31,7 @@ export class Game {
     this.dayDuration = constants.dayDurationMs;
     this.nightDuration = constants.nightDurationMs;
 
-    // create classes instances
+    // CREATE CLASSES INTANCES
     this.background = new Background(
       this.assets.backgroundDay,
       0,
@@ -52,10 +52,8 @@ export class Game {
     // CLEAR CANVAS
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-    // DRAW OBJECTS
+    // GET CURRENT TIME
     const now = Date.now();
-
-    console.log("Now", now);
 
     // DAY SWITCHING LOGIC
     if (!this.isDay && now - this.lastDaySwitchedTime > this.dayDuration) {
@@ -76,6 +74,7 @@ export class Game {
       this.background.setImage(this.assets.backgroundNight);
     }
 
+    // DRAW OBJECTS IN A LOOP
     this.background.draw(this.ctx);
 
     // this.base.draw(this.ctx);
@@ -85,7 +84,9 @@ export class Game {
     this.animationID = requestAnimationFrame(this.loop);
   };
 
-  start() {
+  public restart(): void {}
+
+  public start(): void {
     if (this.isRunning) return;
     this.isRunning = true;
     this.loop();
