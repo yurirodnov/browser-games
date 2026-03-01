@@ -1,4 +1,4 @@
-# Space Invasion :space_invader:
+# :space_invader: Space Invasion
 
 ## ✨ Game Features
 
