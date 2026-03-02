@@ -1,7 +1,8 @@
 // 02_flappy_bird/src/entities/Game.ts
 
-import type { Assets, Constants } from "../types/types";
+import type { Assets, Constants, Keys } from "../types/types";
 import { Background } from "./Background";
+import { Base } from "./Base";
 import { Bird } from "./Bird";
 
 export class Game {
@@ -16,9 +17,18 @@ export class Game {
   private nightDuration: number;
   private lastDaySwitchedTime: number = 0;
   private isDay: boolean = false;
+  private birdWingsLoopCounter: number = 0;
+  private birdWingsSwingingInterval: number = 50;
 
   // GAME ENTITIES
   private background: Background;
+  private base: Base;
+  private bird: Bird;
+
+  // CONTROL KEYS
+  private keys: Keys = {
+    space: false,
+  };
 
   constructor(
     ctx: CanvasRenderingContext2D,
@@ -41,8 +51,27 @@ export class Game {
       this.constants.canvasHeight,
     );
 
-    // this.base = new Base();
-    // this.bird = new Bird(this.assets.bird, 100, 300, 60, 60);
+    this.base = new Base(
+      this.assets.base,
+      0,
+      this.constants.canvasHeight - this.constants.baseHeight,
+      this.constants.canvasWidth,
+      this.constants.baseHeight,
+    );
+    this.bird = new Bird(
+      this.assets.birdUP,
+      this.constants.birdSpawnX,
+      this.constants.birdSpawnY,
+      35,
+      30,
+    );
+
+    // INIT KEYS LISTENERS
+    window.addEventListener("keyup", (e) => {
+      if (e.code === "Space") {
+        console.log("Space");
+      }
+    });
   }
 
   private loop = (timestamp: number): void => {
@@ -93,9 +122,8 @@ export class Game {
 
     // DRAW OBJECTS IN A LOOP
     this.background.draw(this.ctx);
-
-    // this.base.draw(this.ctx);
-    // this.bird.draw(this.ctx);
+    this.base.draw(this.ctx);
+    this.bird.draw(this.ctx);
 
     // ENDLESS GAME LOOP
     this.animationID = requestAnimationFrame(this.loop);

@@ -4,6 +4,8 @@ export class Bird {
   private coordY: number;
   private width: number;
   private height: number;
+  private jumpHeight: number = 10;
+  private gravityPower: number = 20;
 
   constructor(
     img: HTMLImageElement,
@@ -19,7 +21,11 @@ export class Bird {
     this.height = h;
   }
 
-  update(space: boolean) {}
+  public setImage(img: HTMLImageElement): void {
+    this.image = img;
+  }
+
+  update(space: boolean, delta: number) {}
 
   draw(ctx: CanvasRenderingContext2D) {
     ctx.drawImage(

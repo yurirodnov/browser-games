@@ -1,7 +1,10 @@
 export interface Assets {
   backgroundDay: HTMLImageElement;
   backgroundNight: HTMLImageElement;
-  bird: HTMLImageElement;
+  base: HTMLImageElement;
+  birdUP: HTMLImageElement;
+  birdMID: HTMLImageElement;
+  birdDOWN: HTMLImageElement;
 }
 
 export interface Constants {
@@ -9,4 +12,11 @@ export interface Constants {
   canvasHeight: number;
   dayDurationMs: number;
   nightDurationMs: number;
+  baseHeight: number;
+  birdSpawnX: number;
+  birdSpawnY: number;
+}
+
+export interface Keys {
+  space: boolean;
 }

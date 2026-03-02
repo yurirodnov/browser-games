@@ -11,6 +11,9 @@ const constants: Constants = {
   canvasHeight: 680,
   dayDurationMs: 15_000,
   nightDurationMs: 15_000,
+  baseHeight: 120,
+  birdSpawnX: 50,
+  birdSpawnY: 320,
 };
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML =
@@ -34,13 +37,22 @@ const main = async () => {
       "backgroundNight",
       "assets/sprites/background-night.png",
     ),
-    AssetsLoader.loadAsset("bird", "assets/bird.gif"),
+    AssetsLoader.loadAsset("base", "assets/sprites/base.png"),
+    AssetsLoader.loadAsset("birdUP", "assets/sprites/yellowbird-upflap.png"),
+    AssetsLoader.loadAsset("birdMID", "assets/sprites/yellowbird-midflap.png"),
+    AssetsLoader.loadAsset(
+      "birdDOWN",
+      "assets/sprites/yellowbird-downflap.png",
+    ),
   ]);
 
   const assets: Assets = {
     backgroundDay: AssetsLoader.getAsset("backgroundDay"),
     backgroundNight: AssetsLoader.getAsset("backgroundNight"),
-    bird: AssetsLoader.getAsset("bird"),
+    base: AssetsLoader.getAsset("base"),
+    birdUP: AssetsLoader.getAsset("birdUP"),
+    birdMID: AssetsLoader.getAsset("birdMID"),
+    birdDOWN: AssetsLoader.getAsset("birdDOWN"),
   };
 
   const game = new Game(ctx, assets, constants);
