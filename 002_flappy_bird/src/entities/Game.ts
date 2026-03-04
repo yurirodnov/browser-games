@@ -125,6 +125,8 @@ export class Game {
     this.bird.update(this.jump, deltaTime);
     this.jump = false;
 
+    this.base.update(deltaTime);
+
     // DRAW OBJECTS IN A LOOP
 
     this.background.draw(this.ctx);

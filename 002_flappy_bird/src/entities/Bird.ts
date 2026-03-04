@@ -8,7 +8,7 @@ export class Bird {
   // PHYSICS
   private velocity: number = 0;
   private gravity: number = 32;
-  private jumpPower: number = -55;
+  private jumpPower: number = -58;
 
   // ROTATION
   private rotation: number = 0;
@@ -89,7 +89,7 @@ export class Bird {
       this.height,
     );
 
-    // ctx.restore();
+    ctx.restore();
   }
 
   public getCoordX(): number {
