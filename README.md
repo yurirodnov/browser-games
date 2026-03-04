@@ -11,7 +11,7 @@ No game engines, no heavy frameworks (like React or Phaser). Just pure JavaScrip
 - **Entity Component System:** Clean OOP architecture with classes for Player, Enemies, Projectiles etc.
 - **State Management:** LocalStorage integration for high scores and persistent game state.
 - **Tooling:** Bundled with **Vite** for instant hot-reloading and optimized builds.
-- **Weak math knowledge:** I have law education, wish me luck with Computer Science guys! :clown:
+- **Weak math knowledge:** I have law education, wish me luck with Computer Science guys! 🤡
 
 ## 🛠️ Local Development
 
