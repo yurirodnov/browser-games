@@ -52,7 +52,7 @@ Each game is a standalone Vite project:
 ```text
 /browser-games
   ├── 001_space_invasion/    # Source code for Space Invasion
-  ├── 02_Flappy bird/       # Source code for Flappy bird
+  ├── 002_flappy bird/       # Source code for Flappy bird
   ├── 003_snake              # Source code for Snake
   ├── Another games folders...
   └── README.md
