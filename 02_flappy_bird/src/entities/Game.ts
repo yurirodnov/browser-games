@@ -1,6 +1,6 @@
 // 02_flappy_bird/src/entities/Game.ts
 
-import type { Assets, Constants, Keys } from "../types/types";
+import type { Assets, Constants, Controls } from "../types/types";
 import { Background } from "./Background";
 import { Base } from "./Base";
 import { Bird } from "./Bird";
@@ -17,8 +17,10 @@ export class Game {
   private nightDuration: number;
   private lastDaySwitchedTime: number = 0;
   private isDay: boolean = false;
-  private birdWingsLoopCounter: number = 0;
-  private birdWingsSwingingInterval: number = 50;
+
+  // GAME PHYSICS
+  private inertion: number = 8;
+  private jump: boolean = false;
 
   // GAME ENTITIES
   private background: Background;
@@ -26,9 +28,9 @@ export class Game {
   private bird: Bird;
 
   // CONTROL KEYS
-  private keys: Keys = {
-    space: false,
-  };
+  // private controls: Controls = {
+  //   click: MouseEvent,
+  // };
 
   constructor(
     ctx: CanvasRenderingContext2D,
@@ -59,7 +61,7 @@ export class Game {
       this.constants.baseHeight,
     );
     this.bird = new Bird(
-      this.assets.birdUP,
+      this.assets.birdFrames,
       this.constants.birdSpawnX,
       this.constants.birdSpawnY,
       35,
@@ -67,10 +69,9 @@ export class Game {
     );
 
     // INIT KEYS LISTENERS
-    window.addEventListener("keyup", (e) => {
-      if (e.code === "Space") {
-        console.log("Space");
-      }
+    window.addEventListener("mousedown", (e: Event) => {
+      e.preventDefault();
+      this.jump = true;
     });
   }
 
@@ -120,7 +121,12 @@ export class Game {
       this.background.setImage(this.assets.backgroundNight);
     }
 
+    // UPDATE OBJECTS IN A LOOP
+    this.bird.update(this.jump, deltaTime);
+    this.jump = false;
+
     // DRAW OBJECTS IN A LOOP
+
     this.background.draw(this.ctx);
     this.base.draw(this.ctx);
     this.bird.draw(this.ctx);

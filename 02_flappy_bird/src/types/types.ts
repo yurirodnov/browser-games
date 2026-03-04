@@ -2,9 +2,10 @@ export interface Assets {
   backgroundDay: HTMLImageElement;
   backgroundNight: HTMLImageElement;
   base: HTMLImageElement;
-  birdUP: HTMLImageElement;
-  birdMID: HTMLImageElement;
-  birdDOWN: HTMLImageElement;
+  // birdUP: HTMLImageElement;
+  // birdMID: HTMLImageElement;
+  // birdDOWN: HTMLImageElement;
+  birdFrames: HTMLImageElement[];
 }
 
 export interface Constants {
@@ -17,6 +18,6 @@ export interface Constants {
   birdSpawnY: number;
 }
 
-export interface Keys {
-  space: boolean;
+export interface Controls {
+  click: MouseEvent;
 }

@@ -50,9 +50,15 @@ const main = async () => {
     backgroundDay: AssetsLoader.getAsset("backgroundDay"),
     backgroundNight: AssetsLoader.getAsset("backgroundNight"),
     base: AssetsLoader.getAsset("base"),
-    birdUP: AssetsLoader.getAsset("birdUP"),
-    birdMID: AssetsLoader.getAsset("birdMID"),
-    birdDOWN: AssetsLoader.getAsset("birdDOWN"),
+    // birdUP: AssetsLoader.getAsset("birdUP"),
+    // birdMID: AssetsLoader.getAsset("birdMID"),
+    // birdDOWN: AssetsLoader.getAsset("birdDOWN"),
+    birdFrames: [
+      AssetsLoader.getAsset("birdUP"),
+      AssetsLoader.getAsset("birdMID"),
+      AssetsLoader.getAsset("birdDOWN"),
+      AssetsLoader.getAsset("birdMID"),
+    ],
   };
 
   const game = new Game(ctx, assets, constants);
