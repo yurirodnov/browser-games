@@ -37,9 +37,9 @@ Interested in the code? Wanna run it locally?
     ```bash
     npm run dev
     ```
-5.  Open the link shown in the terminal (usually `http://localhost:5173`).
+5.  **Open the link shown in the terminal (usually `http://localhost:5173`)**.
 
-6.  Build for production (optional):
+6.  **Build for production (optional)**:
     ```bash
     npm run build
     npm run preview
