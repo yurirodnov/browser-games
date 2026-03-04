@@ -12,7 +12,7 @@ const constants: Constants = {
   dayDurationMs: 15_000,
   nightDurationMs: 15_000,
   baseHeight: 120,
-  birdSpawnX: 50,
+  birdSpawnX: 70,
   birdSpawnY: 320,
 };
 
@@ -44,6 +44,8 @@ const main = async () => {
       "birdDOWN",
       "assets/sprites/yellowbird-downflap.png",
     ),
+    AssetsLoader.loadAsset("pipeUP", "assets/sprites/pipe-up.png"),
+    AssetsLoader.loadAsset("pipeDOWN", "assets/sprites/pipe-down.png"),
   ]);
 
   const assets: Assets = {
@@ -59,6 +61,8 @@ const main = async () => {
       AssetsLoader.getAsset("birdDOWN"),
       AssetsLoader.getAsset("birdMID"),
     ],
+    pipeUP: AssetsLoader.getAsset("pipeUP"),
+    pipeDOWN: AssetsLoader.getAsset("pipeDOWN"),
   };
 
   const game = new Game(ctx, assets, constants);

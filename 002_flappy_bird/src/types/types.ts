@@ -6,6 +6,8 @@ export interface Assets {
   // birdMID: HTMLImageElement;
   // birdDOWN: HTMLImageElement;
   birdFrames: HTMLImageElement[];
+  pipeUP: HTMLImageElement;
+  pipeDOWN: HTMLImageElement;
 }
 
 export interface Constants {

@@ -21,7 +21,7 @@ export class Base {
   ) {
     this.image = img;
     this.coordX1 = x;
-    this.coordX2 = x + w;
+    this.coordX2 = x + w - 1;
     this.coordY = y;
     this.width1 = w;
     this.width2 = w;
@@ -54,15 +54,15 @@ export class Base {
   }
 
   public update(delta: number): void {
-    this.coordX1 -= 20 * delta;
-    this.coordX2 -= 20 * delta;
+    this.coordX1 -= 17 * delta;
+    this.coordX2 -= 17 * delta;
 
     if (this.coordX1 <= -this.canvasWindth) {
-      this.coordX1 = this.coordX2 + this.width2;
+      this.coordX1 = this.coordX2 + this.width2 - 1;
     }
 
     if (this.coordX2 <= -this.canvasWindth) {
-      this.coordX2 = this.coordX1 + this.width1;
+      this.coordX2 = this.coordX1 + this.width1 - 1;
     }
   }
 

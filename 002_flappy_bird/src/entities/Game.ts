@@ -4,6 +4,7 @@ import type { Assets, Constants, Controls } from "../types/types";
 import { Background } from "./Background";
 import { Base } from "./Base";
 import { Bird } from "./Bird";
+import { Obstacle } from "./Obstacle";
 
 export class Game {
   // GAME STATE
@@ -17,15 +18,17 @@ export class Game {
   private nightDuration: number;
   private lastDaySwitchedTime: number = 0;
   private isDay: boolean = false;
-
+  private obstacleSpawnInterval: number = 10;
+  private obstacleSpawnTimer: number = 0;
+  //private lastObstacleX: number = 0;
   // GAME PHYSICS
-  private inertion: number = 8;
   private jump: boolean = false;
 
   // GAME ENTITIES
   private background: Background;
   private base: Base;
   private bird: Bird;
+  private obstacles: Obstacle[] = [];
 
   // CONTROL KEYS
   // private controls: Controls = {
@@ -121,17 +124,73 @@ export class Game {
       this.background.setImage(this.assets.backgroundNight);
     }
 
+    // SPAWNING OBSTACLES
+
+    this.obstacleSpawnTimer += 1 * deltaTime;
+    if (
+      this.obstacles.length < 5 &&
+      this.obstacleSpawnTimer >= this.obstacleSpawnInterval
+    ) {
+      const nextPipe = this.constants.canvasWidth;
+      const pipesPlaces: string[] = ["UP", "DOWN"];
+      const whichPipeBigger = Math.floor(Math.random() * 2);
+      const howBig: number = Math.floor(Math.random() * 140 + 70);
+      const basePipeHeight: number = this.constants.canvasHeight / 4;
+
+      let pipeUPHeight: number;
+      let pipeDOWNHeight: number;
+
+      if (pipesPlaces[whichPipeBigger] === "UP") {
+        pipeUPHeight = basePipeHeight + howBig;
+        pipeDOWNHeight = basePipeHeight - howBig;
+      } else {
+        pipeUPHeight = basePipeHeight - howBig;
+        pipeDOWNHeight = basePipeHeight + howBig;
+      }
+
+      const obstacle = new Obstacle(
+        this.assets.pipeUP, // pipe up image
+        this.assets.pipeDOWN, // pipe down image
+        this.obstacles.length === 0
+          ? nextPipe
+          : this.obstacles[this.obstacles.length - 1].getCoordX() +
+              this.obstacles[this.obstacles.length - 1].getWidth() +
+              200, // pipe spawn coord X
+        0, // pipe up spawn coord Y
+        this.constants.canvasHeight -
+          this.constants.baseHeight -
+          pipeDOWNHeight, // pipe down spawn coord Y
+        90,
+        pipeUPHeight,
+        pipeDOWNHeight,
+        // this.constants.canvasHeight / 2,
+      );
+      this.obstacles.push(obstacle);
+
+      // this.lastObstacleX += this.constants.canvasWidth / 2;
+
+      this.obstacleSpawnTimer = 0;
+    }
+
     // UPDATE OBJECTS IN A LOOP
     this.bird.update(this.jump, deltaTime);
     this.jump = false;
 
     this.base.update(deltaTime);
+    this.obstacles.forEach((o) => o.update(deltaTime));
 
     // DRAW OBJECTS IN A LOOP
-
     this.background.draw(this.ctx);
     this.base.draw(this.ctx);
     this.bird.draw(this.ctx);
+    this.obstacles = this.obstacles.filter(
+      (o) => o.getCoordX() > -o.getWidth(),
+    );
+
+    this.obstacles.forEach((o) => o.draw(this.ctx));
+
+    console.log(this.obstacles);
+    console.log(this.obstacleSpawnTimer);
 
     // ENDLESS GAME LOOP
     this.animationID = requestAnimationFrame(this.loop);
