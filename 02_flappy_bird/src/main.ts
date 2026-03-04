@@ -1,4 +1,4 @@
-// 02_flappy_birds/src/main.ts
+// 002_flappy_birds/src/main.ts
 
 import { AssetsLoader } from "./lib/AssetsLoader";
 import type { Assets, Constants } from "./types/types";

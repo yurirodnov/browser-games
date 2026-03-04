@@ -1,4 +1,4 @@
-// 02_flappy_bird/src/entities/Game.ts
+// 002_flappy_bird/src/entities/Game.ts
 
 import type { Assets, Constants, Controls } from "../types/types";
 import { Background } from "./Background";
