@@ -27,7 +27,7 @@ Interested in the code? Wanna run it locally?
     ```
 2.  **Go to a specific game directory:**
     ```bash
-    cd 01_space_invasion (or any another game folder)
+    cd 001_space_invasion (or any another game folder)
     ```
 3.  **Install dependencies:**
     ```bash
@@ -51,7 +51,7 @@ Each game is a standalone Vite project:
 
 ```text
 /browser-games
-  ├── 01_space_invasion/    # Source code for Space Invasion
+  ├── 001_space_invasion/    # Source code for Space Invasion
   ├── 02_Flappy bird/       # Source code for Flappy bird
   ├── 03_Snake              # Source code for Snake
   ├── Another games folders...

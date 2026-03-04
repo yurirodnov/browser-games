@@ -1,4 +1,4 @@
-// 01_space_invasion/src/entities/Background.ts
+// 001_space_invasion/src/entities/Background.ts
 
 export class Background {
   private image: HTMLImageElement;

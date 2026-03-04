@@ -1,4 +1,4 @@
-// 01_space_invasion/src/entities/Game.ts
+// 001_space_invasion/src/entities/Game.ts
 
 import type { Assets, Constants } from "../types/types";
 import { Background } from "./Background";

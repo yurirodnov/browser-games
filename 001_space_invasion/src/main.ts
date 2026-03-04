@@ -1,4 +1,4 @@
-// 01_space_invasion/src/main.ts
+// 001_space_invasion/src/main.ts
 
 import { AssetsLoader } from "./utils/AssetsLoader";
 import type { Assets, Constants } from "./types/types";

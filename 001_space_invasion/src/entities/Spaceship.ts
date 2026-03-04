@@ -1,4 +1,4 @@
-// 01_space_invasion/src/entities/Spaceship.ts
+// 001_space_invasion/src/entities/Spaceship.ts
 
 export class Spaceship {
   private image: HTMLImageElement;

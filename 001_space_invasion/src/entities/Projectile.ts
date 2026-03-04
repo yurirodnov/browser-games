@@ -1,4 +1,4 @@
-// 01_space_invasion/src/entities/Projectile.ts
+// 001_space_invasion/src/entities/Projectile.ts
 
 export class Projectile {
   private image: HTMLImageElement;
