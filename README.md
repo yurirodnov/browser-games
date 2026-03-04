@@ -17,13 +17,17 @@ No game engines, no heavy frameworks (like React or Phaser). Just pure JavaScrip
 
 Interested in the code? Wanna run it locally?
 
+**Prerequisites:**
+
+- Node.js (v18 or higher) installed on your machine.
+
 1.  **Clone the repo:**
     ```bash
     git clone https://github.com/твой-ник/browser-games.git
     ```
 2.  **Go to a specific game directory:**
     ```bash
-    cd 01_space_invasion
+    cd 01_space_invasion (or any another game folder)
     ```
 3.  **Install dependencies:**
     ```bash
@@ -34,6 +38,12 @@ Interested in the code? Wanna run it locally?
     npm run dev
     ```
 5.  Open the link shown in the terminal (usually `http://localhost:5173`).
+
+6.  Build for production (optional):
+    ```bash
+    npm run build
+    npm run preview
+    ```
 
 ## 📂 Project Structure
 
