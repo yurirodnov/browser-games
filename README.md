@@ -15,7 +15,7 @@ No game engines, no heavy frameworks (like React or Phaser). Just pure JavaScrip
 
 ## 🛠️ Local Development
 
-Interested in the code? Want to run it locally?
+Interested in the code? Wanna run it locally?
 
 1.  **Clone the repo:**
     ```bash
