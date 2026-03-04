@@ -22,9 +22,17 @@ Interested in the code? Wanna run it locally?
 - [Node.js](https://nodejs.org/en) (v18 or higher) installed on your machine.
 
 1.  **Clone the repo:**
+
     ```bash
-    git clone https://github.com/твой-ник/browser-games.git
+    git clone https://github.com/yurirodnov/browser-games.git
     ```
+
+    or via SSH
+
+    ```bash
+    git clone git@github.com:yurirodnov/browser-games.git
+    ```
+
 2.  **Go to a specific game directory:**
     ```bash
     cd 001_space_invasion (or any another game folder)
