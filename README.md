@@ -19,7 +19,7 @@ Interested in the code? Wanna run it locally?
 
 **Prerequisites:**
 
-- Node.js (v18 or higher) installed on your machine.
+- [Node.js](https://nodejs.org/en) (v18 or higher) installed on your machine.
 
 1.  **Clone the repo:**
     ```bash
