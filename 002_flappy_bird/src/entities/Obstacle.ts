@@ -1,5 +1,7 @@
 // 002_flappy_bird/src/entities/Obstacle.ts
 
+import type { Constants } from "../types/types";
+
 export class Obstacle {
   private imageUP: HTMLImageElement;
   private widthUP: number;
@@ -13,6 +15,8 @@ export class Obstacle {
 
   //   private canvasMid: number;
   private coordX: number;
+  private speed: number;
+  private passed: boolean = false;
 
   constructor(
     imgUP: HTMLImageElement,
@@ -23,6 +27,7 @@ export class Obstacle {
     w: number,
     hUP: number,
     hDOWN: number,
+    c: Constants,
     // canvasMid: number,
   ) {
     this.imageUP = imgUP;
@@ -37,6 +42,7 @@ export class Obstacle {
     this.coordYDOWN = yDOWN;
 
     this.coordX = x;
+    this.speed = c.screenSpeed;
 
     // this.canvasMid = canvasMid;
   }
@@ -49,8 +55,32 @@ export class Obstacle {
     return this.coordX;
   }
 
+  public getHeightUP(): number {
+    return this.heightUP;
+  }
+
+  public getHeightDOWN(): number {
+    return this.heightDOWN;
+  }
+
+  public getCoordYUP(): number {
+    return this.coordYUP;
+  }
+
+  public getCoordYDOWN(): number {
+    return this.coordYDOWN;
+  }
+
+  public getPassed(): boolean {
+    return this.passed;
+  }
+
+  public setPassed(): void {
+    this.passed = true;
+  }
+
   public update(delta: number) {
-    this.coordX -= 17 * delta;
+    this.coordX -= this.speed * delta;
   }
 
   public draw(ctx: CanvasRenderingContext2D) {

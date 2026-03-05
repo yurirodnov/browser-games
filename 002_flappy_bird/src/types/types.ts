@@ -18,8 +18,15 @@ export interface Constants {
   baseHeight: number;
   birdSpawnX: number;
   birdSpawnY: number;
+  screenSpeed: number;
 }
 
 export interface Controls {
   click: MouseEvent;
+}
+
+export interface GameState {
+  menu: string;
+  play: string;
+  death: string;
 }

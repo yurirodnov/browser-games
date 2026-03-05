@@ -1,3 +1,5 @@
+import type { Constants } from "../types/types";
+
 export class Bird {
   private images: HTMLImageElement[];
   private coordX: number;
@@ -7,15 +9,15 @@ export class Bird {
 
   // PHYSICS
   private velocity: number = 0;
-  private gravity: number = 32;
-  private jumpPower: number = -58;
+  private gravity: number = 1000;
+  private jumpPower: number = -350;
 
   // ROTATION
   private rotation: number = 0;
 
   // WINGS ANIMATION
   private wingsTimer: number = 0;
-  private wingsInterval: number = 0.5;
+  private wingsInterval: number = 0.09;
   private imageIndex: number = 0;
 
   constructor(
@@ -34,7 +36,7 @@ export class Bird {
 
   private calculateRotation(): void {
     const maxUp = -25 * (Math.PI / 180);
-    const maxDown = 300 * (Math.PI / 180);
+    const maxDown = 65 * (Math.PI / 180);
 
     let targetRotation: number;
 
@@ -105,7 +107,7 @@ export class Bird {
     return this.height;
   }
 
-  public reset(x: number, coordY: number): void {
+  public birdReset(x: number, coordY: number): void {
     this.coordX = x;
     this.coordY = coordY;
     this.velocity = 0;

@@ -1,5 +1,7 @@
 // 002_flappy_bird/src/entities/Base.ts
 
+import type { Constants } from "../types/types";
+
 export class Base {
   private image: HTMLImageElement;
   private coordX1: number;
@@ -11,6 +13,7 @@ export class Base {
   private width2: number;
 
   private canvasWindth: number;
+  private speed: number;
 
   constructor(
     img: HTMLImageElement,
@@ -18,6 +21,7 @@ export class Base {
     y: number,
     w: number,
     h: number,
+    c: Constants,
   ) {
     this.image = img;
     this.coordX1 = x;
@@ -27,6 +31,7 @@ export class Base {
     this.width2 = w;
     this.height = h;
     this.canvasWindth = w;
+    this.speed = c.screenSpeed;
   }
 
   public getCooordY(): number {
@@ -54,8 +59,8 @@ export class Base {
   }
 
   public update(delta: number): void {
-    this.coordX1 -= 17 * delta;
-    this.coordX2 -= 17 * delta;
+    this.coordX1 -= this.speed * delta;
+    this.coordX2 -= this.speed * delta;
 
     if (this.coordX1 <= -this.canvasWindth) {
       this.coordX1 = this.coordX2 + this.width2 - 1;

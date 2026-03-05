@@ -9,11 +9,12 @@ import "./style.css";
 const constants: Constants = {
   canvasWidth: 480,
   canvasHeight: 680,
-  dayDurationMs: 15_000,
-  nightDurationMs: 15_000,
+  dayDurationMs: 20_000,
+  nightDurationMs: 20_000,
   baseHeight: 120,
   birdSpawnX: 70,
-  birdSpawnY: 320,
+  birdSpawnY: 270,
+  screenSpeed: 210,
 };
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML =
