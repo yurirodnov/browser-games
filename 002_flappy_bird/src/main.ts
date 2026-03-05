@@ -67,7 +67,7 @@ const main = async () => {
   };
 
   const game = new Game(ctx, assets, constants);
-  game.start();
+  // game.start();
 };
 
 main();

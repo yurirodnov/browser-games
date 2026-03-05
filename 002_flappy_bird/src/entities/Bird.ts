@@ -6,6 +6,7 @@ export class Bird {
   private coordY: number;
   private width: number;
   private height: number;
+  private alive: boolean = true;
 
   // PHYSICS
   private velocity: number = 0;
@@ -113,5 +114,9 @@ export class Bird {
     this.velocity = 0;
     this.rotation = 0;
     this.imageIndex = 0;
+  }
+
+  public setDead(): void {
+    this.alive = false;
   }
 }

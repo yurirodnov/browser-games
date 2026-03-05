@@ -25,8 +25,8 @@ export interface Controls {
   click: MouseEvent;
 }
 
-export interface GameState {
-  menu: string;
-  play: string;
-  death: string;
+export enum GameState {
+  MENU = "menu",
+  PLAYING = "playing",
+  GAME_OVER = "game_over",
 }
