@@ -1,5 +1,7 @@
 # 🕹️ Browser Games Collection
 
+![Gameplay](cover.jpg)
+
 A collection of HTML5 games built from scratch using **HTML5 Canvas**, **CSS**, and **TypeScript**.
 
 I copy famous arcade games like a Flappy Bird, Alien Invasion etc. and also create my own for fun and improving my programming skills.
