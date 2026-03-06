@@ -1,5 +1,7 @@
 # :bird: Flappy bird
 
+Another legendary arcade game. Push "Fly" button to avoid obstacles. Try to stay alive as long as possible and earn scores.
+
 ![Gameplay](screen.jpg)
 
 ## ✨ Game Features

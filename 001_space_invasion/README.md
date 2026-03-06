@@ -1,5 +1,7 @@
 # :space_invader: Space Invasion
 
+Classic arcade game. Kill aliens to protect Earth, earn scores.
+
 ![Gameplay](screen.jpg)
 
 ## ✨ Game Features
