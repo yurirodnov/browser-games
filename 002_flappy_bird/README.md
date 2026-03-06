@@ -13,4 +13,4 @@
 
 ## :book: About project
 
-https://github.com/yurirodnov/browser-games/tree/main
+https://github.com/yurirodnov/browser-games
