@@ -1,5 +1,7 @@
 # :space_invader: Space Invasion
 
+![Gameplay](screen.jpg)
+
 ## ✨ Game Features
 
 - **Free assets:** All assets are taken from search engines pics
