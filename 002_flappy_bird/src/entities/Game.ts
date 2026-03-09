@@ -143,7 +143,6 @@ export class Game {
   public start(): void {
     this.isRunning = true;
     this.gameState = GameState.PLAYING;
-    this.isRunning = true;
     this.lastFrameTime = 0;
     this.bird.birdReset(this.constants.birdSpawnX, this.constants.birdSpawnY);
     this.obstacleSpawnTimer = 0;
