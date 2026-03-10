@@ -1,7 +1,13 @@
 // 003_snake/src/entities/Game.ts
 
-import type { Assets, Constants, GameState } from "../types/types";
+import type {
+  Assets,
+  Constants,
+  SnakeDirection,
+  GameState,
+} from "../types/types";
 import { BackgroundTile } from "./BackgroundTile";
+import { SnakePart } from "./SnakePart";
 
 export class Game {
   private ctx: CanvasRenderingContext2D;
@@ -11,6 +17,11 @@ export class Game {
   private lastFrameTime: number = 0;
   private animationID: number | null = null;
   private gameField: BackgroundTile[][];
+  private snakeDirection: SnakeDirection = "top";
+  private snakeBody: SnakePart[] = [];
+  private snakePartsCount: number = 3;
+  private snakeStartX: number;
+  private snakeStartY: number;
 
   // BACKGROUND CACHE TO PREVENT WASTE RERENDER EVERY FRAME
   private backgroundCanvasCache: HTMLCanvasElement | null = null;
@@ -25,6 +36,9 @@ export class Game {
     this.ctx = ctx;
     this.assets = assets;
     this.constants = constants;
+
+    this.snakeStartX = this.constants.tileSize * 9;
+    this.snakeStartY = this.constants.tileSize * 9;
 
     // INIT GAME FIELD
     const tilesArray: BackgroundTile[][] = [];
@@ -53,11 +67,61 @@ export class Game {
 
     this.createBackgroundCache();
 
+    // INIT START SNAKE
+    for (
+      let i: number = this.snakeStartY;
+      i < this.snakeStartY + this.constants.tileSize * this.snakePartsCount;
+      i += this.constants.tileSize
+    ) {
+      if (i === this.snakeStartY) {
+        const snakeHead = new SnakePart(
+          this.assets.snakeHeadTop,
+          this.snakeStartX,
+          this.snakeStartY,
+          this.constants.tileSize,
+          this.constants.tileSize,
+        );
+        snakeHead.setHead();
+        this.snakeBody.push(snakeHead);
+      } else {
+        const snakeBodyPart = new SnakePart(
+          this.assets.snakeBody,
+          this.snakeStartX,
+          this.snakeStartY,
+          this.constants.tileSize,
+          this.constants.tileSize,
+        );
+        this.snakeBody.push(snakeBodyPart);
+      }
+    }
+    console.log(this.snakeBody);
+
     // INIT INPUT LISTENERS
+    window.addEventListener("keydown", (event: KeyboardEvent) => {
+      const key: string = event.key;
+      switch (key) {
+        case "ArrowLeft":
+          this.setDirection("left");
+          break;
+        case "ArrowTop":
+          this.setDirection("top");
+          break;
+        case "ArrowRight":
+          this.setDirection("right");
+          break;
+        case "ArrowDown":
+          this.setDirection("down");
+          break;
+      }
+    });
 
     // START GAME ON GAME INSTANCE CREATION
     this.running = true;
     this.loop(0);
+  }
+
+  private setDirection(d: SnakeDirection): void {
+    this.snakeDirection = d;
   }
 
   private createBackgroundCache(): void {
@@ -124,7 +188,6 @@ export class Game {
     //     tile.draw(this.ctx);
     //   }
     // }
-
     if (this.backgroundCanvasCache) {
       this.ctx.drawImage(
         this.backgroundCanvasCache,
@@ -134,6 +197,8 @@ export class Game {
         this.ctx.canvas.height,
       );
     }
+
+    this.snakeBody.forEach((s) => s.draw(this.ctx));
 
     // ENDLESS GAME LOOP
     this.animationID = requestAnimationFrame(this.loop);

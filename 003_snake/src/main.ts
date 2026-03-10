@@ -24,10 +24,22 @@ canvas.width = constants.tileSize * constants.canvasColumns;
 canvas.height = constants.tileSize * constants.canvasRows;
 
 const main = async () => {
-  await Promise.all([AssetsLoader.loadAsset("background", "assets/grass.jpg")]);
+  await Promise.all([
+    AssetsLoader.loadAsset("background", "assets/grass.jpg"),
+    AssetsLoader.loadAsset("snakeBody", "assets/snake.png"),
+    AssetsLoader.loadAsset("snakeHeadTop", "assets/snake-head.png"),
+    AssetsLoader.loadAsset("snakeHeadRight", "assets/snake-head-right.png"),
+    AssetsLoader.loadAsset("snakeHeadDown", "assets/snake-head-down.png"),
+    AssetsLoader.loadAsset("snakeHeadLeft", "assets/snake-head-left.png"),
+  ]);
 
   const assets: Assets = {
     background: AssetsLoader.getAsset("background"),
+    snakeBody: AssetsLoader.getAsset("snakeBody"),
+    snakeHeadTop: AssetsLoader.getAsset("snakeHeadTop"),
+    snakeHeadRight: AssetsLoader.getAsset("snakeHeadRight"),
+    snakeHeadDown: AssetsLoader.getAsset("snakeHeadDown"),
+    snakeHeadLeft: AssetsLoader.getAsset("snakeHeadLeft"),
   };
 
   const game = new Game(ctx, assets, constants);

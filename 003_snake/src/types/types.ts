@@ -2,6 +2,11 @@
 
 export interface Assets {
   background: HTMLImageElement;
+  snakeBody: HTMLImageElement;
+  snakeHeadTop: HTMLImageElement;
+  snakeHeadRight: HTMLImageElement;
+  snakeHeadDown: HTMLImageElement;
+  snakeHeadLeft: HTMLImageElement;
 }
 
 export interface Constants {
@@ -9,6 +14,8 @@ export interface Constants {
   canvasRows: number;
   canvasColumns: number;
 }
+
+export type SnakeDirection = "left" | "top" | "right" | "down";
 
 export enum GameState {
   MENU = "menu",

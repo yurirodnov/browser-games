@@ -1,7 +1,5 @@
 // 003_snake/src/entities/BackgroundTile.ts
 
-import type { Constants } from "../types/types";
-
 export class BackgroundTile {
   private image: HTMLImageElement;
   private coordX: number;
