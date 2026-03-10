@@ -34,12 +34,16 @@ export class SnakePart {
   public update(delta: number, direction: SnakeDirection) {
     switch (direction) {
       case "left":
-
+        this.coordX -= 30;
+        break;
       case "top":
-        this.coordY -= 30 * delta;
+        this.coordY -= 30;
+        break;
       case "right":
-
+        this.coordX += 10;
+        break;
       case "down":
+        this.coordY += 30;
     }
   }
 

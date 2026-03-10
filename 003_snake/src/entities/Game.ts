@@ -22,6 +22,8 @@ export class Game {
   private snakePartsCount: number = 3;
   private snakeStartX: number;
   private snakeStartY: number;
+  private snakeMovementInterval: number = 10;
+  private snakeMovementTimer: number = 0;
 
   // BACKGROUND CACHE TO PREVENT WASTE RERENDER EVERY FRAME
   private backgroundCanvasCache: HTMLCanvasElement | null = null;
@@ -179,10 +181,14 @@ export class Game {
     this.lastFrameTime = timestamp;
 
     //  UPDATE GAME
-    this.snakeBody.forEach((s) => s.update(deltaTime, this.snakeDirection));
+    console.log(this.snakeMovementTimer);
+    this.snakeMovementTimer += 10 * deltaTime;
+    if (this.snakeMovementTimer > this.snakeMovementInterval) {
+      this.snakeBody.forEach((s) => s.update(deltaTime, this.snakeDirection));
+      this.snakeMovementTimer = 0;
+    }
 
     // DRAW GAME OBJECTS
-
     // GAME FIELD RENDER (MOVED IN CACHE CREATION)
     // for (let row of this.gameField) {
     //   for (let tile of row) {
