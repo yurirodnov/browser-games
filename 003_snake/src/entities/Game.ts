@@ -77,7 +77,7 @@ export class Game {
         const snakeHead = new SnakePart(
           this.assets.snakeHeadTop,
           this.snakeStartX,
-          this.snakeStartY,
+          i,
           this.constants.tileSize,
           this.constants.tileSize,
         );
@@ -87,7 +87,7 @@ export class Game {
         const snakeBodyPart = new SnakePart(
           this.assets.snakeBody,
           this.snakeStartX,
-          this.snakeStartY,
+          i,
           this.constants.tileSize,
           this.constants.tileSize,
         );
@@ -179,6 +179,7 @@ export class Game {
     this.lastFrameTime = timestamp;
 
     //  UPDATE GAME
+    this.snakeBody.forEach((s) => s.update(deltaTime, this.snakeDirection));
 
     // DRAW GAME OBJECTS
 

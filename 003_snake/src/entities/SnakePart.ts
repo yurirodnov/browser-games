@@ -36,7 +36,7 @@ export class SnakePart {
       case "left":
 
       case "top":
-
+        this.coordY -= 30 * delta;
       case "right":
 
       case "down":
