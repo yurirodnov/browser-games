@@ -31,19 +31,19 @@ export class SnakePart {
     return this.isHead;
   }
 
-  public update(delta: number, direction: SnakeDirection) {
+  public update(delta: number, direction: SnakeDirection, tile: number) {
     switch (direction) {
       case "left":
-        this.coordX -= 30;
+        this.coordX -= tile;
         break;
       case "top":
-        this.coordY -= 30;
+        this.coordY -= tile;
         break;
       case "right":
-        this.coordX += 10;
+        this.coordX += tile;
         break;
       case "down":
-        this.coordY += 30;
+        this.coordY += tile;
     }
   }
 

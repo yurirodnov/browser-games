@@ -1,7 +1,8 @@
 // 003_snake/src/types/types.ts
 
 export interface Assets {
-  background: HTMLImageElement;
+  tileDark: HTMLImageElement;
+  tileLight: HTMLImageElement;
   snakeBody: HTMLImageElement;
   snakeHeadTop: HTMLImageElement;
   snakeHeadRight: HTMLImageElement;

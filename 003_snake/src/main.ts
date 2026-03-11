@@ -15,9 +15,9 @@ if (!ctx) {
 }
 
 const constants: Constants = {
-  tileSize: 30,
-  canvasColumns: 20,
-  canvasRows: 20,
+  tileSize: 40,
+  canvasColumns: 12,
+  canvasRows: 16,
 };
 
 canvas.width = constants.tileSize * constants.canvasColumns;
@@ -25,7 +25,8 @@ canvas.height = constants.tileSize * constants.canvasRows;
 
 const main = async () => {
   await Promise.all([
-    AssetsLoader.loadAsset("background", "assets/grass.jpg"),
+    AssetsLoader.loadAsset("tileDark", "assets/tile-dark.png"),
+    AssetsLoader.loadAsset("tileLight", "assets/tile-light.png"),
     AssetsLoader.loadAsset("snakeBody", "assets/snake.png"),
     AssetsLoader.loadAsset("snakeHeadTop", "assets/snake-head.png"),
     AssetsLoader.loadAsset("snakeHeadRight", "assets/snake-head-right.png"),
@@ -34,7 +35,8 @@ const main = async () => {
   ]);
 
   const assets: Assets = {
-    background: AssetsLoader.getAsset("background"),
+    tileDark: AssetsLoader.getAsset("tileDark"),
+    tileLight: AssetsLoader.getAsset("tileLight"),
     snakeBody: AssetsLoader.getAsset("snakeBody"),
     snakeHeadTop: AssetsLoader.getAsset("snakeHeadTop"),
     snakeHeadRight: AssetsLoader.getAsset("snakeHeadRight"),

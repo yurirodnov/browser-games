@@ -7,12 +7,22 @@ export class BackgroundTile {
   private width: number;
   private height: number;
 
-  constructor(img: HTMLImageElement, x: number, y: number, s: number) {
-    this.image = img;
+  constructor(
+    imgDark: HTMLImageElement,
+    imgLight: HTMLImageElement,
+    x: number,
+    y: number,
+    s: number,
+    row: number,
+    col: number,
+  ) {
     this.coordX = x;
     this.coordY = y;
     this.width = s;
     this.height = s;
+
+    const isDark = (row + col) % 2 === 0 ? true : false;
+    this.image = isDark ? imgDark : imgLight;
   }
 
   public draw(ctx: CanvasRenderingContext2D): void {

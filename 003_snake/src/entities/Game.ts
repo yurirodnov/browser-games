@@ -44,22 +44,20 @@ export class Game {
 
     // INIT GAME FIELD
     const tilesArray: BackgroundTile[][] = [];
-    for (
-      let i: number = 0;
-      i < constants.canvasRows * constants.tileSize;
-      i += constants.tileSize
-    ) {
+    for (let row: number = 0; row < constants.canvasRows; row += 1) {
       const tilesRow: BackgroundTile[] = [];
-      for (
-        let j: number = 0;
-        j < constants.canvasColumns * constants.tileSize;
-        j += this.constants.tileSize
-      ) {
+      for (let col: number = 0; col < constants.canvasColumns; col += 1) {
+        const pixelX = col * this.constants.tileSize;
+        const pixelY = row * this.constants.tileSize;
+
         const backgroundTile = new BackgroundTile(
-          this.assets.background,
-          j,
-          i,
+          this.assets.tileDark,
+          this.assets.tileLight,
+          pixelX,
+          pixelY,
           this.constants.tileSize,
+          row,
+          col,
         );
         tilesRow.push(backgroundTile);
       }
@@ -184,7 +182,9 @@ export class Game {
     console.log(this.snakeMovementTimer);
     this.snakeMovementTimer += 10 * deltaTime;
     if (this.snakeMovementTimer > this.snakeMovementInterval) {
-      this.snakeBody.forEach((s) => s.update(deltaTime, this.snakeDirection));
+      this.snakeBody.forEach((s) =>
+        s.update(deltaTime, this.snakeDirection, this.constants.tileSize),
+      );
       this.snakeMovementTimer = 0;
     }
 
