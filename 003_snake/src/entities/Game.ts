@@ -6,6 +6,7 @@ import type {
   SnakeDirection,
   GameState,
 } from "../types/types";
+import { Apple } from "./Apple";
 import { BackgroundTile } from "./BackgroundTile";
 import { SnakePart } from "./SnakePart";
 
@@ -17,6 +18,8 @@ export class Game {
   private lastFrameTime: number = 0;
   private animationID: number | null = null;
   private gameField: BackgroundTile[][];
+  private appleOnField: number = 1;
+  private apples: Apple[] = [];
   private snakeDirection: SnakeDirection = "up";
   private fullSnake: SnakePart[] = [];
   private snakePartsCount: number = 3;
@@ -26,7 +29,6 @@ export class Game {
   private snakeMovementTimer: number = 0;
   private normalSnakeSpeed: number = 10;
   private boostedSnakeSpeed: number = 50;
-
   private isRapid: boolean = false;
 
   // BACKGROUND CACHE TO PREVENT WASTE RERENDER EVERY FRAME
@@ -68,8 +70,17 @@ export class Game {
       tilesArray.push(tilesRow);
     }
     this.gameField = tilesArray;
-
     this.createBackgroundCache();
+
+    // INIT FIRST APPLE
+    const apple: Apple = new Apple(
+      this.assets.apple,
+      this.constants.tileSize * 4,
+      this.constants.tileSize * 2,
+      this.constants.tileSize,
+      this.constants.tileSize,
+    );
+    this.apples.push(apple);
 
     // INIT START SNAKE
     for (
@@ -263,7 +274,7 @@ export class Game {
           this.fullSnake.unshift(newHead);
           break;
         case "down":
-          newHeadDirection = "snakeHeadUp";
+          newHeadDirection = "snakeHeadDown";
           newHead = new SnakePart(
             this.assets[newHeadDirection as keyof typeof this.assets],
             this.fullSnake[0].getCoordX(),
@@ -299,6 +310,7 @@ export class Game {
     }
 
     this.fullSnake.forEach((s) => s.draw(this.ctx));
+    this.apples.forEach((a) => a.draw(this.ctx));
 
     // ENDLESS GAME LOOP
     this.animationID = requestAnimationFrame(this.loop);
