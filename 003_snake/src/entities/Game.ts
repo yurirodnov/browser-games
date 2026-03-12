@@ -17,13 +17,17 @@ export class Game {
   private lastFrameTime: number = 0;
   private animationID: number | null = null;
   private gameField: BackgroundTile[][];
-  private snakeDirection: SnakeDirection = "top";
-  private snakeBody: SnakePart[] = [];
+  private snakeDirection: SnakeDirection = "up";
+  private fullSnake: SnakePart[] = [];
   private snakePartsCount: number = 3;
   private snakeStartX: number;
   private snakeStartY: number;
   private snakeMovementInterval: number = 10;
   private snakeMovementTimer: number = 0;
+  private normalSnakeSpeed: number = 10;
+  private boostedSnakeSpeed: number = 50;
+
+  private isRapid: boolean = false;
 
   // BACKGROUND CACHE TO PREVENT WASTE RERENDER EVERY FRAME
   private backgroundCanvasCache: HTMLCanvasElement | null = null;
@@ -39,7 +43,7 @@ export class Game {
     this.assets = assets;
     this.constants = constants;
 
-    this.snakeStartX = this.constants.tileSize * 9;
+    this.snakeStartX = this.constants.tileSize * 6;
     this.snakeStartY = this.constants.tileSize * 9;
 
     // INIT GAME FIELD
@@ -75,14 +79,15 @@ export class Game {
     ) {
       if (i === this.snakeStartY) {
         const snakeHead = new SnakePart(
-          this.assets.snakeHeadTop,
+          this.assets.snakeHeadUp,
           this.snakeStartX,
           i,
           this.constants.tileSize,
           this.constants.tileSize,
+          true,
         );
-        snakeHead.setHead();
-        this.snakeBody.push(snakeHead);
+        // snakeHead.setHead();
+        this.fullSnake.push(snakeHead);
       } else {
         const snakeBodyPart = new SnakePart(
           this.assets.snakeBody,
@@ -90,28 +95,53 @@ export class Game {
           i,
           this.constants.tileSize,
           this.constants.tileSize,
+          false,
         );
-        this.snakeBody.push(snakeBodyPart);
+        this.fullSnake.push(snakeBodyPart);
       }
     }
-    console.log(this.snakeBody);
+    console.log(this.fullSnake);
 
     // INIT INPUT LISTENERS
     window.addEventListener("keydown", (event: KeyboardEvent) => {
       const key: string = event.key;
       switch (key) {
         case "ArrowLeft":
+          if (this.snakeDirection === "right") {
+            return;
+          }
           this.setDirection("left");
           break;
-        case "ArrowTop":
-          this.setDirection("top");
+        case "ArrowUp":
+          if (this.snakeDirection === "down") {
+            return;
+          }
+          this.setDirection("up");
           break;
         case "ArrowRight":
+          if (this.snakeDirection === "left") {
+            return;
+          }
           this.setDirection("right");
           break;
         case "ArrowDown":
+          if (this.snakeDirection === "up") {
+            return;
+          }
           this.setDirection("down");
           break;
+      }
+    });
+
+    window.addEventListener("keydown", (event: KeyboardEvent) => {
+      if (event.code === "Space") {
+        this.isRapid = true;
+      }
+    });
+
+    window.addEventListener("keyup", (event: KeyboardEvent) => {
+      if (event.code === "Space") {
+        this.isRapid = false;
       }
     });
 
@@ -179,12 +209,75 @@ export class Game {
     this.lastFrameTime = timestamp;
 
     //  UPDATE GAME
-    console.log(this.snakeMovementTimer);
-    this.snakeMovementTimer += 10 * deltaTime;
+
+    this.snakeMovementTimer +=
+      (this.isRapid ? this.boostedSnakeSpeed : this.normalSnakeSpeed) *
+      deltaTime;
     if (this.snakeMovementTimer > this.snakeMovementInterval) {
-      this.snakeBody.forEach((s) =>
-        s.update(deltaTime, this.snakeDirection, this.constants.tileSize),
-      );
+      let newHeadDirection: string = "";
+      let newHead: SnakePart | null = null;
+      switch (this.snakeDirection) {
+        case "left":
+          newHeadDirection = "snakeHeadLeft";
+          newHead = new SnakePart(
+            this.assets[newHeadDirection as keyof typeof this.assets],
+            this.fullSnake[0].getCoordX() - this.constants.tileSize,
+            this.fullSnake[0].getCoordY(),
+            this.constants.tileSize,
+            this.constants.tileSize,
+            true,
+          );
+          this.fullSnake[0].setHead(false);
+          this.fullSnake[0].setImage(this.assets.snakeBody);
+          this.fullSnake.pop();
+          this.fullSnake.unshift(newHead);
+          break;
+        case "up":
+          newHeadDirection = "snakeHeadUp";
+          newHead = new SnakePart(
+            this.assets[newHeadDirection as keyof typeof this.assets],
+            this.fullSnake[0].getCoordX(),
+            this.fullSnake[0].getCoordY() - this.constants.tileSize,
+            this.constants.tileSize,
+            this.constants.tileSize,
+            true,
+          );
+          this.fullSnake[0].setHead(false);
+          this.fullSnake[0].setImage(this.assets.snakeBody);
+          this.fullSnake.pop();
+          this.fullSnake.unshift(newHead);
+          break;
+        case "right":
+          newHeadDirection = "snakeHeadRight";
+          newHead = new SnakePart(
+            this.assets[newHeadDirection as keyof typeof this.assets],
+            this.fullSnake[0].getCoordX() + this.constants.tileSize,
+            this.fullSnake[0].getCoordY(),
+            this.constants.tileSize,
+            this.constants.tileSize,
+            true,
+          );
+          this.fullSnake[0].setHead(false);
+          this.fullSnake[0].setImage(this.assets.snakeBody);
+          this.fullSnake.pop();
+          this.fullSnake.unshift(newHead);
+          break;
+        case "down":
+          newHeadDirection = "snakeHeadUp";
+          newHead = new SnakePart(
+            this.assets[newHeadDirection as keyof typeof this.assets],
+            this.fullSnake[0].getCoordX(),
+            this.fullSnake[0].getCoordY() + this.constants.tileSize,
+            this.constants.tileSize,
+            this.constants.tileSize,
+            true,
+          );
+          this.fullSnake[0].setHead(false);
+          this.fullSnake[0].setImage(this.assets.snakeBody);
+          this.fullSnake.pop();
+          this.fullSnake.unshift(newHead);
+      }
+
       this.snakeMovementTimer = 0;
     }
 
@@ -205,7 +298,7 @@ export class Game {
       );
     }
 
-    this.snakeBody.forEach((s) => s.draw(this.ctx));
+    this.fullSnake.forEach((s) => s.draw(this.ctx));
 
     // ENDLESS GAME LOOP
     this.animationID = requestAnimationFrame(this.loop);

@@ -66,7 +66,7 @@ const main = async () => {
     pipeDOWN: AssetsLoader.getAsset("pipeDOWN"),
   };
 
-  const game = new Game(ctx, assets, constants);
+  new Game(ctx, assets, constants);
   // game.start();
 };
 

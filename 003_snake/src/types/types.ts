@@ -4,7 +4,7 @@ export interface Assets {
   tileDark: HTMLImageElement;
   tileLight: HTMLImageElement;
   snakeBody: HTMLImageElement;
-  snakeHeadTop: HTMLImageElement;
+  snakeHeadUp: HTMLImageElement;
   snakeHeadRight: HTMLImageElement;
   snakeHeadDown: HTMLImageElement;
   snakeHeadLeft: HTMLImageElement;
@@ -16,7 +16,7 @@ export interface Constants {
   canvasColumns: number;
 }
 
-export type SnakeDirection = "left" | "top" | "right" | "down";
+export type SnakeDirection = "left" | "up" | "right" | "down";
 
 export enum GameState {
   MENU = "menu",

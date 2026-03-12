@@ -16,7 +16,7 @@ if (!ctx) {
 
 const constants: Constants = {
   tileSize: 40,
-  canvasColumns: 12,
+  canvasColumns: 13,
   canvasRows: 16,
 };
 
@@ -38,7 +38,7 @@ const main = async () => {
     tileDark: AssetsLoader.getAsset("tileDark"),
     tileLight: AssetsLoader.getAsset("tileLight"),
     snakeBody: AssetsLoader.getAsset("snakeBody"),
-    snakeHeadTop: AssetsLoader.getAsset("snakeHeadTop"),
+    snakeHeadUp: AssetsLoader.getAsset("snakeHeadTop"),
     snakeHeadRight: AssetsLoader.getAsset("snakeHeadRight"),
     snakeHeadDown: AssetsLoader.getAsset("snakeHeadDown"),
     snakeHeadLeft: AssetsLoader.getAsset("snakeHeadLeft"),
