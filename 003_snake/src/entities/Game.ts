@@ -1,11 +1,11 @@
 // 003_snake/src/entities/Game.ts
 
-import type {
-  Assets,
-  Constants,
-  SnakeDirection,
+import {
+  type Assets,
+  type Constants,
+  type SnakeDirection,
   GameState,
-  RandomTile,
+  type RandomTile,
 } from "../types/types";
 import { Apple } from "./Apple";
 import { BackgroundTile } from "./BackgroundTile";
@@ -17,6 +17,7 @@ export class Game {
   private assets: Assets;
   private constants: Constants;
   private running: boolean = true;
+  private gameState: GameState = GameState.MENU;
   private lastFrameTime: number = 0;
   private animationID: number | null = null;
   private gameField: BackgroundTile[][];
@@ -28,8 +29,8 @@ export class Game {
   private snakeStartY: number;
   private snakeMovementInterval: number = 10;
   private snakeMovementTimer: number = 0;
-  private normalSnakeSpeed: number = 15;
-  private boostedSnakeSpeed: number = 50;
+  private normalSnakeSpeed: number = 30;
+  private boostedSnakeSpeed: number = 100;
   private isRapid: boolean = false;
   private haveGrow: boolean = false;
 
@@ -134,6 +135,7 @@ export class Game {
     this.applesOnField.push(newApple);
 
     // INIT INPUT LISTENERS
+    // SNAKE CONTROL
     window.addEventListener("keydown", (event: KeyboardEvent) => {
       const key: string = event.key;
       switch (key) {
@@ -163,6 +165,7 @@ export class Game {
           break;
       }
     });
+    // USE RAPID
     window.addEventListener("keydown", (event: KeyboardEvent) => {
       if (event.code === "Space") {
         this.isRapid = true;
@@ -173,10 +176,26 @@ export class Game {
         this.isRapid = false;
       }
     });
+    // GAME STATE CONTROLL
+    window.addEventListener("mousedown", (e: MouseEvent) => {
+      e.preventDefault();
+      this.handleInput();
+    });
 
     // START GAME ON GAME INSTANCE CREATION
     this.running = true;
     this.loop(0);
+  }
+
+  private handleInput(): void {
+    switch (this.gameState) {
+      case GameState.MENU:
+        this.start();
+        break;
+      case GameState.GAME_OVER:
+        this.restart();
+        break;
+    }
   }
 
   private checkWallCollision(
@@ -217,13 +236,69 @@ export class Game {
 
   public start() {
     this.running = true;
+    this.gameState = GameState.PLAY;
     this.lastFrameTime = 0;
     this.animationID = requestAnimationFrame(this.loop);
   }
 
-  public stop() {}
+  public stop() {
+    this.running = false;
+    this.gameState = GameState.GAME_OVER;
+    if (this.animationID !== null) {
+      cancelAnimationFrame(this.animationID);
+    }
+  }
 
-  public restart() {}
+  public restart() {
+    this.fullSnake = [];
+    this.applesOnField = [];
+    this.start();
+  }
+
+  public drawUI() {
+    const canvasWidthMid: number =
+      (this.constants.canvasColumns * this.constants.tileSize) / 2;
+
+    const canvasHeightMid: number =
+      (this.constants.canvasRows * this.constants.tileSize) / 2;
+
+    this.ctx.save();
+
+    this.ctx.textAlign = "center";
+    this.ctx.lineJoin = "round";
+    this.ctx.lineWidth = 4;
+
+    if (this.gameState === GameState.MENU) {
+      // DARK FADE
+      this.ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+      this.ctx.fillRect(
+        0,
+        0,
+        this.constants.canvasColumns * this.constants.tileSize,
+        this.constants.canvasRows * this.constants.tileSize,
+      );
+
+      // GAME NAME DRAWING
+      this.ctx.font = "75px 'Silkscreen', sans-serif";
+      this.ctx.strokeStyle = "white";
+      this.ctx.strokeText("SNAKE", canvasWidthMid, canvasHeightMid - 20);
+      this.ctx.fillStyle = "rgb(154 223 23)";
+      this.ctx.fillText("SNAKE", canvasWidthMid, canvasHeightMid - 20);
+
+      // CALL TO ACTION DRAWING
+      this.ctx.font = "35px 'Silkscreen', sans-serif";
+      this.ctx.strokeStyle = "black";
+      this.ctx.strokeText(
+        "click to start",
+        canvasWidthMid,
+        canvasHeightMid + 40,
+      );
+      this.ctx.fillStyle = "white";
+      this.ctx.fillText("click to start", canvasWidthMid, canvasHeightMid + 40);
+    } else if (this.gameState === GameState.PLAY) {
+    } else if (this.gameState === GameState.GAME_OVER) {
+    }
+  }
 
   public loop = (timestamp: number) => {
     if (!this.running) {
@@ -248,131 +323,134 @@ export class Game {
     }
     this.lastFrameTime = timestamp;
 
-    // UPDATE GAME
-    // SNAKE MOVEMENT
-    this.snakeMovementTimer +=
-      (this.isRapid ? this.boostedSnakeSpeed : this.normalSnakeSpeed) *
-      deltaTime;
-    if (this.snakeMovementTimer > this.snakeMovementInterval) {
-      let newHeadDirection: string = "";
-      let newHead: SnakePart | null = null;
-      switch (this.snakeDirection) {
-        case "left":
-          newHeadDirection = "snakeHeadLeft";
-          newHead = new SnakePart(
-            this.assets[newHeadDirection as keyof typeof this.assets],
-            this.fullSnake[0].getCoordX() - this.constants.tileSize,
-            this.fullSnake[0].getCoordY(),
-            this.constants.tileSize,
-            this.constants.tileSize,
-            true,
-          );
-          this.fullSnake[0].setHead(false);
-          this.fullSnake[0].setImage(this.assets.snakeBody);
-          if (this.haveGrow) {
-            this.haveGrow = false;
-          } else {
-            this.fullSnake.pop();
-          }
-          this.fullSnake.unshift(newHead);
-          break;
-        case "up":
-          newHeadDirection = "snakeHeadUp";
-          newHead = new SnakePart(
-            this.assets[newHeadDirection as keyof typeof this.assets],
-            this.fullSnake[0].getCoordX(),
-            this.fullSnake[0].getCoordY() - this.constants.tileSize,
-            this.constants.tileSize,
-            this.constants.tileSize,
-            true,
-          );
-          this.fullSnake[0].setHead(false);
-          this.fullSnake[0].setImage(this.assets.snakeBody);
-          if (this.haveGrow) {
-            this.haveGrow = false;
-          } else {
-            this.fullSnake.pop();
-          }
-          this.fullSnake.unshift(newHead);
-          break;
-        case "right":
-          newHeadDirection = "snakeHeadRight";
-          newHead = new SnakePart(
-            this.assets[newHeadDirection as keyof typeof this.assets],
-            this.fullSnake[0].getCoordX() + this.constants.tileSize,
-            this.fullSnake[0].getCoordY(),
-            this.constants.tileSize,
-            this.constants.tileSize,
-            true,
-          );
-          this.fullSnake[0].setHead(false);
-          this.fullSnake[0].setImage(this.assets.snakeBody);
-          if (this.haveGrow) {
-            this.haveGrow = false;
-          } else {
-            this.fullSnake.pop();
-          }
-          this.fullSnake.unshift(newHead);
-          break;
-        case "down":
-          newHeadDirection = "snakeHeadDown";
-          newHead = new SnakePart(
-            this.assets[newHeadDirection as keyof typeof this.assets],
-            this.fullSnake[0].getCoordX(),
-            this.fullSnake[0].getCoordY() + this.constants.tileSize,
-            this.constants.tileSize,
-            this.constants.tileSize,
-            true,
-          );
-          this.fullSnake[0].setHead(false);
-          this.fullSnake[0].setImage(this.assets.snakeBody);
-          if (this.haveGrow) {
-            this.haveGrow = false;
-          } else {
-            this.fullSnake.pop();
-          }
-          this.fullSnake.unshift(newHead);
+    // GAME STATE PLAY
+    if (this.gameState === GameState.PLAY) {
+      // UPDATE GAME
+      // SNAKE MOVEMENT
+      this.snakeMovementTimer +=
+        (this.isRapid ? this.boostedSnakeSpeed : this.normalSnakeSpeed) *
+        deltaTime;
+      if (this.snakeMovementTimer > this.snakeMovementInterval) {
+        let newHeadDirection: string = "";
+        let newHead: SnakePart | null = null;
+        switch (this.snakeDirection) {
+          case "left":
+            newHeadDirection = "snakeHeadLeft";
+            newHead = new SnakePart(
+              this.assets[newHeadDirection as keyof typeof this.assets],
+              this.fullSnake[0].getCoordX() - this.constants.tileSize,
+              this.fullSnake[0].getCoordY(),
+              this.constants.tileSize,
+              this.constants.tileSize,
+              true,
+            );
+            this.fullSnake[0].setHead(false);
+            this.fullSnake[0].setImage(this.assets.snakeBody);
+            if (this.haveGrow) {
+              this.haveGrow = false;
+            } else {
+              this.fullSnake.pop();
+            }
+            this.fullSnake.unshift(newHead);
+            break;
+          case "up":
+            newHeadDirection = "snakeHeadUp";
+            newHead = new SnakePart(
+              this.assets[newHeadDirection as keyof typeof this.assets],
+              this.fullSnake[0].getCoordX(),
+              this.fullSnake[0].getCoordY() - this.constants.tileSize,
+              this.constants.tileSize,
+              this.constants.tileSize,
+              true,
+            );
+            this.fullSnake[0].setHead(false);
+            this.fullSnake[0].setImage(this.assets.snakeBody);
+            if (this.haveGrow) {
+              this.haveGrow = false;
+            } else {
+              this.fullSnake.pop();
+            }
+            this.fullSnake.unshift(newHead);
+            break;
+          case "right":
+            newHeadDirection = "snakeHeadRight";
+            newHead = new SnakePart(
+              this.assets[newHeadDirection as keyof typeof this.assets],
+              this.fullSnake[0].getCoordX() + this.constants.tileSize,
+              this.fullSnake[0].getCoordY(),
+              this.constants.tileSize,
+              this.constants.tileSize,
+              true,
+            );
+            this.fullSnake[0].setHead(false);
+            this.fullSnake[0].setImage(this.assets.snakeBody);
+            if (this.haveGrow) {
+              this.haveGrow = false;
+            } else {
+              this.fullSnake.pop();
+            }
+            this.fullSnake.unshift(newHead);
+            break;
+          case "down":
+            newHeadDirection = "snakeHeadDown";
+            newHead = new SnakePart(
+              this.assets[newHeadDirection as keyof typeof this.assets],
+              this.fullSnake[0].getCoordX(),
+              this.fullSnake[0].getCoordY() + this.constants.tileSize,
+              this.constants.tileSize,
+              this.constants.tileSize,
+              true,
+            );
+            this.fullSnake[0].setHead(false);
+            this.fullSnake[0].setImage(this.assets.snakeBody);
+            if (this.haveGrow) {
+              this.haveGrow = false;
+            } else {
+              this.fullSnake.pop();
+            }
+            this.fullSnake.unshift(newHead);
+        }
+
+        this.snakeMovementTimer = 0;
       }
 
-      this.snakeMovementTimer = 0;
-    }
-
-    // APPLE EATING
-    if (
-      this.fullSnake[0].getCoordX() === this.applesOnField[0].getCoordX() &&
-      this.fullSnake[0].getCoordY() === this.applesOnField[0].getCoordY()
-    ) {
-      this.haveGrow = true;
-      this.applesOnField = [];
-      let newAppleCoords: RandomTile;
-      let isOccupied: boolean;
-      do {
-        isOccupied = false;
-        newAppleCoords = getRandomTile(
-          this.constants.canvasRows,
-          this.constants.canvasColumns,
+      // APPLE EATING
+      if (
+        this.fullSnake[0].getCoordX() === this.applesOnField[0].getCoordX() &&
+        this.fullSnake[0].getCoordY() === this.applesOnField[0].getCoordY()
+      ) {
+        this.haveGrow = true;
+        this.applesOnField = [];
+        let newAppleCoords: RandomTile;
+        let isOccupied: boolean;
+        do {
+          isOccupied = false;
+          newAppleCoords = getRandomTile(
+            this.constants.canvasRows,
+            this.constants.canvasColumns,
+            this.constants.tileSize,
+          );
+          for (const part of this.fullSnake) {
+            if (
+              part.getCoordX() === newAppleCoords.x &&
+              part.getCoordY() === newAppleCoords.y
+            ) {
+              isOccupied = true;
+              break;
+            }
+          }
+        } while (isOccupied);
+        const newApple = new Apple(
+          this.assets.apple,
+          newAppleCoords.x,
+          newAppleCoords.y,
+          this.constants.tileSize,
           this.constants.tileSize,
         );
-        for (const part of this.fullSnake) {
-          if (
-            part.getCoordX() === newAppleCoords.x &&
-            part.getCoordY() === newAppleCoords.y
-          ) {
-            isOccupied = true;
-            break;
-          }
-        }
-      } while (isOccupied);
-      const newApple = new Apple(
-        this.assets.apple,
-        newAppleCoords.x,
-        newAppleCoords.y,
-        this.constants.tileSize,
-        this.constants.tileSize,
-      );
-      this.applesOnField.push(newApple);
+        this.applesOnField.push(newApple);
 
-      console.log(this.snakeSize);
+        console.log(this.snakeSize);
+      }
     }
 
     // DRAW GAME OBJECTS
@@ -383,7 +461,6 @@ export class Game {
       //     tile.draw(this.ctx);
       //   }
       // }
-
       this.ctx.drawImage(
         this.backgroundCanvasCache,
         0,
@@ -397,9 +474,8 @@ export class Game {
       !a.getEaten() ? a.draw(this.ctx) : null,
     );
 
+    this.drawUI();
     // ENDLESS GAME LOOP
     this.animationID = requestAnimationFrame(this.loop);
   };
-
-  public drawUI() {}
 }

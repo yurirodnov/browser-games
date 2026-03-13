@@ -181,19 +181,16 @@ export class Game {
       this.ctx.font = "bold 50px 'Silkscreen', sans-serif";
       this.ctx.strokeStyle = "black";
       this.ctx.strokeText("FLAPPY BIRD", midX, midY - 40);
-
       this.ctx.fillStyle = "#FFD700";
       this.ctx.fillText("FLAPPY BIRD", midX, midY - 40);
 
       this.ctx.font = "20px 'Silkscreen', sans-serif";
       this.ctx.strokeStyle = "black";
       this.ctx.strokeText("click to start", midX, midY + 20);
-
       this.ctx.fillStyle = "white";
       this.ctx.fillText("click to start", midX, midY + 20);
     } else if (this.gameState === GameState.PLAYING) {
       this.ctx.textAlign = "left";
-
       this.ctx.font = "bold 24px 'Silkscreen', sans-serif";
       this.ctx.strokeStyle = "black";
       this.ctx.lineWidth = 3;
