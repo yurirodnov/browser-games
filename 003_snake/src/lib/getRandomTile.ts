@@ -5,5 +5,11 @@ export const getRandomTile = (
   columns: number,
   tileSize: number,
 ): RandomTile => {
-  return { x: 100, y: 100 };
+  const randomColIndex = Math.floor(Math.random() * columns);
+  const randomRowIndex = Math.floor(Math.random() * rows);
+
+  return {
+    x: randomColIndex * tileSize,
+    y: randomRowIndex * tileSize,
+  };
 };

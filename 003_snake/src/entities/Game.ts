@@ -5,10 +5,12 @@ import type {
   Constants,
   SnakeDirection,
   GameState,
+  RandomTile,
 } from "../types/types";
 import { Apple } from "./Apple";
 import { BackgroundTile } from "./BackgroundTile";
 import { SnakePart } from "./SnakePart";
+import { getRandomTile } from "../lib/getRandomTile";
 
 export class Game {
   private ctx: CanvasRenderingContext2D;
@@ -18,7 +20,7 @@ export class Game {
   private lastFrameTime: number = 0;
   private animationID: number | null = null;
   private gameField: BackgroundTile[][];
-  private apples: Apple[] = [];
+  private applesOnField: Apple[] = [];
   private snakeDirection: SnakeDirection = "up";
   private fullSnake: SnakePart[] = [];
   private snakePartsCount: number = 3;
@@ -71,17 +73,6 @@ export class Game {
     this.gameField = tilesArray;
     this.createBackgroundCache();
 
-    // INIT FIRST APPLE
-    const apple: Apple = new Apple(
-      this.assets.apple,
-      this.constants.tileSize * 4,
-      this.constants.tileSize * 2,
-      this.constants.tileSize,
-      this.constants.tileSize,
-    );
-
-    this.apples.push(apple);
-
     // INIT START SNAKE
     for (
       let i: number = this.snakeStartY;
@@ -111,7 +102,35 @@ export class Game {
         this.fullSnake.push(snakeBodyPart);
       }
     }
-    console.log(this.fullSnake);
+
+    // INIT FIRST APPLE
+    let newAppleCoords: RandomTile;
+    let isOccupied: boolean;
+    do {
+      isOccupied = false;
+      newAppleCoords = getRandomTile(
+        this.constants.canvasRows,
+        this.constants.canvasColumns,
+        this.constants.tileSize,
+      );
+      for (const part of this.fullSnake) {
+        if (
+          part.getCoordX() === newAppleCoords.x &&
+          part.getCoordY() === newAppleCoords.y
+        ) {
+          isOccupied = true;
+          break;
+        }
+      }
+    } while (isOccupied);
+    const newApple = new Apple(
+      this.assets.apple,
+      newAppleCoords.x,
+      newAppleCoords.y,
+      this.constants.tileSize,
+      this.constants.tileSize,
+    );
+    this.applesOnField.push(newApple);
 
     // INIT INPUT LISTENERS
     window.addEventListener("keydown", (event: KeyboardEvent) => {
@@ -337,7 +356,9 @@ export class Game {
     }
 
     this.fullSnake.forEach((s) => s.draw(this.ctx));
-    this.apples.forEach((a) => (!a.getEaten() ? a.draw(this.ctx) : null));
+    this.applesOnField.forEach((a) =>
+      !a.getEaten() ? a.draw(this.ctx) : null,
+    );
 
     // ENDLESS GAME LOOP
     this.animationID = requestAnimationFrame(this.loop);

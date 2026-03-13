@@ -14,7 +14,7 @@ if (!ctx) {
   throw new Error("No 2D context");
 }
 
-const constants: Constants = {
+export const constants: Constants = {
   tileSize: 40,
   canvasColumns: 13,
   canvasRows: 16,
