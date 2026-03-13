@@ -18,7 +18,6 @@ export class Game {
   private lastFrameTime: number = 0;
   private animationID: number | null = null;
   private gameField: BackgroundTile[][];
-  private appleOnField: number = 1;
   private apples: Apple[] = [];
   private snakeDirection: SnakeDirection = "up";
   private fullSnake: SnakePart[] = [];
@@ -27,7 +26,7 @@ export class Game {
   private snakeStartY: number;
   private snakeMovementInterval: number = 10;
   private snakeMovementTimer: number = 0;
-  private normalSnakeSpeed: number = 10;
+  private normalSnakeSpeed: number = 15;
   private boostedSnakeSpeed: number = 50;
   private isRapid: boolean = false;
 
@@ -80,6 +79,7 @@ export class Game {
       this.constants.tileSize,
       this.constants.tileSize,
     );
+
     this.apples.push(apple);
 
     // INIT START SNAKE
@@ -160,6 +160,22 @@ export class Game {
     this.running = true;
     this.loop(0);
   }
+
+  private checkAppleCollision(snakePart: SnakePart, apple: Apple): boolean {
+    if (
+      snakePart.getCoordX() === apple.getCoordX() &&
+      snakePart.getCoordY() === apple.getCoordY()
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  // private spawnApples(): void {
+  //   if (this.apples.length === 0) {
+  //     const apple = new Apple();
+  //   }
+  // }
 
   private setDirection(d: SnakeDirection): void {
     this.snakeDirection = d;
@@ -310,7 +326,7 @@ export class Game {
     }
 
     this.fullSnake.forEach((s) => s.draw(this.ctx));
-    this.apples.forEach((a) => a.draw(this.ctx));
+    this.apples.forEach((a) => (!a.getEaten() ? a.draw(this.ctx) : null));
 
     // ENDLESS GAME LOOP
     this.animationID = requestAnimationFrame(this.loop);

@@ -17,6 +17,11 @@ export interface Constants {
   canvasColumns: number;
 }
 
+export interface RandomTile {
+  x: number;
+  y: number;
+}
+
 export type SnakeDirection = "left" | "up" | "right" | "down";
 
 export enum GameState {
