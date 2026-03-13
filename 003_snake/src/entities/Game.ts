@@ -171,6 +171,17 @@ export class Game {
     return false;
   }
 
+  private checkWallCollision(
+    snakePart: SnakePart,
+    constants: Constants,
+  ): boolean {
+    return true;
+  }
+
+  private checkSelfCollision(snakePart: SnakePart): boolean {
+    return true;
+  }
+
   // private spawnApples(): void {
   //   if (this.apples.length === 0) {
   //     const apple = new Apple();
