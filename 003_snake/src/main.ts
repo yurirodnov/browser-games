@@ -33,6 +33,7 @@ const main = async () => {
     AssetsLoader.loadAsset("snakeHeadDown", "assets/snake-head-down.png"),
     AssetsLoader.loadAsset("snakeHeadLeft", "assets/snake-head-left.png"),
     AssetsLoader.loadAsset("apple", "assets/apple2.png"),
+    AssetsLoader.loadAsset("shit", "assets/shit.png"),
   ]);
 
   const assets: Assets = {
@@ -44,6 +45,7 @@ const main = async () => {
     snakeHeadDown: AssetsLoader.getAsset("snakeHeadDown"),
     snakeHeadLeft: AssetsLoader.getAsset("snakeHeadLeft"),
     apple: AssetsLoader.getAsset("apple"),
+    shit: AssetsLoader.getAsset("shit"),
   };
 
   const game = new Game(ctx, assets, constants);

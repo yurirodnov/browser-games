@@ -9,6 +9,7 @@ export interface Assets {
   snakeHeadDown: HTMLImageElement;
   snakeHeadLeft: HTMLImageElement;
   apple: HTMLImageElement;
+  shit: HTMLImageElement;
 }
 
 export interface Constants {

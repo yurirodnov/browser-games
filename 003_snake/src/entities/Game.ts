@@ -10,6 +10,7 @@ import {
 import { Apple } from "./Apple";
 import { BackgroundTile } from "./BackgroundTile";
 import { SnakePart } from "./SnakePart";
+import { Shit } from "./Shit";
 import { getRandomTile } from "../lib/getRandomTile";
 
 export class Game {
@@ -22,6 +23,8 @@ export class Game {
   private animationID: number | null = null;
   private gameField: BackgroundTile[][];
   private applesOnField: Apple[] = [];
+  private applesEaten: number = 0;
+  private shitOnField: Shit[] = [];
   private snakeDirection: SnakeDirection = "up";
   private fullSnake: SnakePart[] = [];
   private snakeSize: number = 3;
@@ -106,33 +109,34 @@ export class Game {
     }
 
     // INIT FIRST APPLE
-    let newAppleCoords: RandomTile;
-    let isOccupied: boolean;
-    do {
-      isOccupied = false;
-      newAppleCoords = getRandomTile(
-        this.constants.canvasRows,
-        this.constants.canvasColumns,
-        this.constants.tileSize,
-      );
-      for (const part of this.fullSnake) {
-        if (
-          part.getCoordX() === newAppleCoords.x &&
-          part.getCoordY() === newAppleCoords.y
-        ) {
-          isOccupied = true;
-          break;
-        }
-      }
-    } while (isOccupied);
-    const newApple = new Apple(
-      this.assets.apple,
-      newAppleCoords.x,
-      newAppleCoords.y,
-      this.constants.tileSize,
-      this.constants.tileSize,
-    );
-    this.applesOnField.push(newApple);
+    // let newAppleCoords: RandomTile;
+    // let isOccupied: boolean;
+    // do {
+    //   isOccupied = false;
+    //   newAppleCoords = getRandomTile(
+    //     this.constants.canvasRows,
+    //     this.constants.canvasColumns,
+    //     this.constants.tileSize,
+    //   );
+    //   for (const part of this.fullSnake) {
+    //     if (
+    //       part.getCoordX() === newAppleCoords.x &&
+    //       part.getCoordY() === newAppleCoords.y
+    //     ) {
+    //       isOccupied = true;
+    //       break;
+    //     }
+    //   }
+    // } while (isOccupied);
+    // const newApple = new Apple(
+    //   this.assets.apple,
+    //   newAppleCoords.x,
+    //   newAppleCoords.y,
+    //   this.constants.tileSize,
+    //   this.constants.tileSize,
+    // );
+    // this.applesOnField.push(newApple);
+    this.spawnApple();
 
     // INIT INPUT LISTENERS
     // SNAKE CONTROL
@@ -205,6 +209,68 @@ export class Game {
     return true;
   }
 
+  private spawnApple(): void {
+    let newAppleCoords: RandomTile;
+    let isOccupied: boolean;
+    do {
+      isOccupied = false;
+      newAppleCoords = getRandomTile(
+        this.constants.canvasRows,
+        this.constants.canvasColumns,
+        this.constants.tileSize,
+      );
+      for (const part of this.fullSnake) {
+        if (
+          part.getCoordX() === newAppleCoords.x &&
+          part.getCoordY() === newAppleCoords.y
+        ) {
+          isOccupied = true;
+          break;
+        }
+      }
+    } while (isOccupied);
+    const newApple = new Apple(
+      this.assets.apple,
+      newAppleCoords.x,
+      newAppleCoords.y,
+      this.constants.tileSize,
+      this.constants.tileSize,
+    );
+    this.applesOnField.push(newApple);
+  }
+
+  private spawnShit(): void {
+    let newShitCoords: RandomTile;
+    let isOccupied: boolean;
+
+    do {
+      isOccupied = false;
+      newShitCoords = getRandomTile(
+        this.constants.canvasRows,
+        this.constants.canvasColumns,
+        this.constants.tileSize,
+      );
+
+      for (const part of this.fullSnake) {
+        if (
+          part.getCoordX() === newShitCoords.x &&
+          part.getCoordY() === newShitCoords.y
+        ) {
+          isOccupied = true;
+          break;
+        }
+      }
+    } while (isOccupied);
+    const newShit = new Shit(
+      this.assets.shit,
+      newShitCoords.x,
+      newShitCoords.y,
+      this.constants.tileSize,
+      this.constants.tileSize,
+    );
+    this.shitOnField.push(newShit);
+  }
+
   private checkSelfCollision(snakePart: SnakePart): boolean {
     return true;
   }
@@ -252,6 +318,7 @@ export class Game {
   public restart() {
     this.fullSnake = [];
     this.applesOnField = [];
+    this.applesEaten = 0;
     this.start();
   }
 
@@ -419,37 +486,43 @@ export class Game {
         this.fullSnake[0].getCoordX() === this.applesOnField[0].getCoordX() &&
         this.fullSnake[0].getCoordY() === this.applesOnField[0].getCoordY()
       ) {
+        this.applesEaten += 1;
         this.haveGrow = true;
         this.applesOnField = [];
-        let newAppleCoords: RandomTile;
-        let isOccupied: boolean;
-        do {
-          isOccupied = false;
-          newAppleCoords = getRandomTile(
-            this.constants.canvasRows,
-            this.constants.canvasColumns,
-            this.constants.tileSize,
-          );
-          for (const part of this.fullSnake) {
-            if (
-              part.getCoordX() === newAppleCoords.x &&
-              part.getCoordY() === newAppleCoords.y
-            ) {
-              isOccupied = true;
-              break;
-            }
-          }
-        } while (isOccupied);
-        const newApple = new Apple(
-          this.assets.apple,
-          newAppleCoords.x,
-          newAppleCoords.y,
-          this.constants.tileSize,
-          this.constants.tileSize,
-        );
-        this.applesOnField.push(newApple);
 
-        console.log(this.snakeSize);
+        // SPAWN NEW APPLE
+        // let newAppleCoords: RandomTile;
+        // let isOccupied: boolean;
+        // do {
+        //   isOccupied = false;
+        //   newAppleCoords = getRandomTile(
+        //     this.constants.canvasRows,
+        //     this.constants.canvasColumns,
+        //     this.constants.tileSize,
+        //   );
+        //   for (const part of this.fullSnake) {
+        //     if (
+        //       part.getCoordX() === newAppleCoords.x &&
+        //       part.getCoordY() === newAppleCoords.y
+        //     ) {
+        //       isOccupied = true;
+        //       break;
+        //     }
+        //   }
+        // } while (isOccupied);
+        // const newApple = new Apple(
+        //   this.assets.apple,
+        //   newAppleCoords.x,
+        //   newAppleCoords.y,
+        //   this.constants.tileSize,
+        //   this.constants.tileSize,
+        // );
+        // this.applesOnField.push(newApple);
+        this.spawnApple();
+
+        if (this.applesEaten % 5 === 0) {
+          this.spawnShit();
+        }
       }
     }
 
@@ -473,6 +546,7 @@ export class Game {
     this.applesOnField.forEach((a) =>
       !a.getEaten() ? a.draw(this.ctx) : null,
     );
+    this.shitOnField.forEach((s) => s.draw(this.ctx));
 
     this.drawUI();
     // ENDLESS GAME LOOP
