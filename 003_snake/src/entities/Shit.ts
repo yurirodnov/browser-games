@@ -19,7 +19,15 @@ export class Shit {
     this.height = h;
   }
 
-  draw(ctx: CanvasRenderingContext2D) {
+  public getCoordX(): number {
+    return this.coordX;
+  }
+
+  public getCoordY(): number {
+    return this.coordY;
+  }
+
+  draw(ctx: CanvasRenderingContext2D): void {
     ctx.drawImage(
       this.image,
       this.coordX,
