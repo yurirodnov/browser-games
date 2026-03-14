@@ -11,6 +11,7 @@ import { Apple } from "./Apple";
 import { BackgroundTile } from "./BackgroundTile";
 import { SnakePart } from "./SnakePart";
 import { Shit } from "./Shit";
+import { Score } from "./Score";
 import { getRandomTile } from "../lib/getRandomTile";
 
 export class Game {
@@ -36,6 +37,7 @@ export class Game {
   private boostedSnakeSpeed: number = 100;
   private isRapid: boolean = false;
   private haveGrow: boolean = false;
+  private score: Score;
 
   // BACKGROUND CACHE TO PREVENT WASTE RERENDER EVERY FRAME
   private backgroundCanvasCache: HTMLCanvasElement | null = null;
@@ -53,6 +55,8 @@ export class Game {
 
     this.snakeStartX = this.constants.tileSize * 6;
     this.snakeStartY = this.constants.tileSize * 9;
+
+    this.score = new Score();
 
     // INIT GAME FIELD
     const tilesArray: BackgroundTile[][] = [];
@@ -302,6 +306,7 @@ export class Game {
     this.shitOnField = [];
     this.applesEaten = 0;
     this.haveGrow = false;
+    this.score.resetScore();
     this.snakeDirection = "up";
 
     this.initSnake();
@@ -350,8 +355,21 @@ export class Game {
       );
       this.ctx.fillStyle = "white";
       this.ctx.fillText("click to start", canvasWidthMid, canvasHeightMid + 40);
+      ////////////////////////////////////////////////////////////////////////
     } else if (this.gameState === GameState.PLAY) {
-      // PLAY UI
+      this.ctx.textAlign = "left";
+      this.ctx.lineWidth = 3;
+      this.ctx.font = "25px 'Silkscreen', sans-serif";
+      this.ctx.strokeStyle = "black";
+      this.ctx.strokeText(`Scores: ${this.score.getScore()}`, 10, 30);
+      this.ctx.fillStyle = "white";
+      this.ctx.fillText(`Scores: ${this.score.getScore()}`, 10, 30);
+
+      this.ctx.strokeStyle = "black";
+      this.ctx.strokeText(`High scores: ${this.score.getHighScore()}`, 10, 60);
+      this.ctx.fillStyle = "white";
+      this.ctx.fillText(`High scores: ${this.score.getHighScore()}`, 10, 60);
+      ///////////////////////////////////////////////////////////////////////
     } else if (this.gameState === GameState.GAME_OVER) {
       this.ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
       this.ctx.fillRect(
@@ -367,18 +385,46 @@ export class Game {
       this.ctx.fillStyle = "red";
       this.ctx.fillText("GAME OVER", canvasWidthMid, canvasHeightMid - 20);
 
-      this.ctx.font = "35px 'Silkscreen', sans-serif";
+      this.ctx.font = "45px 'Silkscreen', sans-serif";
+      this.ctx.strokeStyle = "black";
+      this.ctx.strokeText(
+        `Scores: ${this.score.getScore()}`,
+        canvasWidthMid,
+        canvasHeightMid + 30,
+      );
+      this.ctx.fillStyle = "white";
+      this.ctx.fillText(
+        `Scores: ${this.score.getScore()}`,
+        canvasWidthMid,
+        canvasHeightMid + 30,
+      );
+
+      this.ctx.font = "45px 'Silkscreen', sans-serif";
+      this.ctx.strokeStyle = "black";
+      this.ctx.strokeText(
+        `Best: ${this.score.getHighScore()}`,
+        canvasWidthMid,
+        canvasHeightMid + 80,
+      );
+      this.ctx.fillStyle = "yellow";
+      this.ctx.fillText(
+        `Best: ${this.score.getHighScore()}`,
+        canvasWidthMid,
+        canvasHeightMid + 80,
+      );
+
+      this.ctx.font = "25px 'Silkscreen', sans-serif";
       this.ctx.strokeStyle = "black";
       this.ctx.strokeText(
         "click to restart",
         canvasWidthMid,
-        canvasHeightMid + 40,
+        canvasHeightMid + 120,
       );
       this.ctx.fillStyle = "white";
       this.ctx.fillText(
         "click to restart",
         canvasWidthMid,
-        canvasHeightMid + 40,
+        canvasHeightMid + 120,
       );
     }
   }
@@ -503,6 +549,11 @@ export class Game {
         this.fullSnake[0].getCoordY() === this.applesOnField[0].getCoordY()
       ) {
         this.applesEaten += 1;
+        this.score.addScore(1);
+        if (this.score.getScore() >= this.score.getHighScore()) {
+          this.score.addHighScore(this.score.getScore());
+          this.score.saveHighScore();
+        }
         this.haveGrow = true;
         this.applesOnField = [];
 
