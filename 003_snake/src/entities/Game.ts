@@ -551,7 +551,7 @@ export class Game {
         this.applesEaten += 1;
         this.score.addScore(1);
         if (this.score.getScore() >= this.score.getHighScore()) {
-          this.score.addHighScore(this.score.getScore());
+          this.score.addHighScore();
           this.score.saveHighScore();
         }
         this.haveGrow = true;

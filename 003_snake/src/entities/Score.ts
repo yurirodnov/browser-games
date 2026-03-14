@@ -17,7 +17,7 @@ export class Score {
     this.score += s;
   }
 
-  public addHighScore(hs: number): void {
+  public addHighScore(): void {
     this.highScore = this.score;
   }
 
