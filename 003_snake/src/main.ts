@@ -2,8 +2,8 @@
 
 import type { Assets, Constants } from "./types/types";
 import { Game } from "./entities/Game";
-import "./style.css";
 import { AssetsLoader } from "./lib/AssetsLoader";
+import "./style.css";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML =
   `<canvas id="canvas"></canvas>

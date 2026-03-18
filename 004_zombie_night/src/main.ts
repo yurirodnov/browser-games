@@ -1,8 +1,10 @@
 import type { Assets, Constants } from "./types/type";
 import { Game } from "./entitites/Game";
+import { AssetsLoader } from "./lib/AssetsLoader";
+import "./style.css";
 
-document.querySelector<HTMLDivElement>("app")!.innerHTML =
-  `<div id="canvas"></div>`;
+document.querySelector<HTMLDivElement>("#app")!.innerHTML =
+  `<canvas id="canvas"></canvas>`;
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d");
 if (!ctx) {
@@ -13,8 +15,8 @@ const constants: Constants = {
   tileSize: 40,
 };
 
-import "./style.css";
-import { AssetsLoader } from "./lib/AssetsLoader";
+canvas.width = constants.tileSize * 18;
+canvas.height = constants.tileSize * 8;
 
 export const main = async () => {
   await Promise.all([AssetsLoader.loadAsset("ground", "assets/ground.png")]);

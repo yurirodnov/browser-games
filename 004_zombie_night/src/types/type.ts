@@ -5,3 +5,5 @@ export interface Assets {
 export interface Constants {
   tileSize: number;
 }
+
+export type GameState = "menu" | "play" | "gameOver";
