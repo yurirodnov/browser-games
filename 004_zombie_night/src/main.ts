@@ -12,7 +12,7 @@ if (!ctx) {
 }
 
 const constants: Constants = {
-  tileSize: 40,
+  tileSize: 60,
 };
 
 canvas.width = constants.tileSize * 18;

@@ -32,8 +32,8 @@ export class Game {
         this.assets.ground,
         i,
         this.ctx.canvas.height - this.constants.tileSize,
-        40,
-        40,
+        this.constants.tileSize,
+        this.constants.tileSize,
       );
       groundTilesArray.push(groundTile);
     }
