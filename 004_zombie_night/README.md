@@ -10,8 +10,9 @@ Inspired by tons of zombie games. Stay alive, slay zombies.
 
 ## 🕹️ Controls
 
-**Arrows** - Move
-**Space** - Attack
+- **Arrows** - Move
+- **A** - Shotgun
+- **D** - Knife
 
 ## :book: About project
 
