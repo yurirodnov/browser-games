@@ -10,8 +10,11 @@ export class Game {
   private assets: Assets;
   private constants: Constants;
   private running: boolean = true;
+  private gameState: GameState = "menu";
   private animationID: number = 0;
   private lastFrameTime: number = 0;
+  private zombieSpawnTimer: number = 0;
+
   private groundTiles: GroundTile[];
   private survivor: Survivor;
   private background: Background;
@@ -74,7 +77,11 @@ export class Game {
 
   public restart() {}
 
-  private drawUI() {}
+  private drawUI() {
+    this.ctx.textAlign = "center";
+    this.ctx.lineJoin = "round";
+    this.ctx.lineWidth = 3;
+  }
 
   public loop = (timestamp: number) => {
     if (!this.running) {
