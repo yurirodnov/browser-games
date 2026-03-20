@@ -2,6 +2,8 @@
 
 Another legendary arcade game. Eat apples and avoid shit. Like real life.
 
+![Gameplay](screen.jpg)
+
 ## ✨ Game Features
 
 - **Unique assets:** Simple but original assets made by me in a MS Paint
