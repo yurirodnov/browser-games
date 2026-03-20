@@ -39,4 +39,6 @@ body {
   border: 1px solid #fff;
   display: block;
   cursor: pointer;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }

@@ -1,4 +1,4 @@
-export class Survivor {
+export class Background {
   private image: HTMLImageElement;
   private coordX: number;
   private coordY: number;
@@ -15,9 +15,8 @@ export class Survivor {
     this.image = img;
     this.coordX = x;
     this.coordY = y;
-
-    this.width = w * 4;
-    this.height = h * 4;
+    this.width = w;
+    this.height = h;
   }
 
   public draw(ctx: CanvasRenderingContext2D) {

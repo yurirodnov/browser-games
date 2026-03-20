@@ -1,5 +1,7 @@
 export interface Assets {
   ground: HTMLImageElement;
+  survivor: HTMLImageElement;
+  background: HTMLImageElement;
 }
 
 export interface Constants {

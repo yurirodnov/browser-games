@@ -19,9 +19,15 @@ canvas.width = constants.tileSize * 18;
 canvas.height = constants.tileSize * 8;
 
 export const main = async () => {
-  await Promise.all([AssetsLoader.loadAsset("ground", "assets/ground.png")]);
+  await Promise.all([
+    AssetsLoader.loadAsset("ground", "assets/ground.png"),
+    AssetsLoader.loadAsset("survivor", "assets/hero_shotgun_sketch.png"),
+    AssetsLoader.loadAsset("background", "assets/background.png"),
+  ]);
   const assets: Assets = {
     ground: AssetsLoader.getAsset("ground"),
+    survivor: AssetsLoader.getAsset("survivor"),
+    background: AssetsLoader.getAsset("background"),
   };
 
   const game = new Game(ctx, assets, constants);

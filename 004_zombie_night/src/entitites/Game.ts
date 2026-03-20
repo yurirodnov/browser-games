@@ -1,5 +1,9 @@
+// 004_zombie_night/src/entities/Game.ts
+
 import type { Assets, Constants, GameState } from "../types/type";
+import { Background } from "./Background";
 import { GroundTile } from "./GroundTile";
+import { Survivor } from "./Survivor";
 
 export class Game {
   private ctx: CanvasRenderingContext2D;
@@ -9,6 +13,8 @@ export class Game {
   private animationID: number = 0;
   private lastFrameTime: number = 0;
   private groundTiles: GroundTile[];
+  private survivor: Survivor;
+  private background: Background;
 
   constructor(
     ctx: CanvasRenderingContext2D,
@@ -20,6 +26,15 @@ export class Game {
     this.constants = constants;
 
     // INIT GAME ENTITIES
+
+    // INIT BACKGROUND
+    this.background = new Background(
+      this.assets.background,
+      0,
+      0,
+      this.ctx.canvas.width,
+      this.ctx.canvas.height,
+    );
 
     // INIT GROUND
     const groundTilesArray: GroundTile[] = [];
@@ -38,6 +53,15 @@ export class Game {
       groundTilesArray.push(groundTile);
     }
     this.groundTiles = groundTilesArray;
+
+    // INIT PLAYER
+    this.survivor = new Survivor(
+      this.assets.survivor,
+      this.ctx.canvas.width / 2,
+      this.ctx.canvas.height - this.constants.tileSize - 200,
+      25,
+      50,
+    );
 
     // START GAME ON GAME INSTANCE CREATION
     this.running = true;
@@ -60,6 +84,8 @@ export class Game {
     // CLEAR CANVAS
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
+    this.ctx.imageSmoothingEnabled = false;
+
     // CALCULATE DELTA
     if (this.lastFrameTime === 0) {
       this.lastFrameTime = timestamp;
@@ -72,15 +98,18 @@ export class Game {
     this.lastFrameTime = timestamp;
 
     // DRAW ASSETS
+    this.background.draw(this.ctx);
     for (const tile of this.groundTiles) {
       tile.draw(this.ctx);
     }
+
+    this.survivor.draw(this.ctx);
 
     // DRAW UI
     this.drawUI();
 
     // GAME LOOP
-    console.log(timestamp);
+
     this.animationID = requestAnimationFrame(this.loop);
   };
 }
