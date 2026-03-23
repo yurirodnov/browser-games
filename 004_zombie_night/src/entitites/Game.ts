@@ -73,7 +73,13 @@ export class Game {
 
   public start() {}
 
-  public stop() {}
+  public stop() {
+    this.running = false;
+    this.gameState = "gameOver";
+    if (this.animationID !== null) {
+      cancelAnimationFrame(this.animationID);
+    }
+  }
 
   public restart() {}
 
