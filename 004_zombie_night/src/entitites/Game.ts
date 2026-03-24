@@ -19,9 +19,12 @@ export class Game {
   private animationID: number = 0;
   private lastFrameTime: number = 0;
   private zombieSpawnTimer: number = 0;
+  private worldSize: number = 0;
   private worldOffset: number = 0;
+  private maxWorldOffset: number = 0;
+
   private movementState: MovementState = "stop";
-  private speed: number = 80;
+  private speed: number = 280;
 
   private groundTiles: GroundTile[];
   private survivor: Survivor;
@@ -35,7 +38,11 @@ export class Game {
     this.ctx = ctx;
     this.assets = assets;
     this.constants = constants;
+
+    // WORLD SIZE
+    this.worldSize = this.ctx.canvas.width * 2;
     this.worldOffset = -ctx.canvas.width / 2;
+    this.maxWorldOffset = this.worldOffset * 2;
 
     // INIT GAME ENTITIES
     // INIT BACKGROUND
@@ -70,7 +77,7 @@ export class Game {
     this.survivor = new Survivor(
       this.assets.survivorLeft,
       this.assets.survivorRight,
-      this.ctx.canvas.width / 2,
+      this.ctx.canvas.width / 2 - this.constants.playerWidth / 2,
       this.ctx.canvas.height -
         this.constants.tileSize -
         this.constants.playerHeight,
@@ -140,9 +147,12 @@ export class Game {
     this.lastFrameTime = timestamp;
 
     // UPDATE OBJECTS
-    if (this.movementState === "left") {
+    if (this.movementState === "left" && this.worldOffset <= 0) {
       this.worldOffset += this.speed * delta;
-    } else if (this.movementState === "right") {
+    } else if (
+      this.movementState === "right" &&
+      this.worldOffset > this.maxWorldOffset
+    ) {
       this.worldOffset -= this.speed * delta;
     }
 
