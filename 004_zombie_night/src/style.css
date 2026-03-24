@@ -40,5 +40,4 @@ body {
   display: block;
   cursor: pointer;
   image-rendering: pixelated;
-  image-rendering: crisp-edges;
 }

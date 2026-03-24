@@ -1,3 +1,5 @@
+import type { MovementState } from "../types/type";
+
 export class GroundTile {
   private image: HTMLImageElement;
   private coordX: number;
@@ -19,10 +21,16 @@ export class GroundTile {
     this.height = h;
   }
 
-  public draw(ctx: CanvasRenderingContext2D) {
+  // public update(delta: number, movementState: MovementState) {
+  //   if(movementState === "left"){
+
+  //   }
+  // }
+
+  public draw(ctx: CanvasRenderingContext2D, offset: number) {
     ctx.drawImage(
       this.image,
-      this.coordX,
+      this.coordX + offset,
       this.coordY,
       this.width,
       this.height,

@@ -1,3 +1,5 @@
+import type { MovementState } from "../types/type";
+
 export class Background {
   private image: HTMLImageElement;
   private coordX: number;
@@ -19,7 +21,7 @@ export class Background {
     this.height = h;
   }
 
-  public update(delta: number) {}
+  public update(delta: number, movementState: MovementState) {}
 
   public draw(ctx: CanvasRenderingContext2D) {
     ctx.drawImage(

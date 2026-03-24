@@ -1,6 +1,11 @@
 // 004_zombie_night/src/entities/Game.ts
 
-import type { Assets, Constants, GameState } from "../types/type";
+import type {
+  Assets,
+  Constants,
+  GameState,
+  MovementState,
+} from "../types/type";
 import { Background } from "./Background";
 import { GroundTile } from "./GroundTile";
 import { Survivor } from "./Survivor";
@@ -14,6 +19,9 @@ export class Game {
   private animationID: number = 0;
   private lastFrameTime: number = 0;
   private zombieSpawnTimer: number = 0;
+  private worldOffset: number = 0;
+  private movementState: MovementState = "stop";
+  private speed: number = 160;
 
   private groundTiles: GroundTile[];
   private survivor: Survivor;
@@ -27,13 +35,14 @@ export class Game {
     this.ctx = ctx;
     this.assets = assets;
     this.constants = constants;
+    this.worldOffset = -ctx.canvas.width / 2;
 
     // INIT GAME ENTITIES
 
     // INIT BACKGROUND
     this.background = new Background(
       this.assets.background,
-      0,
+      this.worldOffset,
       0,
       this.ctx.canvas.width * 2,
       this.ctx.canvas.height,
@@ -42,8 +51,8 @@ export class Game {
     // INIT GROUND
     const groundTilesArray: GroundTile[] = [];
     for (
-      let i: number = 0;
-      i < this.ctx.canvas.width;
+      let i: number = this.worldOffset;
+      i < this.ctx.canvas.width + this.ctx.canvas.width / 2;
       i += this.constants.tileSize
     ) {
       const groundTile = new GroundTile(
@@ -60,11 +69,27 @@ export class Game {
     // INIT PLAYER
     this.survivor = new Survivor(
       this.assets.survivor,
-      this.ctx.canvas.width / 2,
+      this.ctx.canvas.width,
       this.ctx.canvas.height - this.constants.tileSize - 200,
-      25,
-      50,
+      this.constants.playerWidth,
+      this.constants.playerHeight,
     );
+
+    window.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") {
+        this.movementState = "left";
+      }
+    });
+    window.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") {
+        this.movementState = "right";
+      }
+    });
+    window.addEventListener("keyup", (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+        this.movementState = "stop";
+      }
+    });
 
     // START GAME ON GAME INSTANCE CREATION
     this.running = true;
@@ -110,10 +135,17 @@ export class Game {
     }
     this.lastFrameTime = timestamp;
 
+    // UPDATE OBJECTS
+    if (this.movementState === "left") {
+      this.worldOffset += this.speed * delta;
+    } else if (this.movementState === "right") {
+      this.worldOffset -= this.speed * delta;
+    }
+
     // DRAW ASSETS
     this.background.draw(this.ctx);
     for (const tile of this.groundTiles) {
-      tile.draw(this.ctx);
+      tile.draw(this.ctx, this.worldOffset);
     }
 
     this.survivor.draw(this.ctx);
