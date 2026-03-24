@@ -35,7 +35,7 @@ export class Game {
       this.assets.background,
       0,
       0,
-      this.ctx.canvas.width,
+      this.ctx.canvas.width * 2,
       this.ctx.canvas.height,
     );
 

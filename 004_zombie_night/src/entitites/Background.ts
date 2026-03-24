@@ -19,6 +19,8 @@ export class Background {
     this.height = h;
   }
 
+  public update(delta: number) {}
+
   public draw(ctx: CanvasRenderingContext2D) {
     ctx.drawImage(
       this.image,
