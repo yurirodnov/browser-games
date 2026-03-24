@@ -34,6 +34,22 @@ export class Survivor {
     return this.coordY;
   }
 
+  public update(
+    speed: number,
+    delta: number,
+    direction: MovementState,
+    canvasWidth: number,
+  ): void {
+    if (direction === "left" && this.coordX > 0) {
+      this.coordX -= speed * delta;
+    } else if (
+      direction === "right" &&
+      this.coordX < canvasWidth - this.width
+    ) {
+      this.coordX += speed * delta;
+    }
+  }
+
   public draw(ctx: CanvasRenderingContext2D, direction: MovementState) {
     if (direction === "left") {
       ctx.drawImage(

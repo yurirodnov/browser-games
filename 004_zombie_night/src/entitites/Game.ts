@@ -156,6 +156,13 @@ export class Game {
       this.worldOffset -= this.speed * delta;
     }
 
+    this.survivor.update(
+      this.speed,
+      delta,
+      this.movementState,
+      this.ctx.canvas.width,
+    );
+
     // DRAW ASSETS
     this.background.draw(this.ctx, this.worldOffset);
     for (const tile of this.groundTiles) {
