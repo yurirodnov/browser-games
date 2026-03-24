@@ -42,7 +42,7 @@ export class Game {
     // INIT BACKGROUND
     this.background = new Background(
       this.assets.background,
-      this.worldOffset,
+      0,
       0,
       this.ctx.canvas.width * 2,
       this.ctx.canvas.height,
@@ -50,15 +50,16 @@ export class Game {
 
     // INIT GROUND
     const groundTilesArray: GroundTile[] = [];
-    for (
-      let i: number = this.worldOffset;
-      i < this.ctx.canvas.width + this.ctx.canvas.width / 2;
-      i += this.constants.tileSize
-    ) {
+    const worldWidth = this.ctx.canvas.width * 2;
+    const groundHeight = this.ctx.canvas.height - this.constants.tileSize;
+    const totalTiles = Math.ceil(worldWidth / this.constants.tileSize);
+    for (let i = 0; i < totalTiles; i++) {
+      const x = i * this.constants.tileSize;
+
       const groundTile = new GroundTile(
         this.assets.ground,
-        i,
-        this.ctx.canvas.height - this.constants.tileSize,
+        x,
+        groundHeight,
         this.constants.tileSize,
         this.constants.tileSize,
       );
@@ -122,6 +123,7 @@ export class Game {
     // CLEAR CANVAS
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
+    // DISABLE PICS BLURING
     this.ctx.imageSmoothingEnabled = false;
 
     // CALCULATE DELTA
@@ -143,7 +145,7 @@ export class Game {
     }
 
     // DRAW ASSETS
-    this.background.draw(this.ctx);
+    this.background.draw(this.ctx, this.worldOffset);
     for (const tile of this.groundTiles) {
       tile.draw(this.ctx, this.worldOffset);
     }
@@ -154,7 +156,6 @@ export class Game {
     this.drawUI();
 
     // GAME LOOP
-
     this.animationID = requestAnimationFrame(this.loop);
   };
 }

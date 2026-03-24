@@ -23,10 +23,10 @@ export class Background {
 
   public update(delta: number, movementState: MovementState) {}
 
-  public draw(ctx: CanvasRenderingContext2D) {
+  public draw(ctx: CanvasRenderingContext2D, offset: number) {
     ctx.drawImage(
       this.image,
-      this.coordX,
+      this.coordX + offset,
       this.coordY,
       this.width,
       this.height,

@@ -16,8 +16,8 @@ export class Survivor {
     this.coordX = x;
     this.coordY = y;
 
-    this.width = w * 4;
-    this.height = h * 4;
+    this.width = w;
+    this.height = h;
   }
 
   public draw(ctx: CanvasRenderingContext2D) {
