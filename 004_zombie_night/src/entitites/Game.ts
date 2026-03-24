@@ -21,7 +21,7 @@ export class Game {
   private zombieSpawnTimer: number = 0;
   private worldOffset: number = 0;
   private movementState: MovementState = "stop";
-  private speed: number = 160;
+  private speed: number = 80;
 
   private groundTiles: GroundTile[];
   private survivor: Survivor;
@@ -38,7 +38,6 @@ export class Game {
     this.worldOffset = -ctx.canvas.width / 2;
 
     // INIT GAME ENTITIES
-
     // INIT BACKGROUND
     this.background = new Background(
       this.assets.background,
@@ -69,9 +68,12 @@ export class Game {
 
     // INIT PLAYER
     this.survivor = new Survivor(
-      this.assets.survivor,
-      this.ctx.canvas.width,
-      this.ctx.canvas.height - this.constants.tileSize - 200,
+      this.assets.survivorLeft,
+      this.assets.survivorRight,
+      this.ctx.canvas.width / 2,
+      this.ctx.canvas.height -
+        this.constants.tileSize -
+        this.constants.playerHeight,
       this.constants.playerWidth,
       this.constants.playerHeight,
     );
@@ -150,7 +152,7 @@ export class Game {
       tile.draw(this.ctx, this.worldOffset);
     }
 
-    this.survivor.draw(this.ctx);
+    this.survivor.draw(this.ctx, this.movementState);
 
     // DRAW UI
     this.drawUI();

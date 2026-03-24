@@ -13,8 +13,8 @@ if (!ctx) {
 
 const constants: Constants = {
   tileSize: 60,
-  playerWidth: 25,
-  playerHeight: 50,
+  playerWidth: 100,
+  playerHeight: 200,
 };
 
 canvas.width = constants.tileSize * 18;
@@ -23,12 +23,20 @@ canvas.height = constants.tileSize * 8;
 export const main = async () => {
   await Promise.all([
     AssetsLoader.loadAsset("ground", "assets/ground.png"),
-    AssetsLoader.loadAsset("survivor", "assets/hero_shotgun_sketch.png"),
+    AssetsLoader.loadAsset(
+      "survivorLeft",
+      "assets/hero_shotgun_sketch_left.png",
+    ),
+    AssetsLoader.loadAsset(
+      "survivorRight",
+      "assets/hero_shotgun_sketch_right.png",
+    ),
     AssetsLoader.loadAsset("background", "assets/background.png"),
   ]);
   const assets: Assets = {
     ground: AssetsLoader.getAsset("ground"),
-    survivor: AssetsLoader.getAsset("survivor"),
+    survivorLeft: AssetsLoader.getAsset("survivorLeft"),
+    survivorRight: AssetsLoader.getAsset("survivorRight"),
     background: AssetsLoader.getAsset("background"),
   };
 

@@ -1,18 +1,24 @@
+import type { MovementState } from "../types/type";
+
 export class Survivor {
-  private image: HTMLImageElement;
+  private imageLeft: HTMLImageElement;
+  private imageRight: HTMLImageElement;
   private coordX: number;
   private coordY: number;
   private width: number;
   private height: number;
+  private lastDirection: MovementState = "left";
 
   constructor(
-    img: HTMLImageElement,
+    imgLeft: HTMLImageElement,
+    imgRight: HTMLImageElement,
     x: number,
     y: number,
     w: number,
     h: number,
   ) {
-    this.image = img;
+    this.imageLeft = imgLeft;
+    this.imageRight = imgRight;
     this.coordX = x;
     this.coordY = y;
 
@@ -20,13 +26,41 @@ export class Survivor {
     this.height = h;
   }
 
-  public draw(ctx: CanvasRenderingContext2D) {
-    ctx.drawImage(
-      this.image,
-      this.coordX,
-      this.coordY,
-      this.width,
-      this.height,
-    );
+  public getCoordX(): number {
+    return this.coordX;
+  }
+
+  public getCoordY(): number {
+    return this.coordY;
+  }
+
+  public draw(ctx: CanvasRenderingContext2D, direction: MovementState) {
+    if (direction === "left") {
+      ctx.drawImage(
+        this.imageLeft,
+        this.coordX,
+        this.coordY,
+        this.width,
+        this.height,
+      );
+      this.lastDirection = "left";
+    } else if (direction === "right") {
+      ctx.drawImage(
+        this.imageRight,
+        this.coordX,
+        this.coordY,
+        this.width,
+        this.height,
+      );
+      this.lastDirection = "right";
+    } else if (direction === "stop") {
+      ctx.drawImage(
+        this.lastDirection === "left" ? this.imageLeft : this.imageRight,
+        this.coordX,
+        this.coordY,
+        this.width,
+        this.height,
+      );
+    }
   }
 }

@@ -1,6 +1,7 @@
 export interface Assets {
   ground: HTMLImageElement;
-  survivor: HTMLImageElement;
+  survivorLeft: HTMLImageElement;
+  survivorRight: HTMLImageElement;
   background: HTMLImageElement;
 }
 
