@@ -56,9 +56,8 @@ export class Game {
 
     // INIT GROUND
     const groundTilesArray: GroundTile[] = [];
-    const worldWidth = this.ctx.canvas.width * 2;
     const groundHeight = this.ctx.canvas.height - this.constants.tileSize;
-    const totalTiles = Math.ceil(worldWidth / this.constants.tileSize);
+    const totalTiles = Math.ceil(this.worldSize / this.constants.tileSize);
     for (let i = 0; i < totalTiles; i++) {
       const x = i * this.constants.tileSize;
 
@@ -106,7 +105,12 @@ export class Game {
     this.loop(0);
   }
 
-  public start() {}
+  public start() {
+    this.running = true;
+    this.gameState = "play";
+    this.lastFrameTime = 0;
+    this.animationID = requestAnimationFrame(this.loop);
+  }
 
   public stop() {
     this.running = false;
@@ -147,20 +151,29 @@ export class Game {
     this.lastFrameTime = timestamp;
 
     // UPDATE OBJECTS
-    if (this.movementState === "left" && this.worldOffset <= 0) {
+
+    // MOVE SCREEN
+    if (
+      this.movementState === "left" &&
+      this.worldOffset <= 0 &&
+      this.survivor.getCoordX() >= this.ctx.canvas.width / 2 - 50 &&
+      this.survivor.getCoordX() <= this.ctx.canvas.width / 2
+    ) {
       this.worldOffset += this.speed * delta;
     } else if (
       this.movementState === "right" &&
-      this.worldOffset > this.maxWorldOffset
+      this.worldOffset >= this.maxWorldOffset &&
+      this.survivor.getCoordX() >= this.ctx.canvas.width / 2 - 50 &&
+      this.survivor.getCoordX() <= this.ctx.canvas.width / 2
     ) {
       this.worldOffset -= this.speed * delta;
     }
 
-    console.log(this.worldOffset);
-    if (
-      Math.floor(this.worldOffset) >= 0 ||
-      Math.floor(this.worldOffset) < -1080
-    ) {
+    console.log("Offset ", this.worldOffset);
+    console.log("Hero X ", this.survivor.getCoordX());
+
+    // MOVE SURVIVOR
+    if (this.worldOffset >= 0 || this.worldOffset <= this.maxWorldOffset) {
       this.survivor.update(
         this.worldOffset,
         this.speed,
