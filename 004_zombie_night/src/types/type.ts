@@ -3,6 +3,8 @@ export interface Assets {
   survivorLeft: HTMLImageElement;
   survivorRight: HTMLImageElement;
   background: HTMLImageElement;
+  bullet: HTMLImageElement;
+  life: HTMLImageElement;
 }
 
 export interface Constants {

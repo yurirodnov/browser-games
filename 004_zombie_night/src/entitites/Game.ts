@@ -15,7 +15,7 @@ export class Game {
   private assets: Assets;
   private constants: Constants;
   private running: boolean = true;
-  private gameState: GameState = "menu";
+  private gameState: GameState = "play";
   private animationID: number = 0;
   private lastFrameTime: number = 0;
 
@@ -29,7 +29,7 @@ export class Game {
   private zombieSpawnTimer: number = 0;
 
   private bullets: number;
-  private lives: number;
+  private lifes: number;
 
   private groundTiles: GroundTile[];
   private survivor: Survivor;
@@ -46,7 +46,7 @@ export class Game {
 
     // SET CHARACTER RESOURCES
     this.bullets = 2;
-    this.lives = 3;
+    this.lifes = 3;
 
     // WORLD SIZE
     this.worldSize = this.ctx.canvas.width * 2;
@@ -155,8 +155,14 @@ export class Game {
     this.ctx.lineWidth = 3;
 
     if (this.gameState === "menu") {
+      ////
     } else if (this.gameState === "play") {
+      // DRAW BULLET ICON
+      this.ctx.drawImage(this.assets.bullet, 35, 20, 30, 60);
+      // DRAW LIFE ICON
+      this.ctx.drawImage(this.assets.life, 20, 100, 60, 50);
     } else {
+      ////
     }
   }
 
