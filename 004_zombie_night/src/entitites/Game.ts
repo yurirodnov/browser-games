@@ -18,13 +18,18 @@ export class Game {
   private gameState: GameState = "menu";
   private animationID: number = 0;
   private lastFrameTime: number = 0;
-  private zombieSpawnTimer: number = 0;
+
   private worldSize: number = 0;
   private worldOffset: number = 0;
   private maxWorldOffset: number = 0;
 
   private movementState: MovementState = "stop";
   private speed: number = 280;
+
+  private zombieSpawnTimer: number = 0;
+
+  private bullets: number;
+  private lives: number;
 
   private groundTiles: GroundTile[];
   private survivor: Survivor;
@@ -38,6 +43,10 @@ export class Game {
     this.ctx = ctx;
     this.assets = assets;
     this.constants = constants;
+
+    // SET CHARACTER RESOURCES
+    this.bullets = 2;
+    this.lives = 3;
 
     // WORLD SIZE
     this.worldSize = this.ctx.canvas.width * 2;
@@ -100,9 +109,25 @@ export class Game {
       }
     });
 
+    window.addEventListener("mousedown", (e: MouseEvent) => {
+      e.preventDefault();
+      this.handleInput();
+    });
+
     // START GAME ON GAME INSTANCE CREATION
     this.running = true;
     this.loop(0);
+  }
+
+  private handleInput(): void {
+    switch (this.gameState) {
+      case "menu":
+        this.start();
+        break;
+      case "gameOver":
+        this.restart();
+        break;
+    }
   }
 
   public start() {
@@ -120,12 +145,19 @@ export class Game {
     }
   }
 
-  public restart() {}
+  public restart() {
+    this.start();
+  }
 
   private drawUI() {
     this.ctx.textAlign = "center";
     this.ctx.lineJoin = "round";
     this.ctx.lineWidth = 3;
+
+    if (this.gameState === "menu") {
+    } else if (this.gameState === "play") {
+    } else {
+    }
   }
 
   public loop = (timestamp: number) => {
