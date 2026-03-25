@@ -35,6 +35,7 @@ export class Survivor {
   }
 
   public update(
+    offset: number,
     speed: number,
     delta: number,
     direction: MovementState,

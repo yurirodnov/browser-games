@@ -156,12 +156,19 @@ export class Game {
       this.worldOffset -= this.speed * delta;
     }
 
-    this.survivor.update(
-      this.speed,
-      delta,
-      this.movementState,
-      this.ctx.canvas.width,
-    );
+    console.log(this.worldOffset);
+    if (
+      Math.floor(this.worldOffset) >= 0 ||
+      Math.floor(this.worldOffset) < -1080
+    ) {
+      this.survivor.update(
+        this.worldOffset,
+        this.speed,
+        delta,
+        this.movementState,
+        this.ctx.canvas.width,
+      );
+    }
 
     // DRAW ASSETS
     this.background.draw(this.ctx, this.worldOffset);
