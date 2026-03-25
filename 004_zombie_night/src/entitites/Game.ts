@@ -207,9 +207,6 @@ export class Game {
       this.worldOffset -= this.speed * delta;
     }
 
-    console.log("Offset ", this.worldOffset);
-    console.log("Hero X ", this.survivor.getCoordX());
-
     // MOVE SURVIVOR
     if (this.worldOffset >= 0 || this.worldOffset <= this.maxWorldOffset) {
       this.survivor.update(
