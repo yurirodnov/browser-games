@@ -10,7 +10,7 @@ No game engines, no heavy frameworks (like React or Phaser). Just pure JavaScrip
 
 ## ✨ Key Features
 
-- **Hand-written code:** No AI generated code here
+- **Hand-written code:** No AI generated code in games. Only this README :robot:
 - **Entity Component System:** Clean OOP architecture with classes for Player, Enemies, Projectiles etc.
 - **State Management:** LocalStorage integration for high scores and persistent game state.
 - **Tooling:** Bundled with **Vite** for instant hot-reloading and optimized builds.
