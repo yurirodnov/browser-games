@@ -3,6 +3,7 @@ import type { MovementState } from "../types/type";
 export class Survivor {
   private imageLeft: HTMLImageElement;
   private imageRight: HTMLImageElement;
+
   private coordX: number;
   private coordY: number;
   private width: number;

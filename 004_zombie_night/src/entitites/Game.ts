@@ -25,6 +25,7 @@ export class Game {
 
   private movementState: MovementState = "stop";
   private speed: number = 280;
+  private walkTimer: number = 0;
 
   private zombieSpawnTimer: number = 0;
 

@@ -1,7 +1,13 @@
 export interface Assets {
-  ground: HTMLImageElement;
   survivorLeft: HTMLImageElement;
+  survivorKnifeLeft: HTMLImageElement;
+  survivorWalk1Left: HTMLImageElement;
+  survivorWalk2Left: HTMLImageElement;
   survivorRight: HTMLImageElement;
+  survivorKnifeRight: HTMLImageElement;
+  survivorWalk1Right: HTMLImageElement;
+  survivorWalk2Right: HTMLImageElement;
+  ground: HTMLImageElement;
   background: HTMLImageElement;
   bullet: HTMLImageElement;
   life: HTMLImageElement;
