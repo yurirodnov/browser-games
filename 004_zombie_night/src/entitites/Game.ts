@@ -26,6 +26,7 @@ export class Game {
 
   private survivorMovementState: SurvivorMovementState = "stop";
   private speed: number = 280;
+  private lastDirection: string = "left";
 
   private survivorWeaponState: SurvivorWeaponState = "shotgun";
 
@@ -97,11 +98,13 @@ export class Game {
 
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") {
+        this.lastDirection = "left";
         this.survivorMovementState = "left";
       }
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") {
+        this.lastDirection = "right";
         this.survivorMovementState = "right";
       }
     });
@@ -209,10 +212,18 @@ export class Game {
       this.worldOffset -= this.speed * delta;
     }
 
+    // TURN SURVIVOR
+    this.survivor.changeDirection(this.survivorMovementState);
+
+    this.survivor.changeAnimation(
+      this.survivorMovementState,
+      delta,
+      this.lastDirection,
+    );
+
     // MOVE SURVIVOR
     if (this.worldOffset >= 0 || this.worldOffset <= this.maxWorldOffset) {
-      this.survivor.update(
-        // this.worldOffset,
+      this.survivor.changePosition(
         this.speed,
         delta,
         this.survivorMovementState,
@@ -225,8 +236,7 @@ export class Game {
     for (const tile of this.groundTiles) {
       tile.draw(this.ctx, this.worldOffset);
     }
-
-    this.survivor.draw(this.ctx, this.survivorMovementState);
+    this.survivor.draw(this.ctx);
 
     // DRAW UI
     this.drawUI();
