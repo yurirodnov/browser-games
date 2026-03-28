@@ -1,25 +1,25 @@
-import type { MovementState } from "../types/type";
+import type { SurvivorMovementState, SurvivorAssets } from "../types/type";
 
 export class Survivor {
-  private imageLeft: HTMLImageElement;
-  private imageRight: HTMLImageElement;
+  private survivorImages: SurvivorAssets;
 
   private coordX: number;
   private coordY: number;
   private width: number;
   private height: number;
-  private lastDirection: MovementState = "left";
+  private lastDirection: SurvivorMovementState = "left";
+
+  private walkTimer: number = 0;
+  private walkAnimationInterval: number = 0;
 
   constructor(
-    imgLeft: HTMLImageElement,
-    imgRight: HTMLImageElement,
+    survivorImages: SurvivorAssets,
     x: number,
     y: number,
     w: number,
     h: number,
   ) {
-    this.imageLeft = imgLeft;
-    this.imageRight = imgRight;
+    this.survivorImages = survivorImages;
     this.coordX = x;
     this.coordY = y;
 
@@ -36,10 +36,10 @@ export class Survivor {
   }
 
   public update(
-    offset: number,
+    // offset: number,
     speed: number,
     delta: number,
-    direction: MovementState,
+    direction: SurvivorMovementState,
     canvasWidth: number,
   ): void {
     if (direction === "left" && this.coordX > 0) {
@@ -50,12 +50,19 @@ export class Survivor {
     ) {
       this.coordX += speed * delta;
     }
+
+    // SURVIVOR WALK ANIMATION
+    if (direction === "left") {
+      this.walkTimer += 10 * delta;
+    } else if (direction === "right") {
+      this.walkTimer += 10 * delta;
+    }
   }
 
-  public draw(ctx: CanvasRenderingContext2D, direction: MovementState) {
+  public draw(ctx: CanvasRenderingContext2D, direction: SurvivorMovementState) {
     if (direction === "left") {
       ctx.drawImage(
-        this.imageLeft,
+        this.survivorImages.survivorLeft,
         this.coordX,
         this.coordY,
         this.width,
@@ -64,7 +71,7 @@ export class Survivor {
       this.lastDirection = "left";
     } else if (direction === "right") {
       ctx.drawImage(
-        this.imageRight,
+        this.survivorImages.survivorRight,
         this.coordX,
         this.coordY,
         this.width,
@@ -73,7 +80,9 @@ export class Survivor {
       this.lastDirection = "right";
     } else if (direction === "stop") {
       ctx.drawImage(
-        this.lastDirection === "left" ? this.imageLeft : this.imageRight,
+        this.lastDirection === "left"
+          ? this.survivorImages.survivorLeft
+          : this.survivorImages.survivorRight,
         this.coordX,
         this.coordY,
         this.width,

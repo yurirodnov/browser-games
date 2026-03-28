@@ -4,7 +4,8 @@ import type {
   Assets,
   Constants,
   GameState,
-  MovementState,
+  SurvivorMovementState,
+  SurvivorWeaponState,
 } from "../types/type";
 import { Background } from "./Background";
 import { GroundTile } from "./GroundTile";
@@ -23,9 +24,10 @@ export class Game {
   private worldOffset: number = 0;
   private maxWorldOffset: number = 0;
 
-  private movementState: MovementState = "stop";
+  private survivorMovementState: SurvivorMovementState = "stop";
   private speed: number = 280;
-  private walkTimer: number = 0;
+
+  private survivorWeaponState: SurvivorWeaponState = "shotgun";
 
   private zombieSpawnTimer: number = 0;
 
@@ -84,8 +86,7 @@ export class Game {
 
     // INIT PLAYER
     this.survivor = new Survivor(
-      this.assets.survivorLeft,
-      this.assets.survivorRight,
+      this.assets.survivor,
       this.ctx.canvas.width / 2 - this.constants.playerWidth / 2,
       this.ctx.canvas.height -
         this.constants.tileSize -
@@ -96,17 +97,17 @@ export class Game {
 
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") {
-        this.movementState = "left";
+        this.survivorMovementState = "left";
       }
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") {
-        this.movementState = "right";
+        this.survivorMovementState = "right";
       }
     });
     window.addEventListener("keyup", (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
-        this.movementState = "stop";
+        this.survivorMovementState = "stop";
       }
     });
 
@@ -193,14 +194,14 @@ export class Game {
 
     // MOVE SCREEN
     if (
-      this.movementState === "left" &&
+      this.survivorMovementState === "left" &&
       this.worldOffset <= 0 &&
       this.survivor.getCoordX() >= this.ctx.canvas.width / 2 - 50 &&
       this.survivor.getCoordX() <= this.ctx.canvas.width / 2
     ) {
       this.worldOffset += this.speed * delta;
     } else if (
-      this.movementState === "right" &&
+      this.survivorMovementState === "right" &&
       this.worldOffset >= this.maxWorldOffset &&
       this.survivor.getCoordX() >= this.ctx.canvas.width / 2 - 50 &&
       this.survivor.getCoordX() <= this.ctx.canvas.width / 2
@@ -211,10 +212,10 @@ export class Game {
     // MOVE SURVIVOR
     if (this.worldOffset >= 0 || this.worldOffset <= this.maxWorldOffset) {
       this.survivor.update(
-        this.worldOffset,
+        // this.worldOffset,
         this.speed,
         delta,
-        this.movementState,
+        this.survivorMovementState,
         this.ctx.canvas.width,
       );
     }
@@ -225,7 +226,7 @@ export class Game {
       tile.draw(this.ctx, this.worldOffset);
     }
 
-    this.survivor.draw(this.ctx, this.movementState);
+    this.survivor.draw(this.ctx, this.survivorMovementState);
 
     // DRAW UI
     this.drawUI();

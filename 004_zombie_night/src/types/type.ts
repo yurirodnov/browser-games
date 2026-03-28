@@ -1,4 +1,4 @@
-export interface Assets {
+export interface SurvivorAssets {
   survivorLeft: HTMLImageElement;
   survivorKnifeLeft: HTMLImageElement;
   survivorWalk1Left: HTMLImageElement;
@@ -7,6 +7,10 @@ export interface Assets {
   survivorKnifeRight: HTMLImageElement;
   survivorWalk1Right: HTMLImageElement;
   survivorWalk2Right: HTMLImageElement;
+}
+
+export interface Assets {
+  survivor: SurvivorAssets;
   ground: HTMLImageElement;
   background: HTMLImageElement;
   bullet: HTMLImageElement;
@@ -21,4 +25,6 @@ export interface Constants {
 
 export type GameState = "menu" | "play" | "gameOver";
 
-export type MovementState = "left" | "right" | "stop";
+export type SurvivorMovementState = "left" | "right" | "stop";
+
+export type SurvivorWeaponState = "shotgun" | "knife";

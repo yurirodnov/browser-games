@@ -1,7 +1,8 @@
-import type { Assets, Constants } from "./types/type";
+import type { Assets, Constants, SurvivorAssets } from "./types/type";
 import { Game } from "./entitites/Game";
 import { AssetsLoader } from "./lib/AssetsLoader";
 import "./style.css";
+import type { Survivor } from "./entitites/Survivor";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML =
   `<canvas id="canvas"></canvas>`;
@@ -27,24 +28,53 @@ export const main = async () => {
       "survivorLeft",
       "assets/hero_shotgun_sketch_left.png",
     ),
-    AssetsLoader.loadAsset("survivorKnifeLeft"),
-    AssetsLoader.loadAsset("survivorWalk1Left"),
-    AssetsLoader.loadAsset("survivorWalk2Left"),
+    AssetsLoader.loadAsset(
+      "survivorKnifeLeft",
+      "assets/hero_knife_sketch_left.png",
+    ),
+    AssetsLoader.loadAsset(
+      "survivorWalk1Left",
+      "assets/hero_shotgun_sketch_left_walk_1.png",
+    ),
+    AssetsLoader.loadAsset(
+      "survivorWalk2Left",
+      "assets/hero_shotgun_sketch_left_walk_2.png",
+    ),
     AssetsLoader.loadAsset(
       "survivorRight",
       "assets/hero_shotgun_sketch_right.png",
     ),
-    AssetsLoader.loadAsset(""),
-    AssetsLoader.loadAsset(""),
-    AssetsLoader.loadAsset(""),
+    AssetsLoader.loadAsset(
+      "survivorKnifeRight",
+      "assets/hero_knife_sketch_right.png",
+    ),
+    AssetsLoader.loadAsset(
+      "survivorWalk1Right",
+      "assets/hero_shotgun_sketch_right_walk_1.png",
+    ),
+    AssetsLoader.loadAsset(
+      "survivorWalk2Right",
+      "assets/hero_shotgun_sketch_right_walk_2.png",
+    ),
     AssetsLoader.loadAsset("background", "assets/background.png"),
     AssetsLoader.loadAsset("bullet", "assets/bullet.png"),
     AssetsLoader.loadAsset("life", "assets/life.png"),
   ]);
+
+  const survivorAssets: SurvivorAssets = {
+    survivorLeft: AssetsLoader.getAsset("survivorLeft"),
+    survivorKnifeLeft: AssetsLoader.getAsset("survivorKnifeLeft"),
+    survivorWalk1Left: AssetsLoader.getAsset("survivorWalk1Left"),
+    survivorWalk2Left: AssetsLoader.getAsset("survivorWalk2Left"),
+    survivorRight: AssetsLoader.getAsset("survivorRight"),
+    survivorKnifeRight: AssetsLoader.getAsset("survivorKnifeRight"),
+    survivorWalk1Right: AssetsLoader.getAsset("survivorWalk1Right"),
+    survivorWalk2Right: AssetsLoader.getAsset("survivorWalk2Right"),
+  };
+
   const assets: Assets = {
     ground: AssetsLoader.getAsset("ground"),
-    survivorLeft: AssetsLoader.getAsset("survivorLeft"),
-    survivorRight: AssetsLoader.getAsset("survivorRight"),
+    survivor: survivorAssets,
     background: AssetsLoader.getAsset("background"),
     bullet: AssetsLoader.getAsset("bullet"),
     life: AssetsLoader.getAsset("life"),
