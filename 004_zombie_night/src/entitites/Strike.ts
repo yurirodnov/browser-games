@@ -1,6 +1,6 @@
 export class Strike {
-  private strikeLeftImage: HTMLImageElement;
-  private strikeRightImage: HTMLImageElement;
+  private strikeImageLeft: HTMLImageElement;
+  private strikeImageRight: HTMLImageElement;
   private currentImage: HTMLImageElement;
 
   private coordX: number;
@@ -16,9 +16,9 @@ export class Strike {
     w: number,
     h: number,
   ) {
-    this.strikeLeftImage = leftImg;
-    this.strikeRightImage = rightImg;
-    this.currentImage = this.strikeLeftImage;
+    this.strikeImageLeft = leftImg;
+    this.strikeImageRight = rightImg;
+    this.currentImage = this.strikeImageLeft;
     this.coordX = x;
     this.coordY = y;
     this.width = w;
