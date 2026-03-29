@@ -10,7 +10,7 @@ export class Survivor {
   private height: number;
 
   private walkTimer: number = 0;
-  private walkAnimationInterval: number = 0;
+  private walkAnimationInterval: number = 20;
   private speed: number = 50;
 
   constructor(

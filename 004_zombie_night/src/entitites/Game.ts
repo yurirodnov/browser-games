@@ -10,6 +10,7 @@ import type {
 import { Background } from "./Background";
 import { GroundTile } from "./GroundTile";
 import { Survivor } from "./Survivor";
+import { Strike } from "./Strike";
 
 export class Game {
   private ctx: CanvasRenderingContext2D;
@@ -38,6 +39,7 @@ export class Game {
   private groundTiles: GroundTile[];
   private survivor: Survivor;
   private background: Background;
+  private strike: Strike | null = null;
 
   constructor(
     ctx: CanvasRenderingContext2D,
