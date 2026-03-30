@@ -1,6 +1,7 @@
+import type { StrikeAssets } from "../types/type";
+
 export class Strike {
-  private strikeImageLeft: HTMLImageElement;
-  private strikeImageRight: HTMLImageElement;
+  private strikeImages: StrikeAssets;
   private currentImage: HTMLImageElement;
 
   private coordX: number;
@@ -9,16 +10,14 @@ export class Strike {
   private height: number;
 
   constructor(
-    leftImg: HTMLImageElement,
-    rightImg: HTMLImageElement,
+    strikeImages: StrikeAssets,
     x: number,
     y: number,
     w: number,
     h: number,
   ) {
-    this.strikeImageLeft = leftImg;
-    this.strikeImageRight = rightImg;
-    this.currentImage = this.strikeImageLeft;
+    this.strikeImages = strikeImages;
+    this.currentImage = this.strikeImages.strikeLeft;
     this.coordX = x;
     this.coordY = y;
     this.width = w;

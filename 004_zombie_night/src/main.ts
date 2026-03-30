@@ -7,7 +7,6 @@ import type {
 import { Game } from "./entitites/Game";
 import { AssetsLoader } from "./lib/AssetsLoader";
 import "./style.css";
-import type { Survivor } from "./entitites/Survivor";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML =
   `<canvas id="canvas"></canvas>`;

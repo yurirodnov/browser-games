@@ -38,6 +38,14 @@ export class Survivor {
     return this.coordY;
   }
 
+  public getWidth(): number {
+    return this.width;
+  }
+
+  public getHeight(): number {
+    return this.height;
+  }
+
   public changeDirection(direction: string): void {
     if (direction === "left") {
       this.currentImage = this.survivorImages.survivorLeft;
