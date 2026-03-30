@@ -119,27 +119,17 @@ export class Game {
 
     // ATTACK INPUT
     window.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key === "a" && this.survivorMovementState === "stop") {
-        this.survivorWeaponState = "shotgun";
-        this.survivorKnifeTimer += 1;
-        if (this.survivorKnifeTimer === 30) {
-          this.survivorWeaponState = "shotgun";
-          this.survivorKnifeTimer = 0;
-        }
-        console.log(this.survivorWeaponState);
-      }
-    });
-    window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "d" && this.survivorMovementState === "stop") {
         this.survivorWeaponState = "knife";
-        this.survivorKnifeTimer += 1;
-        if (this.survivorKnifeTimer === 30) {
-          this.survivorWeaponState = "shotgun";
-          this.survivorKnifeTimer = 0;
-        }
-        console.log(this.survivorWeaponState);
+        this.survivorKnifeTimer = 5;
       }
     });
+    // window.addEventListener("keydown", (e: KeyboardEvent) => {
+    //   if (e.key === "d" && this.survivorMovementState === "stop") {
+    //     this.survivorWeaponState = "knife";
+    //     this.survivorKnifeTimer = 5;
+    //   }
+    // });
 
     window.addEventListener("mousedown", (e: MouseEvent) => {
       e.preventDefault();
@@ -224,6 +214,15 @@ export class Game {
     }
     this.lastFrameTime = timestamp;
 
+    // RESET KNIFE TIMER
+    if (this.survivorKnifeTimer > 0) {
+      this.survivorKnifeTimer -= 0.3;
+    }
+
+    if (this.survivorKnifeTimer <= 0) {
+      this.survivorWeaponState = "shotgun";
+    }
+
     // UPDATE OBJECTS
 
     // MOVE SCREEN
@@ -246,7 +245,9 @@ export class Game {
     // TURN SURVIVOR
     this.survivor.changeDirection(this.survivorMovementState);
 
+    // ANIMATE SURVIVOR
     this.survivor.changeAnimation(
+      this.survivorWeaponState,
       this.survivorMovementState,
       delta,
       this.lastDirection,

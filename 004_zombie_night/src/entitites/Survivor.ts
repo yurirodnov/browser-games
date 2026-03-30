@@ -11,6 +11,7 @@ export class Survivor {
 
   private walkTimer: number = 0;
   private walkAnimationInterval: number = 20;
+
   private speed: number = 50;
 
   constructor(
@@ -62,6 +63,7 @@ export class Survivor {
   }
 
   public changeAnimation(
+    weaponState: string,
     movementState: string,
     delta: number,
     lastDirection: string,
@@ -91,6 +93,20 @@ export class Survivor {
       } else if (Math.floor(this.walkTimer) === 30) {
         this.walkTimer = 0;
       }
+    } else if (
+      movementState === "stop" &&
+      weaponState === "knife" &&
+      lastDirection === "right"
+    ) {
+      console.log("Knife strike");
+      this.currentImage = this.survivorImages.survivorKnifeRight;
+    } else if (
+      movementState === "stop" &&
+      weaponState === "knife" &&
+      lastDirection === "left"
+    ) {
+      console.log("Knife strike");
+      this.currentImage = this.survivorImages.survivorKnifeLeft;
     } else if (movementState === "stop" && lastDirection === "left") {
       this.walkTimer = 0;
       this.currentImage = this.survivorImages.survivorLeft;
