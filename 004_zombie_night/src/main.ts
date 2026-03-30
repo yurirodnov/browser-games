@@ -1,4 +1,9 @@
-import type { Assets, Constants, SurvivorAssets } from "./types/type";
+import type {
+  Assets,
+  Constants,
+  StrikeAssets,
+  SurvivorAssets,
+} from "./types/type";
 import { Game } from "./entitites/Game";
 import { AssetsLoader } from "./lib/AssetsLoader";
 import "./style.css";
@@ -59,6 +64,8 @@ export const main = async () => {
     AssetsLoader.loadAsset("background", "assets/background.png"),
     AssetsLoader.loadAsset("bullet", "assets/bullet.png"),
     AssetsLoader.loadAsset("life", "assets/life.png"),
+    AssetsLoader.loadAsset("strikeLeft", "assets/strike_left.png"),
+    AssetsLoader.loadAsset("strikeRight", "assets/strike_right.png"),
   ]);
 
   const survivorAssets: SurvivorAssets = {
@@ -72,9 +79,15 @@ export const main = async () => {
     survivorWalk2Right: AssetsLoader.getAsset("survivorWalk2Right"),
   };
 
+  const strikeAssets: StrikeAssets = {
+    strikeLeft: AssetsLoader.getAsset("strikeLeft"),
+    strikeRight: AssetsLoader.getAsset("strikeRight"),
+  };
+
   const assets: Assets = {
-    ground: AssetsLoader.getAsset("ground"),
     survivor: survivorAssets,
+    strike: strikeAssets,
+    ground: AssetsLoader.getAsset("ground"),
     background: AssetsLoader.getAsset("background"),
     bullet: AssetsLoader.getAsset("bullet"),
     life: AssetsLoader.getAsset("life"),

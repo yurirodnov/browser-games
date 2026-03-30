@@ -9,8 +9,14 @@ export interface SurvivorAssets {
   survivorWalk2Right: HTMLImageElement;
 }
 
+export interface StrikeAssets {
+  strikeLeft: HTMLImageElement;
+  strikeRight: HTMLImageElement;
+}
+
 export interface Assets {
   survivor: SurvivorAssets;
+  strike: StrikeAssets;
   ground: HTMLImageElement;
   background: HTMLImageElement;
   bullet: HTMLImageElement;
