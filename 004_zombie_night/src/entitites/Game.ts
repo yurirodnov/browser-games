@@ -30,6 +30,7 @@ export class Game {
   private lastDirection: string = "left";
 
   private survivorWeaponState: SurvivorWeaponState = "shotgun";
+  private survivorKnifeTimer: number = 0;
 
   private zombieSpawnTimer: number = 0;
 
@@ -116,6 +117,30 @@ export class Game {
       }
     });
 
+    // ATTACK INPUT
+    window.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.key === "a" && this.survivorMovementState === "stop") {
+        this.survivorWeaponState = "shotgun";
+        this.survivorKnifeTimer += 1;
+        if (this.survivorKnifeTimer === 30) {
+          this.survivorWeaponState = "shotgun";
+          this.survivorKnifeTimer = 0;
+        }
+        console.log(this.survivorWeaponState);
+      }
+    });
+    window.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.key === "d" && this.survivorMovementState === "stop") {
+        this.survivorWeaponState = "knife";
+        this.survivorKnifeTimer += 1;
+        if (this.survivorKnifeTimer === 30) {
+          this.survivorWeaponState = "shotgun";
+          this.survivorKnifeTimer = 0;
+        }
+        console.log(this.survivorWeaponState);
+      }
+    });
+
     window.addEventListener("mousedown", (e: MouseEvent) => {
       e.preventDefault();
       this.handleInput();
@@ -125,6 +150,10 @@ export class Game {
     this.running = true;
     this.loop(0);
   }
+
+  private useKnife(): void {}
+
+  private useShotgun(): void {}
 
   private handleInput(): void {
     switch (this.gameState) {

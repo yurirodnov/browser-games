@@ -66,7 +66,7 @@ export class Survivor {
     delta: number,
     lastDirection: string,
   ): void {
-    console.log("Walk timer", this.walkTimer);
+    //console.log("Walk timer", this.walkTimer);
     if (movementState === "left") {
       this.walkTimer += this.speed * delta;
       if (this.walkTimer < 20) {
