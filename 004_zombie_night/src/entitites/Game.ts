@@ -208,8 +208,19 @@ export class Game {
     } else if (this.gameState === "play") {
       // DRAW BULLET ICON
       this.ctx.drawImage(this.assets.bullet, 35, 20, 30, 60);
+      this.ctx.font = "25px 'Silkscreen', sans-serif";
+      this.ctx.strokeStyle = "black";
+      this.ctx.strokeText("x", 90, 55);
+      this.ctx.fillStyle = "white";
+      this.ctx.fillText("x", 90, 55);
+      this.ctx.font = "45px 'Silkscreen', sans-serif";
+      this.ctx.strokeStyle = "black";
+      this.ctx.strokeText(this.bullets.toString(), 130, 60);
+      this.ctx.fillStyle = "white";
+      this.ctx.fillText(this.bullets.toString(), 130, 60);
+
       // DRAW LIFE ICON
-      this.ctx.drawImage(this.assets.life, 20, 100, 60, 50);
+      // this.ctx.drawImage(this.assets.life, 20, 100, 60, 50);
     } else {
       ////
     }
