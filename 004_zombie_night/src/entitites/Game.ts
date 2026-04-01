@@ -5,6 +5,7 @@ import { Background } from "./Background";
 import { GroundTile } from "./GroundTile";
 import { Survivor } from "./Survivor";
 import { Strike } from "./Strike";
+import { Shoot } from "./Shoot";
 
 export class Game {
   private ctx: CanvasRenderingContext2D;
@@ -28,6 +29,7 @@ export class Game {
   private survivorKnifeCooldown: number = 0;
 
   private survivorShootTimer: number = 0;
+  private survivorShootCooldown: number = 0;
 
   private zombieSpawnTimer: number = 0;
 
@@ -38,6 +40,7 @@ export class Game {
   private survivor: Survivor;
   private background: Background;
   private strike: Strike | null = null;
+  private shoot: Shoot | null = null;
 
   constructor(ctx: CanvasRenderingContext2D, assets: Assets, constants: Constants) {
     this.ctx = ctx;
@@ -70,7 +73,14 @@ export class Game {
     this.groundTiles = groundTilesArray;
 
     // INIT PLAYER
-    this.survivor = new Survivor(this.assets.survivor, this.ctx.canvas.width / 2 - this.constants.playerWidth / 2, this.ctx.canvas.height - this.constants.tileSize - this.constants.playerHeight, this.constants.playerWidth, this.constants.playerHeight);
+    this.survivor = new Survivor(
+      this.assets.survivor,
+      this.ctx.canvas.width / 2 - this.constants.playerWidth / 2,
+      this.ctx.canvas.height - this.constants.tileSize - this.constants.playerHeight,
+      this.constants.playerWidth,
+      this.constants.playerHeight,
+      this.constants.shootSize,
+    );
 
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") {
@@ -98,7 +108,13 @@ export class Game {
     });
 
     window.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key === "a" && this.survivorMovementState === "stop" && this.survivorWeaponState === "shotgun" && this.survivorKnifeCooldown <= 0 && this.bullets > 0) {
+      if (
+        e.key === "a" &&
+        this.survivorMovementState === "stop" &&
+        this.survivorWeaponState === "shotgun" &&
+        this.survivorShootCooldown <= 0 &&
+        this.bullets > 0
+      ) {
         this.useShotgun();
       }
     });
@@ -127,7 +143,30 @@ export class Game {
     console.log(this.lastDirection);
     console.log(this.strike);
   }
-  private useShotgun(): void {}
+  private useShotgun(): void {
+    this.survivorShootTimer = 0.2;
+    this.survivorShootCooldown = 1.3;
+
+    if (this.lastDirection === "left") {
+      this.shoot = new Shoot(
+        this.assets.shoot,
+        this.survivor.getShootLeftCoordsX() - this.constants.shootSize,
+        this.survivor.getShootCoordsY(),
+        this.constants.shootSize,
+        this.constants.shootSize,
+        this.lastDirection,
+      );
+    } else if (this.lastDirection === "right") {
+      this.shoot = new Shoot(
+        this.assets.shoot,
+        this.survivor.getShootRightCoordsX(),
+        this.survivor.getShootCoordsY(),
+        this.constants.shootSize,
+        this.constants.shootSize,
+        this.lastDirection,
+      );
+    }
+  }
 
   private handleInput(): void {
     switch (this.gameState) {
@@ -208,19 +247,37 @@ export class Game {
       this.survivorWeaponState = "shotgun";
       this.strike = null;
     }
-
     if (this.survivorKnifeCooldown >= 0) {
       this.survivorKnifeCooldown -= 1 * delta;
     }
 
     // SHOOT TIMER
+    if (this.survivorShootTimer > 0) {
+      this.survivorShootTimer -= 1 * delta;
+    }
+    if (this.survivorShootTimer <= 0) {
+      this.shoot = null;
+    }
+    if (this.survivorShootCooldown >= 0) {
+      this.survivorShootCooldown -= 1 * delta;
+    }
 
     // UPDATE OBJECTS
 
     // MOVE SCREEN
-    if (this.survivorMovementState === "left" && this.worldOffset <= 0 && this.survivor.getCoordX() >= this.ctx.canvas.width / 2 - 50 && this.survivor.getCoordX() <= this.ctx.canvas.width / 2) {
+    if (
+      this.survivorMovementState === "left" &&
+      this.worldOffset <= 0 &&
+      this.survivor.getCoordX() >= this.ctx.canvas.width / 2 - 50 &&
+      this.survivor.getCoordX() <= this.ctx.canvas.width / 2
+    ) {
       this.worldOffset += this.speed * delta;
-    } else if (this.survivorMovementState === "right" && this.worldOffset >= this.maxWorldOffset && this.survivor.getCoordX() >= this.ctx.canvas.width / 2 - 50 && this.survivor.getCoordX() <= this.ctx.canvas.width / 2) {
+    } else if (
+      this.survivorMovementState === "right" &&
+      this.worldOffset >= this.maxWorldOffset &&
+      this.survivor.getCoordX() >= this.ctx.canvas.width / 2 - 50 &&
+      this.survivor.getCoordX() <= this.ctx.canvas.width / 2
+    ) {
       this.worldOffset -= this.speed * delta;
     }
 
@@ -243,6 +300,9 @@ export class Game {
     this.survivor.draw(this.ctx);
     if (this.survivorKnifeTimer > 0 && this.strike) {
       this.strike.draw(this.ctx);
+    }
+    if (this.survivorShootTimer > 0 && this.shoot) {
+      this.shoot.draw(this.ctx);
     }
 
     // DRAW UI

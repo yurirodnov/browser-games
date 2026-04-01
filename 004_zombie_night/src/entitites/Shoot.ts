@@ -1,6 +1,7 @@
+import type { ShootAssets } from "../types/type";
+
 export class Shoot {
-  private shootImageLeft: HTMLImageElement;
-  private shootImageRight: HTMLImageElement;
+  private shootImages: ShootAssets;
   private currentImage: HTMLImageElement;
 
   private coordX: number;
@@ -8,17 +9,10 @@ export class Shoot {
   private width: number;
   private height: number;
 
-  constructor(
-    leftImg: HTMLImageElement,
-    rightImg: HTMLImageElement,
-    x: number,
-    y: number,
-    w: number,
-    h: number,
-  ) {
-    this.shootImageLeft = leftImg;
-    this.shootImageRight = rightImg;
-    this.currentImage = this.shootImageLeft;
+  constructor(shootImages: ShootAssets, x: number, y: number, w: number, h: number, direction: string) {
+    this.shootImages = shootImages;
+
+    this.currentImage = direction === "left" ? shootImages.shootLeft : shootImages.shootRight;
     this.coordX = x;
     this.coordY = y;
     this.width = w;
@@ -26,12 +20,6 @@ export class Shoot {
   }
 
   public draw(ctx: CanvasRenderingContext2D): void {
-    ctx.drawImage(
-      this.currentImage,
-      this.coordX,
-      this.coordY,
-      this.width,
-      this.height,
-    );
+    ctx.drawImage(this.currentImage, this.coordX, this.coordY, this.width, this.height);
   }
 }

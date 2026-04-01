@@ -1,4 +1,4 @@
-import type { Assets, Constants, StrikeAssets, SurvivorAssets } from "./types/type";
+import type { Assets, Constants, StrikeAssets, ShootAssets, SurvivorAssets } from "./types/type";
 import { Game } from "./entitites/Game";
 import { AssetsLoader } from "./lib/AssetsLoader";
 import "./style.css";
@@ -14,6 +14,7 @@ const constants: Constants = {
   tileSize: 60,
   playerWidth: 100,
   playerHeight: 200,
+  shootSize: 40,
 };
 
 canvas.width = constants.tileSize * 18;
@@ -35,6 +36,8 @@ export const main = async () => {
     AssetsLoader.loadAsset("life", "assets/life.png"),
     AssetsLoader.loadAsset("strikeLeft", "assets/strike_left.png"),
     AssetsLoader.loadAsset("strikeRight", "assets/strike_right.png"),
+    AssetsLoader.loadAsset("shootLeft", "assets/shoot_left.png"),
+    AssetsLoader.loadAsset("shootRight", "assets/shoot_right.png"),
   ]);
 
   const survivorAssets: SurvivorAssets = {
@@ -53,9 +56,15 @@ export const main = async () => {
     strikeRight: AssetsLoader.getAsset("strikeRight"),
   };
 
+  const shootAssets: ShootAssets = {
+    shootLeft: AssetsLoader.getAsset("shootLeft"),
+    shootRight: AssetsLoader.getAsset("shootRight"),
+  };
+
   const assets: Assets = {
     survivor: survivorAssets,
     strike: strikeAssets,
+    shoot: shootAssets,
     ground: AssetsLoader.getAsset("ground"),
     background: AssetsLoader.getAsset("background"),
     bullet: AssetsLoader.getAsset("bullet"),

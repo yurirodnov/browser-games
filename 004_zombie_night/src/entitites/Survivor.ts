@@ -12,12 +12,13 @@ export class Survivor {
   private walkTimer: number = 0;
   private walkAnimationInterval: number = 20;
   private speed: number = 50;
+  private shootSize: number;
 
   private readonly WALK_ANIMATION_SPEED = 10;
   private readonly WALK_FRAME_DURATION = 3;
   private readonly WALK_TOTAL_FRAMES = 2;
 
-  constructor(survivorImages: SurvivorAssets, x: number, y: number, w: number, h: number) {
+  constructor(survivorImages: SurvivorAssets, x: number, y: number, w: number, h: number, shootSize: number) {
     this.survivorImages = survivorImages;
     this.currentImage = survivorImages.survivorLeft;
     this.coordX = x;
@@ -25,6 +26,8 @@ export class Survivor {
 
     this.width = w;
     this.height = h;
+
+    this.shootSize = shootSize;
   }
 
   public getCoordX(): number {
@@ -48,19 +51,23 @@ export class Survivor {
   }
 
   public getRightStrikeCoordsX(): number {
-    return this.coordX + this.width / 2 + 30;
+    return this.coordX + this.width / 2 + this.shootSize;
   }
 
   public getStrikeCoordsY(): number {
     return this.coordY + this.height / 4;
   }
 
-  public getShootCoordsX(): number {
+  public getShootLeftCoordsX(): number {
+    return this.coordX;
+  }
+
+  public getShootRightCoordsX(): number {
     return this.coordX + this.width;
   }
 
   public getShootCoordsY(): number {
-    return this.coordY + this.height / 4;
+    return this.coordY + this.height / 2 - this.shootSize + this.shootSize / 4;
   }
 
   public changeDirection(direction: string): void {

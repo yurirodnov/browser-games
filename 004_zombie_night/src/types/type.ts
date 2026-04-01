@@ -14,9 +14,15 @@ export interface StrikeAssets {
   strikeRight: HTMLImageElement;
 }
 
+export interface ShootAssets {
+  shootLeft: HTMLImageElement;
+  shootRight: HTMLImageElement;
+}
+
 export interface Assets {
   survivor: SurvivorAssets;
   strike: StrikeAssets;
+  shoot: ShootAssets;
   ground: HTMLImageElement;
   background: HTMLImageElement;
   bullet: HTMLImageElement;
@@ -27,6 +33,7 @@ export interface Constants {
   tileSize: number;
   playerWidth: number;
   playerHeight: number;
+  shootSize: number;
 }
 
 export type GameState = "menu" | "play" | "gameOver";
