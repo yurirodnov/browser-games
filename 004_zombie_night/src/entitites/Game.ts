@@ -93,18 +93,7 @@ export class Game {
     // ATTACK INPUT
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "d" && this.survivorMovementState === "stop" && this.survivorWeaponState === "shotgun" && this.survivorKnifeCooldown <= 0) {
-        this.survivorWeaponState = "knife";
-        this.survivorKnifeTimer = 0.2;
-        this.survivorKnifeCooldown = 1.3;
-
-        if (this.lastDirection === "left") {
-          this.strike = new Strike(this.assets.strike, this.survivor.getLeftStrikeCoordsX(), this.survivor.getStrikeCoordsY(), 80, 80, this.lastDirection);
-        } else if (this.lastDirection === "right") {
-          this.strike = new Strike(this.assets.strike, this.survivor.getRightStrikeCoordsX(), this.survivor.getStrikeCoordsY(), 80, 80, this.lastDirection);
-        }
-
-        console.log(this.lastDirection);
-        console.log(this.strike);
+        this.useKnife();
       }
     });
 
@@ -124,6 +113,20 @@ export class Game {
     this.loop(0);
   }
 
+  private useKnife(): void {
+    this.survivorWeaponState = "knife";
+    this.survivorKnifeTimer = 0.2;
+    this.survivorKnifeCooldown = 1.3;
+
+    if (this.lastDirection === "left") {
+      this.strike = new Strike(this.assets.strike, this.survivor.getLeftStrikeCoordsX(), this.survivor.getStrikeCoordsY(), 80, 80, this.lastDirection);
+    } else if (this.lastDirection === "right") {
+      this.strike = new Strike(this.assets.strike, this.survivor.getRightStrikeCoordsX(), this.survivor.getStrikeCoordsY(), 80, 80, this.lastDirection);
+    }
+
+    console.log(this.lastDirection);
+    console.log(this.strike);
+  }
   private useShotgun(): void {}
 
   private handleInput(): void {

@@ -44,7 +44,7 @@ export class Survivor {
   }
 
   public getLeftStrikeCoordsX(): number {
-    return this.coordX - this.width / 2;
+    return this.coordX - this.width;
   }
 
   public getRightStrikeCoordsX(): number {
