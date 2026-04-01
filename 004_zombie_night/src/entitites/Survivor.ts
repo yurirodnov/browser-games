@@ -43,6 +43,26 @@ export class Survivor {
     return this.height;
   }
 
+  public getLeftStrikeCoordsX(): number {
+    return this.coordX - this.width / 2;
+  }
+
+  public getRightStrikeCoordsX(): number {
+    return this.coordX + this.width;
+  }
+
+  public getStrikeCoordsY(): number {
+    return this.coordY + this.height / 4;
+  }
+
+  public getShootCoordsX(): number {
+    return this.coordX + this.width;
+  }
+
+  public getShootCoordsY(): number {
+    return this.coordY + this.height / 4;
+  }
+
   public changeDirection(direction: string): void {
     if (direction === "left") {
       this.currentImage = this.survivorImages.survivorLeft;

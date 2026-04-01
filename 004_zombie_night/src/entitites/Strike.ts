@@ -9,15 +9,9 @@ export class Strike {
   private width: number;
   private height: number;
 
-  constructor(
-    strikeImages: StrikeAssets,
-    x: number,
-    y: number,
-    w: number,
-    h: number,
-  ) {
+  constructor(strikeImages: StrikeAssets, x: number, y: number, w: number, h: number, direction: string) {
     this.strikeImages = strikeImages;
-    this.currentImage = this.strikeImages.strikeLeft;
+    this.currentImage = direction === "left" ? strikeImages.strikeLeft : strikeImages.strikeRight;
     this.coordX = x;
     this.coordY = y;
     this.width = w;
@@ -25,12 +19,6 @@ export class Strike {
   }
 
   public draw(ctx: CanvasRenderingContext2D): void {
-    ctx.drawImage(
-      this.currentImage,
-      this.coordX,
-      this.coordY,
-      this.width,
-      this.height,
-    );
+    ctx.drawImage(this.currentImage, this.coordX, this.coordY, this.width, this.height);
   }
 }
