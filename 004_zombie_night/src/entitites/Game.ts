@@ -31,6 +31,7 @@ export class Game {
 
   private survivorWeaponState: SurvivorWeaponState = "shotgun";
   private survivorKnifeTimer: number = 0;
+  private survivorKnifeCooldown: number = 0;
 
   private zombieSpawnTimer: number = 0;
 
@@ -119,17 +120,17 @@ export class Game {
 
     // ATTACK INPUT
     window.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key === "d" && this.survivorMovementState === "stop") {
+      if (
+        e.key === "d" &&
+        this.survivorMovementState === "stop" &&
+        this.survivorWeaponState === "shotgun" &&
+        this.survivorKnifeCooldown <= 0
+      ) {
         this.survivorWeaponState = "knife";
-        this.survivorKnifeTimer = 5;
+        this.survivorKnifeTimer = 0.3;
+        this.survivorKnifeCooldown = 1.3;
       }
     });
-    // window.addEventListener("keydown", (e: KeyboardEvent) => {
-    //   if (e.key === "d" && this.survivorMovementState === "stop") {
-    //     this.survivorWeaponState = "knife";
-    //     this.survivorKnifeTimer = 5;
-    //   }
-    // });
 
     window.addEventListener("mousedown", (e: MouseEvent) => {
       e.preventDefault();
@@ -215,12 +216,17 @@ export class Game {
     this.lastFrameTime = timestamp;
 
     // RESET KNIFE TIMER
+    console.log("Knife timer", this.survivorKnifeTimer);
+    console.log("Knife cooldown", this.survivorKnifeCooldown);
     if (this.survivorKnifeTimer > 0) {
-      this.survivorKnifeTimer -= 0.3;
+      this.survivorKnifeTimer -= 1 * delta;
     }
-
     if (this.survivorKnifeTimer <= 0) {
       this.survivorWeaponState = "shotgun";
+    }
+
+    if (this.survivorKnifeCooldown >= 0) {
+      this.survivorKnifeCooldown -= 1 * delta;
     }
 
     // UPDATE OBJECTS
