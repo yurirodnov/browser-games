@@ -4,7 +4,7 @@ export class Projectile {
   private coordY: number;
   private width: number;
   private height: number;
-  private speed: number = 800;
+  private speed: number = 1200;
   private direction: string;
   private exists: boolean;
 
