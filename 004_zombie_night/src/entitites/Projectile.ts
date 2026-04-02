@@ -4,7 +4,7 @@ export class Projectile {
   private coordY: number;
   private width: number;
   private height: number;
-  private speed: number = 500;
+  private speed: number = 800;
   private direction: string;
   private exists: boolean;
 
@@ -19,11 +19,15 @@ export class Projectile {
     this.exists = true;
   }
 
-  public move(delta: number) {
+  public move(delta: number, worldSpeed: number = 0) {
+    let actualSpeed = 0;
+
     if (this.direction === "left") {
-      this.coordX -= this.speed * delta;
+      actualSpeed = this.speed - worldSpeed;
+      this.coordX -= actualSpeed * delta;
     } else if (this.direction === "right") {
-      this.coordX += this.speed * delta;
+      actualSpeed = this.speed + worldSpeed;
+      this.coordX += actualSpeed * delta;
     }
   }
 

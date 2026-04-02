@@ -22,7 +22,7 @@ export class Game {
   private maxWorldOffset: number = 0;
 
   private survivorMovementState: SurvivorMovementState = "stop";
-  private speed: number = 280;
+  private survivorMovementSpeed: number = 280;
   private lastDirection: string = "left";
 
   private survivorWeaponState: SurvivorWeaponState = "shotgun";
@@ -31,8 +31,6 @@ export class Game {
 
   private survivorShootTimer: number = 0;
   private survivorShootCooldown: number = 0;
-
-  private zombieSpawnTimer: number = 0;
 
   private bullets: number;
 
@@ -49,7 +47,7 @@ export class Game {
     this.constants = constants;
 
     // SET CHARACTER RESOURCES
-    this.bullets = 3;
+    this.bullets = 33;
 
     // WORLD SIZE
     this.worldSize = this.ctx.canvas.width * 2;
@@ -332,9 +330,16 @@ export class Game {
       this.survivorShootCooldown -= 1 * delta;
     }
 
+    let worldSpeed = 0;
+    if (this.survivorMovementState === "left" && this.worldOffset < 0) {
+      worldSpeed = this.survivorMovementSpeed;
+    } else if (this.survivorMovementState === "right" && this.worldOffset > this.maxWorldOffset) {
+      worldSpeed = -this.survivorMovementSpeed;
+    }
+
     // UPDATE OBJECTS
     if (this.projectiles.length > 0) {
-      this.projectiles.forEach((p) => p.move(delta));
+      this.projectiles.forEach((p) => p.move(delta, worldSpeed));
     }
 
     // MOVE SCREEN
@@ -344,14 +349,14 @@ export class Game {
       this.survivor.getCoordX() >= this.ctx.canvas.width / 2 - 50 &&
       this.survivor.getCoordX() <= this.ctx.canvas.width / 2
     ) {
-      this.worldOffset += this.speed * delta;
+      this.worldOffset += this.survivorMovementSpeed * delta;
     } else if (
       this.survivorMovementState === "right" &&
       this.worldOffset >= this.maxWorldOffset &&
       this.survivor.getCoordX() >= this.ctx.canvas.width / 2 - 50 &&
       this.survivor.getCoordX() <= this.ctx.canvas.width / 2
     ) {
-      this.worldOffset -= this.speed * delta;
+      this.worldOffset -= this.survivorMovementSpeed * delta;
     }
 
     // TURN SURVIVOR
@@ -362,7 +367,12 @@ export class Game {
 
     // MOVE SURVIVOR
     if (this.worldOffset >= 0 || this.worldOffset <= this.maxWorldOffset) {
-      this.survivor.changePosition(this.speed, delta, this.survivorMovementState, this.ctx.canvas.width);
+      this.survivor.changePosition(
+        this.survivorMovementSpeed,
+        delta,
+        this.survivorMovementState,
+        this.ctx.canvas.width,
+      );
     }
 
     // DRAW ASSETS
