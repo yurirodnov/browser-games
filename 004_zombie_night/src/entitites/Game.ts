@@ -6,6 +6,7 @@ import { GroundTile } from "./GroundTile";
 import { Survivor } from "./Survivor";
 import { Strike } from "./Strike";
 import { Shoot } from "./Shoot";
+import { Projectile } from "./Projectile";
 
 export class Game {
   private ctx: CanvasRenderingContext2D;
@@ -33,14 +34,14 @@ export class Game {
 
   private zombieSpawnTimer: number = 0;
 
-  private bullets: number = 2;
-  private lifes: number;
+  private bullets: number;
 
   private groundTiles: GroundTile[];
   private survivor: Survivor;
   private background: Background;
   private strike: Strike | null = null;
   private shoot: Shoot | null = null;
+  private projectiles: Projectile[] = [];
 
   constructor(ctx: CanvasRenderingContext2D, assets: Assets, constants: Constants) {
     this.ctx = ctx;
@@ -48,8 +49,7 @@ export class Game {
     this.constants = constants;
 
     // SET CHARACTER RESOURCES
-    this.bullets = 2;
-    this.lifes = 3;
+    this.bullets = 3;
 
     // WORLD SIZE
     this.worldSize = this.ctx.canvas.width * 2;
@@ -67,7 +67,13 @@ export class Game {
     for (let i = 0; i < totalTiles; i++) {
       const x = i * this.constants.tileSize;
 
-      const groundTile = new GroundTile(this.assets.ground, x, groundHeight, this.constants.tileSize, this.constants.tileSize);
+      const groundTile = new GroundTile(
+        this.assets.ground,
+        x,
+        groundHeight,
+        this.constants.tileSize,
+        this.constants.tileSize,
+      );
       groundTilesArray.push(groundTile);
     }
     this.groundTiles = groundTilesArray;
@@ -102,7 +108,12 @@ export class Game {
 
     // ATTACK INPUT
     window.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key === "d" && this.survivorMovementState === "stop" && this.survivorWeaponState === "shotgun" && this.survivorKnifeCooldown <= 0) {
+      if (
+        e.key === "d" &&
+        this.survivorMovementState === "stop" &&
+        this.survivorWeaponState === "shotgun" &&
+        this.survivorKnifeCooldown <= 0
+      ) {
         this.useKnife();
       }
     });
@@ -129,43 +140,91 @@ export class Game {
     this.loop(0);
   }
 
+  // USE WEAPON METHODS
   private useKnife(): void {
     this.survivorWeaponState = "knife";
     this.survivorKnifeTimer = 0.2;
     this.survivorKnifeCooldown = 1.3;
 
     if (this.lastDirection === "left") {
-      this.strike = new Strike(this.assets.strike, this.survivor.getLeftStrikeCoordsX(), this.survivor.getStrikeCoordsY(), 80, 80, this.lastDirection);
+      this.strike = new Strike(
+        this.assets.strike,
+        this.survivor.getLeftStrikeCoordsX(),
+        this.survivor.getStrikeCoordsY(),
+        80,
+        80,
+        this.lastDirection,
+      );
     } else if (this.lastDirection === "right") {
-      this.strike = new Strike(this.assets.strike, this.survivor.getRightStrikeCoordsX(), this.survivor.getStrikeCoordsY(), 80, 80, this.lastDirection);
+      this.strike = new Strike(
+        this.assets.strike,
+        this.survivor.getRightStrikeCoordsX(),
+        this.survivor.getStrikeCoordsY(),
+        80,
+        80,
+        this.lastDirection,
+      );
     }
-
-    console.log(this.lastDirection);
-    console.log(this.strike);
   }
+
   private useShotgun(): void {
     this.survivorShootTimer = 0.2;
     this.survivorShootCooldown = 1.3;
 
+    const shootStartPoint = {
+      left: {
+        x: this.survivor.getShootLeftCoordsX() - this.constants.shootSize,
+        y: this.survivor.getShootCoordsY(),
+      },
+      right: {
+        x: this.survivor.getShootRightCoordsX(),
+        y: this.survivor.getShootCoordsY(),
+      },
+    };
+
+    let projectile: null | Projectile = null;
+
     if (this.lastDirection === "left") {
       this.shoot = new Shoot(
         this.assets.shoot,
-        this.survivor.getShootLeftCoordsX() - this.constants.shootSize,
-        this.survivor.getShootCoordsY(),
+        shootStartPoint.left.x,
+        shootStartPoint.left.y,
         this.constants.shootSize,
         this.constants.shootSize,
         this.lastDirection,
       );
+
+      projectile = new Projectile(
+        this.assets.projectile,
+        shootStartPoint.left.x,
+        shootStartPoint.left.y,
+        30,
+        30,
+        this.lastDirection,
+      );
+      this.projectiles.push(projectile);
     } else if (this.lastDirection === "right") {
       this.shoot = new Shoot(
         this.assets.shoot,
-        this.survivor.getShootRightCoordsX(),
-        this.survivor.getShootCoordsY(),
+        shootStartPoint.right.x,
+        shootStartPoint.right.y,
         this.constants.shootSize,
         this.constants.shootSize,
         this.lastDirection,
       );
+
+      projectile = new Projectile(
+        this.assets.projectile,
+        shootStartPoint.right.x,
+        shootStartPoint.right.y,
+        30,
+        30,
+        this.lastDirection,
+      );
+      this.projectiles.push(projectile);
     }
+
+    this.bullets -= 1;
   }
 
   private handleInput(): void {
@@ -274,6 +333,9 @@ export class Game {
     }
 
     // UPDATE OBJECTS
+    if (this.projectiles.length > 0) {
+      this.projectiles.forEach((p) => p.move(delta));
+    }
 
     // MOVE SCREEN
     if (
@@ -314,6 +376,9 @@ export class Game {
     }
     if (this.survivorShootTimer > 0 && this.shoot) {
       this.shoot.draw(this.ctx);
+    }
+    if (this.projectiles.length > 0) {
+      this.projectiles.forEach((p) => p.draw(this.ctx));
     }
 
     // DRAW UI

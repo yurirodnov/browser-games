@@ -27,6 +27,7 @@ export interface Assets {
   background: HTMLImageElement;
   bullet: HTMLImageElement;
   life: HTMLImageElement;
+  projectile: HTMLImageElement;
 }
 
 export interface Constants {

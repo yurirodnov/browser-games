@@ -38,6 +38,7 @@ export const main = async () => {
     AssetsLoader.loadAsset("strikeRight", "assets/strike_right.png"),
     AssetsLoader.loadAsset("shootLeft", "assets/shoot_left.png"),
     AssetsLoader.loadAsset("shootRight", "assets/shoot_right.png"),
+    AssetsLoader.loadAsset("projectile", "assets/projectile.png"),
   ]);
 
   const survivorAssets: SurvivorAssets = {
@@ -69,6 +70,7 @@ export const main = async () => {
     background: AssetsLoader.getAsset("background"),
     bullet: AssetsLoader.getAsset("bullet"),
     life: AssetsLoader.getAsset("life"),
+    projectile: AssetsLoader.getAsset("projectile"),
   };
 
   new Game(ctx, assets, constants);
