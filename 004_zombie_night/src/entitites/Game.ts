@@ -47,7 +47,7 @@ export class Game {
     this.constants = constants;
 
     // SET CHARACTER RESOURCES
-    this.bullets = 33;
+    this.bullets = 3;
 
     // WORLD SIZE
     this.worldSize = this.ctx.canvas.width * 2;

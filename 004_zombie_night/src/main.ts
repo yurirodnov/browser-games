@@ -1,4 +1,4 @@
-import type { Assets, Constants, StrikeAssets, ShootAssets, SurvivorAssets } from "./types/type";
+import type { Assets, Constants, StrikeAssets, ShootAssets, SurvivorAssets, ZombiesAssets } from "./types/type";
 import { Game } from "./entitites/Game";
 import { AssetsLoader } from "./lib/AssetsLoader";
 import "./style.css";
@@ -39,6 +39,10 @@ export const main = async () => {
     AssetsLoader.loadAsset("shootLeft", "assets/shoot_left.png"),
     AssetsLoader.loadAsset("shootRight", "assets/shoot_right.png"),
     AssetsLoader.loadAsset("projectile", "assets/projectile.png"),
+    AssetsLoader.loadAsset("zombieGreenLeft1", "assets/zombie_green_left_1.png"),
+    AssetsLoader.loadAsset("zombieGreenLeft2", "assets/zombie_green_left_2.png"),
+    AssetsLoader.loadAsset("zombieGreenRight1", "assets/zombie_green_right_1.png"),
+    AssetsLoader.loadAsset("zombieGreenRight2", "assets/zombie_green_right_2.png"),
   ]);
 
   const survivorAssets: SurvivorAssets = {
@@ -62,8 +66,16 @@ export const main = async () => {
     shootRight: AssetsLoader.getAsset("shootRight"),
   };
 
+  const zombiesAssets: ZombiesAssets = {
+    zombieGreenLeft1: AssetsLoader.getAsset("zombieGreenLeft1"),
+    zombieGreenLeft2: AssetsLoader.getAsset("zombieGreenLeft2"),
+    zombieGreenRight1: AssetsLoader.getAsset("zombieGreenRight1"),
+    zombieGreenRight2: AssetsLoader.getAsset("zombieGreenRight2"),
+  };
+
   const assets: Assets = {
     survivor: survivorAssets,
+    zombies: zombiesAssets,
     strike: strikeAssets,
     shoot: shootAssets,
     ground: AssetsLoader.getAsset("ground"),

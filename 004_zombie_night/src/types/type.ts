@@ -9,6 +9,13 @@ export interface SurvivorAssets {
   survivorWalk2Right: HTMLImageElement;
 }
 
+export interface ZombiesAssets {
+  zombieGreenLeft1: HTMLImageElement;
+  zombieGreenLeft2: HTMLImageElement;
+  zombieGreenRight1: HTMLImageElement;
+  zombieGreenRight2: HTMLImageElement;
+}
+
 export interface StrikeAssets {
   strikeLeft: HTMLImageElement;
   strikeRight: HTMLImageElement;
@@ -21,6 +28,7 @@ export interface ShootAssets {
 
 export interface Assets {
   survivor: SurvivorAssets;
+  zombies: ZombiesAssets;
   strike: StrikeAssets;
   shoot: ShootAssets;
   ground: HTMLImageElement;
