@@ -14,6 +14,8 @@ const constants: Constants = {
   tileSize: 60,
   playerWidth: 100,
   playerHeight: 200,
+  zombieWidth: 100,
+  zombieHeight: 200,
   shootSize: 40,
 };
 

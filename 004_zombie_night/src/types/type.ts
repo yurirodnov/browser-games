@@ -42,6 +42,8 @@ export interface Constants {
   tileSize: number;
   playerWidth: number;
   playerHeight: number;
+  zombieWidth: number;
+  zombieHeight: number;
   shootSize: number;
 }
 

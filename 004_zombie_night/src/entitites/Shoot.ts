@@ -12,7 +12,7 @@ export class Shoot {
   constructor(shootImages: ShootAssets, x: number, y: number, w: number, h: number, direction: string) {
     this.shootImages = shootImages;
 
-    this.currentImage = direction === "left" ? shootImages.shootLeft : shootImages.shootRight;
+    this.currentImage = direction === "left" ? this.shootImages.shootLeft : this.shootImages.shootRight;
     this.coordX = x;
     this.coordY = y;
     this.width = w;

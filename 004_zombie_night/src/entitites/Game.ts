@@ -6,7 +6,9 @@ import { GroundTile } from "./GroundTile";
 import { Survivor } from "./Survivor";
 import { Strike } from "./Strike";
 import { Shoot } from "./Shoot";
+import { Zombie } from "./Zombie";
 import { Projectile } from "./Projectile";
+import { getRandomNumber } from "../lib/GetRandomNumber";
 
 export class Game {
   private ctx: CanvasRenderingContext2D;
@@ -31,9 +33,16 @@ export class Game {
 
   private survivorShootTimer: number = 0;
   private survivorShootCooldown: number = 0;
-
   private bullets: number;
 
+  private zombies: Zombie[] = [];
+  private zombieSpawnInterval: number = 90;
+  private zombieSpawnTimer: number = 0;
+  private zombieSpawnSpeed: number = 20;
+  private zombieSpawnSides: string[] = ["left", "right"];
+  private zombieTypes: string[] = ["dead", "festering", "abomination"];
+
+  // ENTITIES
   private groundTiles: GroundTile[];
   private survivor: Survivor;
   private background: Background;
@@ -47,7 +56,7 @@ export class Game {
     this.constants = constants;
 
     // SET CHARACTER RESOURCES
-    this.bullets = 3;
+    this.bullets = 6;
 
     // WORLD SIZE
     this.worldSize = this.ctx.canvas.width * 2;
@@ -136,6 +145,20 @@ export class Game {
     // START GAME ON GAME INSTANCE CREATION
     this.running = true;
     this.loop(0);
+  }
+
+  private spawnZombie(): void {
+    const spawnSide = this.zombieSpawnSides[0];
+    const zombie = new Zombie(
+      this.assets.zombies,
+      spawnSide,
+      this.ctx.canvas.height - this.constants.tileSize - this.constants.playerHeight,
+      this.constants.zombieWidth,
+      this.constants.zombieHeight,
+      this.zombieTypes[0],
+    );
+
+    this.zombies.push(zombie);
   }
 
   // USE WEAPON METHODS
@@ -305,7 +328,13 @@ export class Game {
     }
     this.lastFrameTime = timestamp;
 
-    // RESET KNIFE TIMER
+    // ZOMBIE TIMER
+    this.zombieSpawnTimer += this.zombieSpawnSpeed * delta;
+    if (Math.floor(this.zombieSpawnTimer) % this.zombieSpawnInterval === 0) {
+      this.spawnZombie();
+    }
+
+    // KNIFE TIMER
     // console.log("Knife timer", this.survivorKnifeTimer);
     // console.log("Knife cooldown", this.survivorKnifeCooldown);
     if (this.survivorKnifeTimer > 0) {
@@ -359,6 +388,7 @@ export class Game {
       this.worldOffset -= this.survivorMovementSpeed * delta;
     }
 
+    // UPDATE SURVIVOR
     // TURN SURVIVOR
     this.survivor.changeDirection(this.survivorMovementState);
 
@@ -375,6 +405,11 @@ export class Game {
       );
     }
 
+    // UPDATE ZOMBIES
+    if (this.zombies.length > 0) {
+      this.zombies.forEach((z) => z.move(delta));
+    }
+
     // DRAW ASSETS
     this.background.draw(this.ctx, this.worldOffset);
     for (const tile of this.groundTiles) {
@@ -389,6 +424,9 @@ export class Game {
     }
     if (this.projectiles.length > 0) {
       this.projectiles.forEach((p) => p.draw(this.ctx));
+    }
+    if (this.zombies.length > 0) {
+      this.zombies.forEach((z) => z.draw(this.ctx));
     }
 
     // DRAW UI
