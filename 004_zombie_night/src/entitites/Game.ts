@@ -166,7 +166,7 @@ export class Game {
   }
 
   private useShotgun(): void {
-    this.survivorShootTimer = 0.2;
+    this.survivorShootTimer = 0.1;
     this.survivorShootCooldown = 1.3;
 
     const shootStartPoint = {
