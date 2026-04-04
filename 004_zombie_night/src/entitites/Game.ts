@@ -36,7 +36,7 @@ export class Game {
   private bullets: number;
 
   private zombies: Zombie[] = [];
-  private zombieSpawnInterval: number = 90;
+  private zombieSpawnInterval: number = 150;
   private zombieSpawnTimer: number = 0;
   private zombieSpawnSpeed: number = 20;
   private zombieSpawnSides: string[] = ["left", "right"];
@@ -156,6 +156,7 @@ export class Game {
       this.constants.zombieWidth,
       this.constants.zombieHeight,
       this.zombieTypes[0],
+      this.survivorMovementState,
     );
 
     this.zombies.push(zombie);
@@ -259,14 +260,14 @@ export class Game {
     }
   }
 
-  public start() {
+  public start(): void {
     this.running = true;
     this.gameState = "play";
     this.lastFrameTime = 0;
     this.animationID = requestAnimationFrame(this.loop);
   }
 
-  public stop() {
+  public stop(): void {
     this.running = false;
     this.gameState = "gameOver";
     if (this.animationID !== null) {
@@ -274,11 +275,11 @@ export class Game {
     }
   }
 
-  public restart() {
+  public restart(): void {
     this.start();
   }
 
-  private drawUI() {
+  private drawUI(): void {
     this.ctx.textAlign = "center";
     this.ctx.lineJoin = "round";
     this.ctx.lineWidth = 3;
@@ -306,7 +307,7 @@ export class Game {
     }
   }
 
-  public loop = (timestamp: number) => {
+  public loop = (timestamp: number): void => {
     if (!this.running) {
       return;
     }
@@ -366,9 +367,14 @@ export class Game {
       worldSpeed = -this.survivorMovementSpeed;
     }
 
-    // UPDATE OBJECTS
+    // UPDATE PROJECTILE
     if (this.projectiles.length > 0) {
       this.projectiles.forEach((p) => p.move(delta, worldSpeed));
+    }
+
+    // UPDATE ZOMBIES
+    if (this.zombies.length > 0) {
+      this.zombies.forEach((z) => z.move(delta));
     }
 
     // MOVE SCREEN
@@ -405,11 +411,6 @@ export class Game {
       );
     }
 
-    // UPDATE ZOMBIES
-    if (this.zombies.length > 0) {
-      this.zombies.forEach((z) => z.move(delta));
-    }
-
     // DRAW ASSETS
     this.background.draw(this.ctx, this.worldOffset);
     for (const tile of this.groundTiles) {
@@ -426,7 +427,7 @@ export class Game {
       this.projectiles.forEach((p) => p.draw(this.ctx));
     }
     if (this.zombies.length > 0) {
-      this.zombies.forEach((z) => z.draw(this.ctx));
+      this.zombies.forEach((z) => z.draw(this.ctx, this.worldOffset));
     }
 
     // DRAW UI

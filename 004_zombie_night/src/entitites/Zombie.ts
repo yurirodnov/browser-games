@@ -1,3 +1,5 @@
+// 004_zombie_night/src/entities/Zombie.ts
+
 import type { ZombiesAssets } from "../types/type";
 
 export class Zombie {
@@ -10,17 +12,27 @@ export class Zombie {
   private height: number;
 
   private lives: number = 3;
-  private speed: number = 30;
+  private speed: number = 90;
 
-  constructor(zombieImages: ZombiesAssets, s: string, y: number, w: number, h: number, t: string) {
+  private survivorDirection: string;
+
+  constructor(
+    zombieImages: ZombiesAssets,
+    side: string,
+    y: number,
+    w: number,
+    h: number,
+    zombieType: string,
+    direction: string,
+  ) {
     this.zombieImages = zombieImages;
-    if (s === "left") {
+    if (side === "left") {
       this.currentImage = this.zombieImages.zombieGreenLeft1;
-    } else if (s === "right") {
+    } else if (side === "right") {
       this.currentImage = this.zombieImages.zombieGreenRight1;
     }
 
-    if (s === "left") {
+    if (side === "left") {
       this.coordX = -500;
       this.coordY = y;
     }
@@ -28,13 +40,26 @@ export class Zombie {
     this.coordY = y;
     this.width = w;
     this.height = h;
+
+    this.survivorDirection = direction;
   }
 
-  public move(delta: number, worldSpeed: number = 0) {
+  public move(delta: number) {
     this.coordX += this.speed * delta;
+
+    // if (this.survivorDirection === "left") {
+    //   actualSpeed = this.speed + worldSpeed;
+    //   this.coordX -= actualSpeed * delta;
+    // } else if (this.survivorDirection === "right") {
+    //   actualSpeed = this.speed;
+    //   this.coordX += actualSpeed * delta;
+    // } else if (this.survivorDirection === "stop") {
+    //   actualSpeed = this.speed;
+    //   this.coordX += actualSpeed * delta;
+    // }
   }
 
-  draw(ctx: CanvasRenderingContext2D) {
-    ctx.drawImage(this.currentImage, this.coordX, this.coordY, this.width, this.height);
+  draw(ctx: CanvasRenderingContext2D, worldOffset: number) {
+    ctx.drawImage(this.currentImage, this.coordX + worldOffset, this.coordY, this.width, this.height);
   }
 }
