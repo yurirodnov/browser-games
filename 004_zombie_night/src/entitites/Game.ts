@@ -36,9 +36,9 @@ export class Game {
   private bullets: number;
 
   private zombies: Zombie[] = [];
-  private zombieSpawnInterval: number = 200;
+  private zombieSpawnInterval: number = 400;
   private zombieSpawnTimer: number = 0;
-  private zombieSpawnSpeed: number = 20;
+  private zombieSpawnSpeed: number = 10;
   private zombieSpawnSides: string[] = ["left", "right"];
   private zombieTypes: string[] = ["dead", "festering", "abomination"];
 
@@ -418,17 +418,19 @@ export class Game {
       tile.draw(this.ctx, this.worldOffset);
     }
     this.survivor.draw(this.ctx);
-    if (this.survivorKnifeTimer > 0 && this.strike) {
-      this.strike.draw(this.ctx);
-    }
+
     if (this.survivorShootTimer > 0 && this.shoot) {
       this.shoot.draw(this.ctx);
     }
-    if (this.projectiles.length > 0) {
-      this.projectiles.filter((p) => p.checkAlive()).forEach((p) => p.draw(this.ctx));
-    }
+
     if (this.zombies.length > 0) {
       this.zombies.forEach((z) => z.draw(this.ctx, this.worldOffset));
+    }
+    if (this.survivorKnifeTimer > 0 && this.strike) {
+      this.strike.draw(this.ctx);
+    }
+    if (this.projectiles.length > 0) {
+      this.projectiles.filter((p) => p.checkAlive()).forEach((p) => p.draw(this.ctx));
     }
 
     // DRAW UI

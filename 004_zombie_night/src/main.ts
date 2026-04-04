@@ -45,6 +45,10 @@ export const main = async () => {
     AssetsLoader.loadAsset("zombieGreenLeft2", "assets/zombie_green_left_2.png"),
     AssetsLoader.loadAsset("zombieGreenRight1", "assets/zombie_green_right_1.png"),
     AssetsLoader.loadAsset("zombieGreenRight2", "assets/zombie_green_right_2.png"),
+    AssetsLoader.loadAsset("zombieYellowLeft1", "assets/zombie_yellow_left_1.png"),
+    AssetsLoader.loadAsset("zombieYellowLeft2", "assets/zombie_yellow_left_2.png"),
+    AssetsLoader.loadAsset("zombieYellowRight1", "assets/zombie_yellow_right_1.png"),
+    AssetsLoader.loadAsset("zombieYellowRight2", "assets/zombie_yellow_right_2.png"),
   ]);
 
   const survivorAssets: SurvivorAssets = {
@@ -73,6 +77,10 @@ export const main = async () => {
     zombieGreenLeft2: AssetsLoader.getAsset("zombieGreenLeft2"),
     zombieGreenRight1: AssetsLoader.getAsset("zombieGreenRight1"),
     zombieGreenRight2: AssetsLoader.getAsset("zombieGreenRight2"),
+    zombieYellowLeft1: AssetsLoader.getAsset("zombieYellowLeft1"),
+    zombieYellowLeft2: AssetsLoader.getAsset("zombieYellowLeft2"),
+    zombieYellowRight1: AssetsLoader.getAsset("zombieYellowRight1"),
+    zombieYellowRight2: AssetsLoader.getAsset("zombieYellowRight2"),
   };
 
   const assets: Assets = {

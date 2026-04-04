@@ -12,7 +12,7 @@ export class Zombie {
   private height: number;
 
   private lives: number = 3;
-  private speed: number = 50;
+  private speed: number = 30;
   private walkTimer: number = 0;
   private side: string;
 
@@ -50,7 +50,7 @@ export class Zombie {
 
   private changeAnimation(delta: number): void {
     this.walkTimer += this.WALK_ANIMATION_SPEED * delta;
-    console.log("walktimer", this.walkTimer);
+
     const frameIndex = Math.floor(this.walkTimer / this.WALK_ANIMATION_FRAME) % this.WALK_ANIMATION_TOTAL_FRAMES;
     if (frameIndex === 0) {
       this.currentImage =

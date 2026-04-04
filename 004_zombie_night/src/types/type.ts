@@ -14,6 +14,10 @@ export interface ZombiesAssets {
   zombieGreenLeft2: HTMLImageElement;
   zombieGreenRight1: HTMLImageElement;
   zombieGreenRight2: HTMLImageElement;
+  zombieYellowLeft1: HTMLImageElement;
+  zombieYellowLeft2: HTMLImageElement;
+  zombieYellowRight1: HTMLImageElement;
+  zombieYellowRight2: HTMLImageElement;
 }
 
 export interface StrikeAssets {
