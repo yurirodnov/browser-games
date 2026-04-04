@@ -36,7 +36,7 @@ export class Game {
   private bullets: number;
 
   private zombies: Zombie[] = [];
-  private zombieSpawnInterval: number = 150;
+  private zombieSpawnInterval: number = 200;
   private zombieSpawnTimer: number = 0;
   private zombieSpawnSpeed: number = 20;
   private zombieSpawnSides: string[] = ["left", "right"];
@@ -148,7 +148,7 @@ export class Game {
   }
 
   private spawnZombie(): void {
-    const spawnSide = this.zombieSpawnSides[0];
+    const spawnSide = this.zombieSpawnSides[getRandomNumber()];
     const zombie = new Zombie(
       this.assets.zombies,
       spawnSide,
@@ -156,8 +156,9 @@ export class Game {
       this.constants.zombieWidth,
       this.constants.zombieHeight,
       this.zombieTypes[0],
-      this.survivorMovementState,
     );
+
+    console.log("spawned zombie", zombie);
 
     this.zombies.push(zombie);
   }
@@ -424,7 +425,7 @@ export class Game {
       this.shoot.draw(this.ctx);
     }
     if (this.projectiles.length > 0) {
-      this.projectiles.forEach((p) => p.draw(this.ctx));
+      this.projectiles.filter((p) => p.checkAlive()).forEach((p) => p.draw(this.ctx));
     }
     if (this.zombies.length > 0) {
       this.zombies.forEach((z) => z.draw(this.ctx, this.worldOffset));

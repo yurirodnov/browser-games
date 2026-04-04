@@ -6,7 +6,7 @@ export class Projectile {
   private height: number;
   private speed: number = 1200;
   private direction: string;
-  private exists: boolean;
+  private alive: boolean;
 
   constructor(img: HTMLImageElement, x: number, y: number, w: number, h: number, direction: string) {
     this.image = img;
@@ -16,10 +16,14 @@ export class Projectile {
     this.height = h;
 
     this.direction = direction;
-    this.exists = true;
+    this.alive = true;
   }
 
-  public move(delta: number, worldSpeed: number = 0) {
+  public checkAlive(): boolean {
+    return this.alive;
+  }
+
+  public move(delta: number, worldSpeed: number = 0): void {
     let actualSpeed = 0;
 
     if (this.direction === "left") {
@@ -31,7 +35,7 @@ export class Projectile {
     }
   }
 
-  public draw(ctx: CanvasRenderingContext2D) {
+  public draw(ctx: CanvasRenderingContext2D): void {
     ctx.drawImage(this.image, this.coordX, this.coordY, this.width, this.height);
   }
 }

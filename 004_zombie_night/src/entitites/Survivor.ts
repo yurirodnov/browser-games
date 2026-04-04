@@ -10,8 +10,6 @@ export class Survivor {
   private height: number;
 
   private walkTimer: number = 0;
-  private walkAnimationInterval: number = 20;
-  private speed: number = 50;
   private shootSize: number;
 
   private readonly WALK_ANIMATION_SPEED = 10;
@@ -100,12 +98,14 @@ export class Survivor {
 
       // KNIFE ANIMATION
     } else if (weaponState === "knife") {
-      this.currentImage = lastDirection === "left" ? this.survivorImages.survivorKnifeLeft : this.survivorImages.survivorKnifeRight;
+      this.currentImage =
+        lastDirection === "left" ? this.survivorImages.survivorKnifeLeft : this.survivorImages.survivorKnifeRight;
 
       // JUST STOP ANIMATION
     } else {
       this.walkTimer = 0;
-      this.currentImage = lastDirection === "left" ? this.survivorImages.survivorLeft : this.survivorImages.survivorRight;
+      this.currentImage =
+        lastDirection === "left" ? this.survivorImages.survivorLeft : this.survivorImages.survivorRight;
     }
   }
 
