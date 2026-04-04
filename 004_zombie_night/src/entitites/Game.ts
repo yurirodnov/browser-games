@@ -40,7 +40,7 @@ export class Game {
   private zombieSpawnTimer: number = 0;
   private zombieSpawnSpeed: number = 10;
   private zombieSpawnSides: string[] = ["left", "right"];
-  private zombieTypes: string[] = ["dead", "festering", "abomination"];
+  private zombieTypes: string[] = ["green", "yellow", "red"];
 
   // ENTITIES
   private groundTiles: GroundTile[];
@@ -148,14 +148,15 @@ export class Game {
   }
 
   private spawnZombie(): void {
-    const spawnSide = this.zombieSpawnSides[getRandomNumber()];
+    const spawnSide = this.zombieSpawnSides[getRandomNumber(0, 1)];
+    const spawnZombieType = this.zombieTypes[getRandomNumber(0, 2)];
     const zombie = new Zombie(
       this.assets.zombies,
       spawnSide,
       this.ctx.canvas.height - this.constants.tileSize - this.constants.playerHeight,
       this.constants.zombieWidth,
       this.constants.zombieHeight,
-      this.zombieTypes[0],
+      spawnZombieType,
     );
 
     console.log("spawned zombie", zombie);
