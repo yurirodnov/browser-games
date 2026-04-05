@@ -13,7 +13,7 @@ I copy famous arcade games like a Flappy Bird, Alien Invasion etc. and also crea
 - **Entity Component System:** Clean OOP architecture with classes for Player, Enemies, Projectiles etc.
 - **State Management:** LocalStorage integration for high scores and persistent game state.
 - **Tooling:** No frameworks, no extra libraries. Only HTML5, CSS, TypeScript and Vite.
-- **Weak math knowledge:** I have law education, wish me luck with Computer Science guys! :clown:
+- **Weak math knowledge:** I have law education, wish me luck with Computer Science guys! :clown_face:
 
 ## 🛠️ Local Development
 
