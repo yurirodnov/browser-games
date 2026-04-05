@@ -50,7 +50,7 @@ export class Game {
   private strike: Strike | null = null;
   private shoot: Shoot | null = null;
   private projectiles: Projectile[] = [];
-  private blood: Blood[] = [];
+  private bloods: Blood[] = [];
 
   constructor(ctx: CanvasRenderingContext2D, assets: Assets, constants: Constants) {
     this.ctx = ctx;
@@ -151,7 +151,7 @@ export class Game {
 
   private showBlood(coordX: number, coordY: number): void {
     const blood = new Blood(this.assets.blood, coordX, coordY, this.constants.bloodSize);
-    this.blood.push(blood);
+    this.bloods.push(blood);
   }
 
   private spawnZombie(): void {

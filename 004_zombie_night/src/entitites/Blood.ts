@@ -5,12 +5,22 @@ export class Blood {
   private width: number;
   private height: number;
 
+  private lifeTimer: number = 20;
+
   constructor(img: HTMLImageElement, x: number, y: number, s: number) {
     this.image = img;
     this.coordX = x;
     this.coordY = y;
     this.width = s;
     this.height = s;
+  }
+
+  public startLifeTimer(): void {
+    this.lifeTimer -= 1;
+  }
+
+  public getLifeTimer(): number {
+    return this.lifeTimer;
   }
 
   public draw(ctx: CanvasRenderingContext2D): void {
