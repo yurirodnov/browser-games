@@ -152,7 +152,7 @@ export class Game {
     const spawnZombieType = this.zombieTypes[getRandomNumber(0, this.zombieTypes.length - 1)];
     const zombie = new Zombie(
       this.assets.zombies,
-      spawnSide === "left" ? this.worldOffset : this.worldSize,
+      spawnSide === "left" ? this.worldOffset : this.worldSize + 100,
       spawnSide,
       this.ctx.canvas.height - this.constants.tileSize - this.constants.playerHeight,
       this.constants.zombieWidth,
