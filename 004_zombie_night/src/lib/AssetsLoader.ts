@@ -19,7 +19,7 @@ export class AssetsLoader {
   static getAsset(key: string) {
     const img = this.images.get(key);
     if (!img) {
-      throw new Error("No such image");
+      throw new Error(`No image "${key}"`);
     }
     return img;
   }

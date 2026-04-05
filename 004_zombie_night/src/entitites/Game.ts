@@ -36,7 +36,7 @@ export class Game {
   private bullets: number;
 
   private zombies: Zombie[] = [];
-  private zombieSpawnInterval: number = 400;
+  private zombieSpawnInterval: number = 70;
   private zombieSpawnTimer: number = 0;
   private zombieSpawnSpeed: number = 10;
   private zombieSpawnSides: string[] = ["left", "right"];
@@ -149,9 +149,10 @@ export class Game {
 
   private spawnZombie(): void {
     const spawnSide = this.zombieSpawnSides[getRandomNumber(0, 1)];
-    const spawnZombieType = this.zombieTypes[getRandomNumber(0, 2)];
+    const spawnZombieType = this.zombieTypes[getRandomNumber(0, this.zombieTypes.length - 1)];
     const zombie = new Zombie(
       this.assets.zombies,
+      spawnSide === "left" ? this.worldOffset : this.worldSize,
       spawnSide,
       this.ctx.canvas.height - this.constants.tileSize - this.constants.playerHeight,
       this.constants.zombieWidth,
@@ -333,8 +334,9 @@ export class Game {
 
     // ZOMBIE TIMER
     this.zombieSpawnTimer += this.zombieSpawnSpeed * delta;
-    if (Math.floor(this.zombieSpawnTimer) % this.zombieSpawnInterval === 0) {
+    if (Math.floor(this.zombieSpawnTimer) === this.zombieSpawnInterval) {
       this.spawnZombie();
+      this.zombieSpawnTimer = 0;
     }
 
     // KNIFE TIMER

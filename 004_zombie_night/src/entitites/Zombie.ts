@@ -1,6 +1,7 @@
 // 004_zombie_night/src/entities/Zombie.ts
 
 import type { ZombiesAssets } from "../types/type";
+import { ZombieTypeConfig } from "../lib/ZombieTypeConfig";
 
 export class Zombie {
   private zombieImages: ZombiesAssets;
@@ -12,28 +13,37 @@ export class Zombie {
   private height: number;
 
   private lives: number = 3;
-  private speed: number = 30;
+  private speed: number = 40;
   private walkTimer: number = 0;
   private side: string;
+
+  private zombieType: string;
 
   private readonly WALK_ANIMATION_SPEED = 3;
   private readonly WALK_ANIMATION_FRAME = 4;
   private readonly WALK_ANIMATION_TOTAL_FRAMES = 2;
 
-  constructor(zombieImages: ZombiesAssets, side: string, y: number, w: number, h: number, zombieType: string) {
-    console.log("Spawn side", side);
+  constructor(
+    zombieImages: ZombiesAssets,
+    spawnCoords: number,
+    side: string,
+    y: number,
+    w: number,
+    h: number,
+    zombieType: string,
+  ) {
     this.zombieImages = zombieImages;
     this.side = side;
+    this.zombieType = zombieType;
+
+    this.currentImage = this.zombieImages[this.getAccessKey(1)] ?? this.zombieImages.zombieGreenLeft1;
     if (this.side === "left") {
-      this.currentImage = this.zombieImages.zombieGreenLeft1;
-      this.coordX = -540;
+      this.coordX = spawnCoords;
       this.coordY = y;
     } else if (this.side === "right") {
-      this.currentImage = this.zombieImages.zombieGreenRight1;
-      this.coordX = 2000;
+      this.coordX = spawnCoords;
       this.coordY = y;
     }
-    this.currentImage = this.zombieImages.zombieGreenLeft1;
 
     this.width = w;
     this.height = h;
@@ -49,17 +59,18 @@ export class Zombie {
     this.changeAnimation(delta);
   }
 
+  private getAccessKey(frame: 1 | 2): keyof ZombiesAssets {
+    const color = ZombieTypeConfig[this.zombieType as keyof typeof ZombieTypeConfig] ?? "Green";
+    const side = this.side === "left" ? "Left" : "Right";
+
+    return `zombie${color}${side}${frame}` as keyof ZombiesAssets;
+  }
+
   private changeAnimation(delta: number): void {
     this.walkTimer += this.WALK_ANIMATION_SPEED * delta;
-
     const frameIndex = Math.floor(this.walkTimer / this.WALK_ANIMATION_FRAME) % this.WALK_ANIMATION_TOTAL_FRAMES;
-    if (frameIndex === 0) {
-      this.currentImage =
-        this.side === "left" ? this.zombieImages.zombieGreenLeft1 : this.zombieImages.zombieGreenRight1;
-    } else {
-      this.currentImage =
-        this.side === "left" ? this.zombieImages.zombieGreenLeft2 : this.zombieImages.zombieGreenRight2;
-    }
+    const key = frameIndex === 0 ? this.getAccessKey(1) : this.getAccessKey(2);
+    this.currentImage = this.zombieImages[key] ?? this.zombieImages.zombieGreenLeft1;
   }
 
   draw(ctx: CanvasRenderingContext2D, worldOffset: number): void {
