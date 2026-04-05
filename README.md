@@ -10,6 +10,7 @@ No game engines, no heavy frameworks (like React or Phaser). Just pure JavaScrip
 
 ## ✨ Key Features
 
+- **Original assets:** Starting from Zombie Night game i paint my own in GIMP, Paint etc.
 - **Hand-written code:** No AI generated code in games. Only this README :robot:
 - **Entity Component System:** Clean OOP architecture with classes for Player, Enemies, Projectiles etc.
 - **State Management:** LocalStorage integration for high scores and persistent game state.
