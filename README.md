@@ -12,7 +12,7 @@ I copy famous arcade games like a Flappy Bird, Alien Invasion etc. and also crea
 - **Hand-written code:** No AI generated code in games. Only this README :robot:
 - **Entity Component System:** Clean OOP architecture with classes for Player, Enemies, Projectiles etc.
 - **State Management:** LocalStorage integration for high scores and persistent game state.
-- **Tooling:** No frameworks, no extra libraries. Only HTML5, CSS, TypeScript and Vite.
+- **Minimum tools:** No frameworks, no extra libraries. Only HTML5, CSS, TypeScript and Vite.
 - **Weak math knowledge:** I have law education, wish me luck with Computer Science guys! :clown_face:
 
 ## 🛠️ Local Development
