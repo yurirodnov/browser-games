@@ -6,16 +6,14 @@ A collection of browser games built from scratch using **HTML5 Canvas**, **CSS**
 
 I copy famous arcade games like a Flappy Bird, Alien Invasion etc. and also create my own for fun and improving my programming skills.
 
-No game engines, no heavy frameworks (like React or Phaser). Just pure JavaScript logic and Object-Oriented Programming.
-
 ## ✨ Key Features
 
 - **Original assets:** Starting from Zombie Night game i paint my own in GIMP, Paint etc.
 - **Hand-written code:** No AI generated code in games. Only this README :robot:
 - **Entity Component System:** Clean OOP architecture with classes for Player, Enemies, Projectiles etc.
 - **State Management:** LocalStorage integration for high scores and persistent game state.
-- **Tooling:** Bundled with **Vite** for instant hot-reloading and optimized builds.
-- **Weak math knowledge:** I have law education, wish me luck with Computer Science guys! 🤡
+- **Tooling:** No frameworks, no extra libraries. Only HTML5, CSS, TypeScript and Vite.
+- **Weak math knowledge:** I have law education, wish me luck with Computer Science guys! :clown:
 
 ## 🛠️ Local Development
 
