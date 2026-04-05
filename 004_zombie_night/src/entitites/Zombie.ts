@@ -33,6 +33,7 @@ export class Zombie {
       this.coordX = 2000;
       this.coordY = y;
     }
+    this.currentImage = this.zombieImages.zombieGreenLeft1;
 
     this.width = w;
     this.height = h;
