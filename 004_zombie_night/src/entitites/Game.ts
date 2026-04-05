@@ -9,6 +9,7 @@ import { Shoot } from "./Shoot";
 import { Zombie } from "./Zombie";
 import { Projectile } from "./Projectile";
 import { getRandomNumber } from "../lib/GetRandomNumber";
+import { Blood } from "./Blood";
 
 export class Game {
   private ctx: CanvasRenderingContext2D;
@@ -49,6 +50,7 @@ export class Game {
   private strike: Strike | null = null;
   private shoot: Shoot | null = null;
   private projectiles: Projectile[] = [];
+  private blood: Blood[] = [];
 
   constructor(ctx: CanvasRenderingContext2D, assets: Assets, constants: Constants) {
     this.ctx = ctx;
@@ -145,6 +147,11 @@ export class Game {
     // START GAME ON GAME INSTANCE CREATION
     this.running = true;
     this.loop(0);
+  }
+
+  private showBlood(coordX: number, coordY: number): void {
+    const blood = new Blood(this.assets.blood, coordX, coordY, this.constants.bloodSize);
+    this.blood.push(blood);
   }
 
   private spawnZombie(): void {

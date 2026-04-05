@@ -19,6 +19,10 @@ export class Projectile {
     this.alive = true;
   }
 
+  public setDead(): void {
+    this.alive = !this.alive;
+  }
+
   public checkAlive(): boolean {
     return this.alive;
   }

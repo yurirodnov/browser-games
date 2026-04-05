@@ -12,7 +12,7 @@ export class Zombie {
   private width: number;
   private height: number;
 
-  private lives: number = 3;
+  private life: number = 0;
   private speed: number = 40;
   private walkTimer: number = 0;
   private side: string;
@@ -49,6 +49,10 @@ export class Zombie {
     this.height = h;
   }
 
+  public decreaseLife(): void {
+    this.life -= 1;
+  }
+
   public move(delta: number): void {
     if (this.side === "left") {
       this.coordX += this.speed * delta;
@@ -73,7 +77,7 @@ export class Zombie {
     this.currentImage = this.zombieImages[key] ?? this.zombieImages.zombieGreenLeft1;
   }
 
-  draw(ctx: CanvasRenderingContext2D, worldOffset: number): void {
+  public draw(ctx: CanvasRenderingContext2D, worldOffset: number): void {
     ctx.drawImage(this.currentImage, this.coordX + worldOffset, this.coordY, this.width, this.height);
   }
 }

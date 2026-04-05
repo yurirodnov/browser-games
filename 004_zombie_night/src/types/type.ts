@@ -44,6 +44,7 @@ export interface Assets {
   bullet: HTMLImageElement;
   life: HTMLImageElement;
   projectile: HTMLImageElement;
+  blood: HTMLImageElement;
 }
 
 export interface Constants {
@@ -53,6 +54,7 @@ export interface Constants {
   zombieWidth: number;
   zombieHeight: number;
   shootSize: number;
+  bloodSize: number;
 }
 
 export type GameState = "menu" | "play" | "gameOver";
