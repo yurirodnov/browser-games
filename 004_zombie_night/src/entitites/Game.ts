@@ -42,6 +42,8 @@ export class Game {
   private zombieSpawnSpeed: number = 10;
   private zombieSpawnSides: string[] = ["left", "right"];
   private zombieTypes: string[] = ["green", "yellow", "red"];
+  private leftZombieSpawnCoords: number;
+  private rightZombieSpawnCoords: number;
 
   // ENTITIES
   private groundTiles: GroundTile[];
@@ -64,6 +66,10 @@ export class Game {
     this.worldSize = this.ctx.canvas.width * 2;
     this.worldOffset = -ctx.canvas.width / 2;
     this.maxWorldOffset = this.worldOffset * 2;
+
+    // ZOMBIE SPAM CONSTANTS
+    this.leftZombieSpawnCoords = this.worldOffset;
+    this.rightZombieSpawnCoords = this.worldSize;
 
     // INIT GAME ENTITIES
     // INIT BACKGROUND
@@ -159,7 +165,7 @@ export class Game {
     const spawnZombieType = this.zombieTypes[getRandomNumber(0, this.zombieTypes.length - 1)];
     const zombie = new Zombie(
       this.assets.zombies,
-      spawnSide === "left" ? this.worldOffset : this.worldSize + 100,
+      spawnSide === "left" ? this.leftZombieSpawnCoords : this.rightZombieSpawnCoords + 100,
       spawnSide,
       this.ctx.canvas.height - this.constants.tileSize - this.constants.playerHeight,
       this.constants.zombieWidth,
@@ -167,7 +173,7 @@ export class Game {
       spawnZombieType,
     );
 
-    console.log("spawned zombie", zombie);
+    console.log(`Spawn ${spawnZombieType} ${spawnSide} zombie`, zombie);
 
     this.zombies.push(zombie);
   }
@@ -341,7 +347,9 @@ export class Game {
 
     // ZOMBIE TIMER
     this.zombieSpawnTimer += this.zombieSpawnSpeed * delta;
+
     if (Math.floor(this.zombieSpawnTimer) === this.zombieSpawnInterval) {
+      console.log("Zombie timer", this.zombieSpawnTimer);
       this.spawnZombie();
       this.zombieSpawnTimer = 0;
     }
@@ -421,6 +429,8 @@ export class Game {
         this.ctx.canvas.width,
       );
     }
+
+    // HANDLE COLLISIONS
 
     // DRAW ASSETS
     this.background.draw(this.ctx, this.worldOffset);
