@@ -433,6 +433,9 @@ export class Game {
     }
 
     // HANDLE COLLISIONS
+    // SURVIVOR COLLISION
+
+    // STRIKE COLLSION
     if (this.strike && this.zombies.length > 0) {
       for (const zombie of this.zombies) {
       }
