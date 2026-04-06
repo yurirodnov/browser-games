@@ -19,8 +19,8 @@ export class Zombie {
 
   private zombieType: string;
 
-  private readonly WALK_ANIMATION_SPEED = 3;
-  private readonly WALK_ANIMATION_FRAME = 4;
+  private readonly WALK_ANIMATION_SPEED = 10;
+  private readonly WALK_ANIMATION_FRAME = 6;
   private readonly WALK_ANIMATION_TOTAL_FRAMES = 2;
 
   constructor(
@@ -59,7 +59,6 @@ export class Zombie {
     } else if (this.side === "right") {
       this.coordX -= this.speed * delta;
     }
-
     this.changeAnimation(delta);
   }
 

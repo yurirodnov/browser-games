@@ -8,8 +8,8 @@ import { Strike } from "./Strike";
 import { Shoot } from "./Shoot";
 import { Zombie } from "./Zombie";
 import { Projectile } from "./Projectile";
-import { getRandomNumber } from "../lib/GetRandomNumber";
 import { Blood } from "./Blood";
+import { getRandomNumber } from "../lib/GetRandomNumber";
 
 export class Game {
   private ctx: CanvasRenderingContext2D;
@@ -165,7 +165,9 @@ export class Game {
     const spawnZombieType = this.zombieTypes[getRandomNumber(0, this.zombieTypes.length - 1)];
     const zombie = new Zombie(
       this.assets.zombies,
-      spawnSide === "left" ? this.leftZombieSpawnCoords : this.rightZombieSpawnCoords + 100,
+      spawnSide === "left"
+        ? this.leftZombieSpawnCoords + this.constants.zombieWidth * 2
+        : this.rightZombieSpawnCoords + this.constants.zombieWidth * 2,
       spawnSide,
       this.ctx.canvas.height - this.constants.tileSize - this.constants.playerHeight,
       this.constants.zombieWidth,
@@ -431,6 +433,10 @@ export class Game {
     }
 
     // HANDLE COLLISIONS
+    if (this.strike && this.zombies.length > 0) {
+      for (const zombie of this.zombies) {
+      }
+    }
 
     // DRAW ASSETS
     this.background.draw(this.ctx, this.worldOffset);

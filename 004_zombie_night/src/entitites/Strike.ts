@@ -11,7 +11,7 @@ export class Strike {
 
   constructor(strikeImages: StrikeAssets, x: number, y: number, w: number, h: number, direction: string) {
     this.strikeImages = strikeImages;
-    this.currentImage = direction === "left" ? strikeImages.strikeLeft : strikeImages.strikeRight;
+    this.currentImage = direction === "left" ? this.strikeImages.strikeLeft : this.strikeImages.strikeRight;
     this.coordX = x;
     this.coordY = y;
     this.width = w;
