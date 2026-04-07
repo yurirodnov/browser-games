@@ -9,7 +9,7 @@
 }
 
 body {
-  background-color: rgb(97, 13, 6);
+  background-color: rgb(15, 13, 13);
   display: flex;
   flex-direction: column;
   gap: 20px;

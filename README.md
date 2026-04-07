@@ -66,3 +66,7 @@ Each game is a standalone Vite project:
   ├── Another games folders...
   └── README.md
 ```
+
+## 🎨 Design constants
+
+**CSS Window background:** "rgb(15, 13, 13);"
