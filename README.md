@@ -67,6 +67,7 @@ Each game is a standalone Vite project:
   └── README.md
 ```
 
-## 🎨 Design constants
+## 🎨 Design
 
-**CSS Window background:** rgb(15, 13, 13);
+**CSS window background:** rgb(15, 13, 13);
+**CSS fonts:** Silkscreen
