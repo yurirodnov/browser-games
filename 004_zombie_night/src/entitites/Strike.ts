@@ -9,6 +9,8 @@ export class Strike {
   private width: number;
   private height: number;
 
+  private hasDealtDamage: boolean = true;
+
   constructor(strikeImages: StrikeAssets, x: number, y: number, w: number, h: number, direction: string) {
     this.strikeImages = strikeImages;
     this.currentImage = direction === "left" ? this.strikeImages.strikeLeft : this.strikeImages.strikeRight;
@@ -16,6 +18,14 @@ export class Strike {
     this.coordY = y;
     this.width = w;
     this.height = h;
+  }
+
+  public setDealtDamage(): void {
+    this.hasDealtDamage = !this.hasDealtDamage;
+  }
+
+  public ableToDealDamage(): boolean {
+    return this.hasDealtDamage;
   }
 
   public getCoordX(): number {

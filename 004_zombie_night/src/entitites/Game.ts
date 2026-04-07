@@ -361,8 +361,7 @@ export class Game {
     }
 
     // KNIFE TIMER
-    // console.log("Knife timer", this.survivorKnifeTimer);
-    // console.log("Knife cooldown", this.survivorKnifeCooldown);
+
     if (this.survivorKnifeTimer > 0) {
       this.survivorKnifeTimer -= 1 * delta;
     }
@@ -434,30 +433,11 @@ export class Game {
         this.survivorMovementState,
         this.ctx.canvas.width,
       );
-      // console.log("THE SUVIVOR", this.survivor);
     }
 
-    // HANDLE COLLISIONS
-    // SURVIVOR COLLISION
-
-    // STRIKE COLLSION
-    // if (this.strike && this.zombies.length > 0) {
-    //   for (const zombie of this.zombies) {
-    //     const strikeEdge = this.strike.getEdge(this.lastDirection);
-    //     const zombieLeftEdge = zombie.getBodySize().leftEdge;
-    //     const zombieRightEdge = zombie.getBodySize().rightEdge;
-
-    //     if (strikeEdge > zombieLeftEdge && strikeEdge < zombieRightEdge) {
-    //       console.log("STRIKE EDGE", strikeEdge);
-    //       console.log("ZOMBIE PIC LEFT EDGE", zombieLeftEdge);
-    //       console.log("ZOMBIE PIC RIGHT EDGE", zombieRightEdge);
-    //       console.log("GET COLLISION");
-    //     }
-    //   }
-    // }
-
     // STRIKE COLLISION
-    if (this.strike && this.zombies.length > 0) {
+
+    if (this.strike && this.zombies.length > 0 && this.strike.ableToDealDamage()) {
       const strikeWorldX = this.strike.getCoordX() - this.worldOffset;
       const strikeWorldY = this.strike.getCoordY();
 
@@ -478,13 +458,14 @@ export class Game {
           strikeBottom > zombieTop &&
           strikeTop < zombieBottom
         ) {
-          zombie.decreaseLife();
           this.showBlood(zombie.getCoordX(), zombie.getCoordY());
+          this.strike.setDealtDamage();
         }
       }
     }
 
     this.bloods.forEach((b) => b.startLifeTimer());
+    this.bloods = this.bloods.filter((b) => b.getLifeTimer() !== 0);
 
     // DRAW ASSETS
     this.background.draw(this.ctx, this.worldOffset);

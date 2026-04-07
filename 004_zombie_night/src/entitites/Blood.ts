@@ -5,7 +5,7 @@ export class Blood {
   private width: number;
   private height: number;
 
-  private lifeTimer: number = 3;
+  private lifeTimer: number = 10;
 
   constructor(img: HTMLImageElement, x: number, y: number, s: number) {
     this.image = img;
