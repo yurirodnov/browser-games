@@ -5,7 +5,7 @@ export class Blood {
   private width: number;
   private height: number;
 
-  private lifeTimer: number = 10;
+  private lifeTimer: number = 1.2;
 
   constructor(img: HTMLImageElement, x: number, y: number, s: number) {
     this.image = img;
@@ -15,9 +15,9 @@ export class Blood {
     this.height = s;
   }
 
-  public startLifeTimer(): void {
+  public startLifeTimer(delta: number): void {
     if (this.lifeTimer !== 0) {
-      this.lifeTimer -= 1;
+      this.lifeTimer -= delta;
     }
   }
 

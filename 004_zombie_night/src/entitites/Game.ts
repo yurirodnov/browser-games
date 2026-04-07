@@ -464,8 +464,8 @@ export class Game {
       }
     }
 
-    this.bloods.forEach((b) => b.startLifeTimer());
-    this.bloods = this.bloods.filter((b) => b.getLifeTimer() !== 0);
+    this.bloods.forEach((b) => b.startLifeTimer(delta));
+    this.bloods = this.bloods.filter((b) => Math.floor(b.getLifeTimer()) !== 0);
 
     // DRAW ASSETS
     this.background.draw(this.ctx, this.worldOffset);
