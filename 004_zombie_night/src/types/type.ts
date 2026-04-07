@@ -57,6 +57,11 @@ export interface Constants {
   bloodSize: number;
 }
 
+export interface ZombyBodySize {
+  leftEdge: number;
+  rightEdge: number;
+}
+
 export type GameState = "menu" | "play" | "gameOver";
 
 export type SurvivorMovementState = "left" | "right" | "stop";

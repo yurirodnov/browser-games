@@ -18,6 +18,22 @@ export class Strike {
     this.height = h;
   }
 
+  public getCoordX(): number {
+    return this.coordX;
+  }
+
+  public getCoordY(): number {
+    return this.coordY;
+  }
+
+  public getHeight(): number {
+    return this.height;
+  }
+
+  public getWidth(): number {
+    return this.width;
+  }
+
   public draw(ctx: CanvasRenderingContext2D): void {
     ctx.drawImage(this.currentImage, this.coordX, this.coordY, this.width, this.height);
   }

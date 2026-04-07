@@ -130,6 +130,7 @@ export class Game {
         this.survivorKnifeCooldown <= 0
       ) {
         this.useKnife();
+        // console.log("Last direction", this.lastDirection);
       }
     });
 
@@ -175,7 +176,7 @@ export class Game {
       spawnZombieType,
     );
 
-    console.log(`Spawn ${spawnZombieType} ${spawnSide} zombie`, zombie);
+    console.log(`Spawn ${spawnZombieType} ${spawnSide} zombie at ${zombie.getCoordX()}`, zombie);
 
     this.zombies.push(zombie);
   }
@@ -205,6 +206,8 @@ export class Game {
         this.lastDirection,
       );
     }
+
+    console.log(`Strike x is ${this.strike?.getCoordX()} and worldOffset is ${this.worldOffset}`);
   }
 
   private useShotgun(): void {
@@ -351,7 +354,7 @@ export class Game {
     this.zombieSpawnTimer += this.zombieSpawnSpeed * delta;
 
     if (Math.floor(this.zombieSpawnTimer) === this.zombieSpawnInterval) {
-      console.log("Zombie timer", this.zombieSpawnTimer);
+      //console.log("Zombie timer", this.zombieSpawnTimer);
       this.spawnZombie();
       this.zombieSpawnTimer = 0;
     }
@@ -430,14 +433,53 @@ export class Game {
         this.survivorMovementState,
         this.ctx.canvas.width,
       );
+      // console.log("THE SUVIVOR", this.survivor);
     }
 
     // HANDLE COLLISIONS
     // SURVIVOR COLLISION
 
     // STRIKE COLLSION
+    // if (this.strike && this.zombies.length > 0) {
+    //   for (const zombie of this.zombies) {
+    //     const strikeEdge = this.strike.getEdge(this.lastDirection);
+    //     const zombieLeftEdge = zombie.getBodySize().leftEdge;
+    //     const zombieRightEdge = zombie.getBodySize().rightEdge;
+
+    //     if (strikeEdge > zombieLeftEdge && strikeEdge < zombieRightEdge) {
+    //       console.log("STRIKE EDGE", strikeEdge);
+    //       console.log("ZOMBIE PIC LEFT EDGE", zombieLeftEdge);
+    //       console.log("ZOMBIE PIC RIGHT EDGE", zombieRightEdge);
+    //       console.log("GET COLLISION");
+    //     }
+    //   }
+    // }
+
+    // STRIKE COLLISION
     if (this.strike && this.zombies.length > 0) {
+      const strikeWorldX = this.strike.getCoordX() - this.worldOffset;
+      const strikeWorldY = this.strike.getCoordY();
+
+      const strikeLeft = strikeWorldX;
+      const strikeRight = strikeWorldX + this.strike.getWidth();
+      const strikeTop = strikeWorldY;
+      const strikeBottom = strikeWorldY + this.strike.getHeight();
+
       for (const zombie of this.zombies) {
+        const zombieLeft = zombie.getCoordX();
+        const zombieRight = zombie.getCoordX() + zombie.getWidth();
+        const zombieTop = zombie.getCoordY();
+        const zombieBottom = zombie.getCoordY() + zombie.getHeight();
+
+        if (
+          strikeRight > zombieLeft &&
+          strikeLeft < zombieRight &&
+          strikeBottom > zombieTop &&
+          strikeTop < zombieBottom
+        ) {
+          zombie.decreaseLife();
+          this.showBlood(zombie.getCoordX(), zombie.getCoordY());
+        }
       }
     }
 

@@ -1,6 +1,6 @@
 // 004_zombie_night/src/entities/Zombie.ts
 
-import type { ZombiesAssets } from "../types/type";
+import type { ZombiesAssets, ZombyBodySize } from "../types/type";
 import { ZombieTypeConfig } from "../lib/ZombieTypeConfig";
 
 export class Zombie {
@@ -60,6 +60,31 @@ export class Zombie {
       this.coordX -= this.speed * delta;
     }
     this.changeAnimation(delta);
+  }
+
+  public getBodySize(): ZombyBodySize {
+    const zombieBodySize: ZombyBodySize = {
+      leftEdge: this.coordX,
+      rightEdge: this.coordX + this.width,
+    };
+
+    return zombieBodySize;
+  }
+
+  public getCoordX(): number {
+    return this.coordX;
+  }
+
+  public getCoordY(): number {
+    return this.coordY;
+  }
+
+  public getHeight(): number {
+    return this.height;
+  }
+
+  public getWidth(): number {
+    return this.width;
   }
 
   private getAccessKey(frame: 1 | 2): keyof ZombiesAssets {
