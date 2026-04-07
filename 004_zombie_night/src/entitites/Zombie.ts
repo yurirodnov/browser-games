@@ -19,6 +19,8 @@ export class Zombie {
 
   private zombieType: string;
 
+  private ammoDropChance: number = 20;
+
   private readonly WALK_ANIMATION_SPEED = 10;
   private readonly WALK_ANIMATION_FRAME = 6;
   private readonly WALK_ANIMATION_TOTAL_FRAMES = 2;
