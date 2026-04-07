@@ -159,6 +159,7 @@ export class Game {
   private showBlood(coordX: number, coordY: number): void {
     const blood = new Blood(this.assets.blood, coordX, coordY, this.constants.bloodSize);
     this.bloods.push(blood);
+    console.log("BLOODZ", this.bloods);
   }
 
   private spawnZombie(): void {
@@ -483,6 +484,8 @@ export class Game {
       }
     }
 
+    this.bloods.forEach((b) => b.startLifeTimer());
+
     // DRAW ASSETS
     this.background.draw(this.ctx, this.worldOffset);
     for (const tile of this.groundTiles) {
@@ -502,6 +505,10 @@ export class Game {
     }
     if (this.projectiles.length > 0) {
       this.projectiles.filter((p) => p.checkAlive()).forEach((p) => p.draw(this.ctx));
+    }
+
+    if (this.bloods.length > 0) {
+      this.bloods.filter((b) => b.getLifeTimer() !== 0).forEach((b) => b.draw(this.ctx, this.worldOffset));
     }
 
     // DRAW UI

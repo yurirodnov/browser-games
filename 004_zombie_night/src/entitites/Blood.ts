@@ -5,7 +5,7 @@ export class Blood {
   private width: number;
   private height: number;
 
-  private lifeTimer: number = 20;
+  private lifeTimer: number = 3;
 
   constructor(img: HTMLImageElement, x: number, y: number, s: number) {
     this.image = img;
@@ -16,14 +16,16 @@ export class Blood {
   }
 
   public startLifeTimer(): void {
-    this.lifeTimer -= 1;
+    if (this.lifeTimer !== 0) {
+      this.lifeTimer -= 1;
+    }
   }
 
   public getLifeTimer(): number {
     return this.lifeTimer;
   }
 
-  public draw(ctx: CanvasRenderingContext2D): void {
-    ctx.drawImage(this.image, this.coordX, this.coordY, this.width, this.height);
+  public draw(ctx: CanvasRenderingContext2D, worldOffset: number): void {
+    ctx.drawImage(this.image, this.coordX + worldOffset, this.coordY, this.width, this.height);
   }
 }
