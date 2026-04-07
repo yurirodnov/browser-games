@@ -69,4 +69,4 @@ Each game is a standalone Vite project:
 
 ## 🎨 Design constants
 
-**CSS Window background:** "rgb(15, 13, 13);"
+**CSS Window background:** rgb(15, 13, 13);
