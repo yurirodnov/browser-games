@@ -107,6 +107,7 @@ export class Game {
     this.groundTiles = groundTilesArray;
 
     // INIT PLAYER
+
     this.initSurvivor();
 
     window.addEventListener("keydown", (e: KeyboardEvent) => {
@@ -366,7 +367,7 @@ export class Game {
 
     if (this.gameState === "menu") {
       this.ctx.textAlign = "center";
-      this.ctx.fillStyle = "rgba(114, 13, 13, 0.4)";
+      this.ctx.fillStyle = "rgba(139, 3, 3, 0.4)";
       this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
       this.ctx.font = "75px 'Silkscreen', sans-serif";
@@ -733,8 +734,9 @@ export class Game {
     for (const tile of this.groundTiles) {
       tile.draw(this.ctx, this.worldOffset);
     }
-
-    this.survivor.draw(this.ctx);
+    if (this.gameState === "play" || this.gameState === "dying" || this.gameState === "gameOver") {
+      this.survivor.draw(this.ctx);
+    }
 
     if (this.survivorShootTimer > 0 && this.shoot) {
       this.shoot.draw(this.ctx);

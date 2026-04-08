@@ -36,7 +36,7 @@ export const main = async () => {
     AssetsLoader.loadAsset("survivorKnifeRight", "assets/hero_knife_sketch_right.png"),
     AssetsLoader.loadAsset("survivorWalk1Right", "assets/hero_shotgun_sketch_right_walk_1.png"),
     AssetsLoader.loadAsset("survivorWalk2Right", "assets/hero_shotgun_sketch_right_walk_2.png"),
-    AssetsLoader.loadAsset("background", "assets/background.png"),
+    AssetsLoader.loadAsset("background", "assets/background2.png"),
     AssetsLoader.loadAsset("bullet", "assets/bullet.png"),
     AssetsLoader.loadAsset("life", "assets/life.png"),
     AssetsLoader.loadAsset("strikeLeft", "assets/strike_left.png"),
