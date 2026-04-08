@@ -19,18 +19,18 @@ export class Game {
   private assets: Assets;
   private constants: Constants;
   private running: boolean = true;
-  private gameState: GameState = "play";
+  private gameState: GameState = "menu";
   private animationID: number = 0;
   private lastFrameTime: number = 0;
 
   private dyingTimer: number = 0;
-  private dyingDuration: number = 3;
+  private dyingDuration: number = 2;
 
   private worldSize: number = 0;
   private worldOffset: number = 0;
   private maxWorldOffset: number = 0;
 
-  private isSurvivorSurvived: boolean;
+  private isSurvivorSurvived!: boolean;
   private survivorMovementState: SurvivorMovementState = "stop";
   private survivorMovementSpeed: number = 280;
   private lastDirection: string = "left";
@@ -56,7 +56,7 @@ export class Game {
 
   // ENTITIES
   private groundTiles: GroundTile[];
-  private survivor: Survivor;
+  private survivor!: Survivor;
   private background: Background;
   private strike: Strike | null = null;
   private shoot: Shoot | null = null;
@@ -107,15 +107,7 @@ export class Game {
     this.groundTiles = groundTilesArray;
 
     // INIT PLAYER
-    this.survivor = new Survivor(
-      this.assets.survivor,
-      this.ctx.canvas.width / 2 - this.constants.playerWidth / 2,
-      this.ctx.canvas.height - this.constants.tileSize - this.constants.playerHeight,
-      this.constants.playerWidth,
-      this.constants.playerHeight,
-      this.constants.shootSize,
-    );
-    this.isSurvivorSurvived = true;
+    this.initSurvivor();
 
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft" && this.isSurvivorSurvived) {
@@ -170,6 +162,18 @@ export class Game {
     // START GAME ON GAME INSTANCE CREATION
     this.running = true;
     this.loop(0);
+  }
+
+  private initSurvivor(): void {
+    this.survivor = new Survivor(
+      this.assets.survivor,
+      this.ctx.canvas.width / 2 - this.constants.playerWidth / 2,
+      this.ctx.canvas.height - this.constants.tileSize - this.constants.playerHeight,
+      this.constants.playerWidth,
+      this.constants.playerHeight,
+      this.constants.shootSize,
+    );
+    this.isSurvivorSurvived = true;
   }
 
   private dropAmmo(chance: number, x: number, y: number): void {
@@ -344,6 +348,14 @@ export class Game {
   }
 
   public restart(): void {
+    this.worldOffset = -this.ctx.canvas.width / 2;
+    this.initSurvivor();
+    this.isSurvivorSurvived = true;
+    this.zombies = [];
+    this.ammo = [];
+    this.projectiles = [];
+    this.bullets = 3;
+    this.score.resetScore();
     this.start();
   }
 
@@ -353,10 +365,23 @@ export class Game {
     this.ctx.lineWidth = 3;
 
     if (this.gameState === "menu") {
-      ////
+      this.ctx.textAlign = "center";
+      this.ctx.fillStyle = "rgba(114, 13, 13, 0.4)";
+      this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+
+      this.ctx.font = "75px 'Silkscreen', sans-serif";
+      this.ctx.strokeStyle = "white";
+      this.ctx.strokeText(`ZOMBIE NIGHT`, this.ctx.canvas.width / 2, this.ctx.canvas.height / 4);
+      this.ctx.fillStyle = "red";
+      this.ctx.fillText(`ZOMBIE NIGHT`, this.ctx.canvas.width / 2, this.ctx.canvas.height / 4);
+
+      this.ctx.font = "25px 'Silkscreen', sans-serif";
+      this.ctx.strokeStyle = "black";
+      this.ctx.strokeText(`click to play`, this.ctx.canvas.width / 2, this.ctx.canvas.height / 4 + 50);
+      this.ctx.fillStyle = "white";
+      this.ctx.fillText(`click to play`, this.ctx.canvas.width / 2, this.ctx.canvas.height / 4 + 50);
     } else if (this.gameState === "play") {
       // DRAW BULLET ICON
-
       this.ctx.textAlign = "left";
 
       this.ctx.drawImage(this.assets.bullet, 35, 20, 30, 60);
@@ -391,7 +416,7 @@ export class Game {
       this.ctx.fillStyle = "rgba(114, 13, 13, 0.4)";
       this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-      this.ctx.font = "55px 'Silkscreen', sans-serif";
+      this.ctx.font = "75px 'Silkscreen', sans-serif";
       this.ctx.strokeStyle = "white";
       this.ctx.strokeText(`game over`, this.ctx.canvas.width / 2, this.ctx.canvas.height / 4);
       this.ctx.fillStyle = "red";
@@ -410,7 +435,7 @@ export class Game {
         this.ctx.canvas.width / 2,
         this.ctx.canvas.height / 4 + 120,
       );
-      this.ctx.fillStyle = "white";
+      this.ctx.fillStyle = "yellow";
       this.ctx.fillText(`score: ${this.score.getScore()}`, this.ctx.canvas.width / 2, this.ctx.canvas.height / 4 + 120);
 
       this.ctx.font = "45px 'Silkscreen', sans-serif";
@@ -420,7 +445,7 @@ export class Game {
         this.ctx.canvas.width / 2,
         this.ctx.canvas.height / 4 + 170,
       );
-      this.ctx.fillStyle = "white";
+      this.ctx.fillStyle = "yellow";
       this.ctx.fillText(
         `high score: ${this.score.getHighScore()}`,
         this.ctx.canvas.width / 2,
