@@ -45,6 +45,7 @@ export interface Assets {
   life: HTMLImageElement;
   projectile: HTMLImageElement;
   blood: HTMLImageElement;
+  zombieDeath: HTMLImageElement;
 }
 
 export interface Constants {
@@ -55,6 +56,7 @@ export interface Constants {
   zombieHeight: number;
   shootSize: number;
   bloodSize: number;
+  zombieDeathSize: number;
 }
 
 export interface ZombyBodySize {

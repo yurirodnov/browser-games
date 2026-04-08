@@ -5,15 +5,27 @@ export class ZombieDeath {
   private width: number;
   private height: number;
 
-  constructor(img: HTMLImageElement, x: number, y: number, w: number, h: number) {
+  private lifeTimer: number = 1.4;
+
+  constructor(img: HTMLImageElement, x: number, y: number, s: number) {
     this.image = img;
     this.coordX = x;
     this.coordY = y;
-    this.width = w;
-    this.height = h;
+    this.width = s;
+    this.height = s;
   }
 
-  public draw(ctx: CanvasRenderingContext2D): void {
-    ctx.drawImage(this.image, this.coordX, this.coordY, this.width, this.height);
+  public getLifeTimer(): number {
+    return this.lifeTimer;
+  }
+
+  public startLifeTimer(delta: number): void {
+    if (this.lifeTimer !== 0) {
+      this.lifeTimer -= delta;
+    }
+  }
+
+  public draw(ctx: CanvasRenderingContext2D, worldOffset: number): void {
+    ctx.drawImage(this.image, this.coordX + worldOffset, this.coordY, this.width, this.height);
   }
 }

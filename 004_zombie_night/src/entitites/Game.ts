@@ -11,7 +11,7 @@ import { Projectile } from "./Projectile";
 import { Blood } from "./Blood";
 import { getRandomNumber } from "../lib/GetRandomNumber";
 import type { Ammo } from "./Ammo";
-import type { ZombieDeath } from "./ZombieDeath";
+import { ZombieDeath } from "./ZombieDeath";
 
 export class Game {
   private ctx: CanvasRenderingContext2D;
@@ -39,6 +39,7 @@ export class Game {
   private bullets: number;
 
   private zombies: Zombie[] = [];
+  private zombieDeathAnimation: ZombieDeath[] = [];
   private zombieSpawnInterval: number = 70;
   private zombieSpawnTimer: number = 0;
   private zombieSpawnSpeed: number = 10;
@@ -56,7 +57,6 @@ export class Game {
   private projectiles: Projectile[] = [];
   private bloods: Blood[] = [];
   private ammo: Ammo[] = [];
-  private zombieDeathAnimation: ZombieDeath[] = [];
 
   constructor(ctx: CanvasRenderingContext2D, assets: Assets, constants: Constants) {
     this.ctx = ctx;
@@ -164,6 +164,11 @@ export class Game {
     const blood = new Blood(this.assets.blood, coordX, coordY, this.constants.bloodSize);
     this.bloods.push(blood);
     console.log("BLOODZ", this.bloods);
+  }
+
+  private showZombieDeath(x: number, y: number): void {
+    const zombieDeath = new ZombieDeath(this.assets.zombieDeath, x, y, this.constants.zombieDeathSize);
+    this.zombieDeathAnimation.push(zombieDeath);
   }
 
   private spawnZombie(): void {
@@ -464,6 +469,10 @@ export class Game {
           this.showBlood(zombie.getCoordX(), zombie.getCoordY());
           this.strike.setDealtDamage();
           zombie.getDamage(1);
+          const zombieStillAlive = zombie.isAlive();
+          if (!zombieStillAlive) {
+            this.showZombieDeath(zombie.getCoordX(), zombie.getCoordY());
+          }
           console.log("ZOMBIES ALIVE", this.zombies);
         }
       }
@@ -496,6 +505,10 @@ export class Game {
               projectile.setDealtDamage();
               projectile.setDead();
               zombie.getDamage(999);
+              const zombieStillAlive = zombie.isAlive();
+              if (!zombieStillAlive) {
+                this.showZombieDeath(zombie.getCoordX(), zombie.getCoordY());
+              }
               console.log("SHOOT!");
               console.log("ZOMBIES ALIVE", this.zombies);
             }
@@ -505,17 +518,23 @@ export class Game {
     }
 
     this.bloods.forEach((b) => b.startLifeTimer(delta));
+    this.zombieDeathAnimation.forEach((animation) => animation.startLifeTimer(delta));
 
     // CLEAR DEAD ENTITIES LISTS
     this.bloods = this.bloods.filter((b) => Math.floor(b.getLifeTimer()) !== 0);
+    this.zombieDeathAnimation = this.zombieDeathAnimation.filter(
+      (animation) => Math.floor(animation.getLifeTimer()) !== 0,
+    );
     this.projectiles = this.projectiles.filter((p) => p.checkAlive());
     this.zombies = this.zombies.filter((z) => z.isAlive());
 
     // DRAW ASSETS
     this.background.draw(this.ctx, this.worldOffset);
+
     for (const tile of this.groundTiles) {
       tile.draw(this.ctx, this.worldOffset);
     }
+
     this.survivor.draw(this.ctx);
 
     if (this.survivorShootTimer > 0 && this.shoot) {
@@ -525,15 +544,21 @@ export class Game {
     if (this.zombies.length > 0) {
       this.zombies.filter((z) => z.getLifePoints() > 0).forEach((z) => z.draw(this.ctx, this.worldOffset));
     }
+
     if (this.survivorKnifeTimer > 0 && this.strike) {
       this.strike.draw(this.ctx);
     }
+
     if (this.projectiles.length > 0) {
       this.projectiles.filter((p) => p.checkAlive()).forEach((p) => p.draw(this.ctx));
     }
 
     if (this.bloods.length > 0) {
       this.bloods.forEach((b) => b.draw(this.ctx, this.worldOffset));
+    }
+
+    if (this.zombieDeathAnimation.length > 0) {
+      this.zombieDeathAnimation.forEach((death) => death.draw(this.ctx, this.worldOffset));
     }
 
     // DRAW UI

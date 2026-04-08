@@ -21,7 +21,7 @@ export class Zombie {
 
   private ammoDropChance: number = 20;
 
-  private readonly WALK_ANIMATION_SPEED = 10;
+  private walkAnimationSpeed = 10;
   private readonly WALK_ANIMATION_FRAME = 6;
   private readonly WALK_ANIMATION_TOTAL_FRAMES = 2;
 
@@ -43,6 +43,7 @@ export class Zombie {
       case "yellow":
         this.life = 1;
         this.speed += this.speed * 2;
+        this.walkAnimationSpeed = 30;
         break;
       case "green":
         this.life = 3;
@@ -118,7 +119,7 @@ export class Zombie {
   }
 
   private changeAnimation(delta: number): void {
-    this.walkTimer += this.WALK_ANIMATION_SPEED * delta;
+    this.walkTimer += this.walkAnimationSpeed * delta;
     const frameIndex = Math.floor(this.walkTimer / this.WALK_ANIMATION_FRAME) % this.WALK_ANIMATION_TOTAL_FRAMES;
     const key = frameIndex === 0 ? this.getAccessKey(1) : this.getAccessKey(2);
     this.currentImage = this.zombieImages[key] ?? this.zombieImages.zombieGreenLeft1;
