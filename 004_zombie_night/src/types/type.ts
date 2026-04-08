@@ -67,7 +67,7 @@ export interface ZombyBodySize {
   rightEdge: number;
 }
 
-export type GameState = "menu" | "play" | "gameOver";
+export type GameState = "menu" | "play" | "dying" | "gameOver";
 
 export type SurvivorMovementState = "left" | "right" | "stop";
 

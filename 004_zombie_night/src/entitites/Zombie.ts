@@ -21,6 +21,8 @@ export class Zombie {
 
   private ammoDropChance: number = 20;
 
+  private score: number = 0;
+
   private walkAnimationSpeed = 10;
   private readonly WALK_ANIMATION_FRAME = 6;
   private readonly WALK_ANIMATION_TOTAL_FRAMES = 2;
@@ -44,12 +46,15 @@ export class Zombie {
         this.life = 1;
         this.speed += this.speed * 2;
         this.walkAnimationSpeed = 30;
+        this.score = 20;
         break;
       case "green":
         this.life = 3;
+        this.score = 10;
         break;
       case "red":
         this.life = 5;
+        this.score = 30;
     }
 
     this.currentImage = this.zombieImages[this.getAccessKey(1)] ?? this.zombieImages.zombieGreenLeft1;
@@ -63,6 +68,10 @@ export class Zombie {
 
     this.width = w;
     this.height = h;
+  }
+
+  public getZombieScore(): number {
+    return this.score;
   }
 
   public getDropChance(): number {
