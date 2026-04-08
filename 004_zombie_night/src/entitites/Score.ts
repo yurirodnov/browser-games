@@ -3,9 +3,7 @@ export class Score {
   private highScore: number;
 
   constructor() {
-    const highScoreFromLocalStorage = localStorage.getItem(
-      "zombieNightHightSccore",
-    );
+    const highScoreFromLocalStorage = localStorage.getItem("zombieNightHightSccore");
 
     if (!highScoreFromLocalStorage) {
       this.highScore = 0;

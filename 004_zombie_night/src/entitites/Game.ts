@@ -12,6 +12,7 @@ import { Blood } from "./Blood";
 import { getRandomNumber } from "../lib/GetRandomNumber";
 import { Ammo } from "./Ammo";
 import { ZombieDeath } from "./ZombieDeath";
+import { Score } from "./Score";
 
 export class Game {
   private ctx: CanvasRenderingContext2D;
@@ -59,6 +60,7 @@ export class Game {
   private projectiles: Projectile[] = [];
   private bloods: Blood[] = [];
   private ammo: Ammo[] = [];
+  private score: Score;
 
   constructor(ctx: CanvasRenderingContext2D, assets: Assets, constants: Constants) {
     this.ctx = ctx;
@@ -67,6 +69,8 @@ export class Game {
 
     // SET CHARACTER RESOURCES
     this.bullets = 6;
+
+    this.score = new Score();
 
     // WORLD SIZE
     this.worldSize = this.ctx.canvas.width * 2;
@@ -348,19 +352,32 @@ export class Game {
     } else if (this.gameState === "play") {
       // DRAW BULLET ICON
       this.ctx.drawImage(this.assets.bullet, 35, 20, 30, 60);
+
       this.ctx.font = "25px 'Silkscreen', sans-serif";
       this.ctx.strokeStyle = "black";
       this.ctx.strokeText("x", 90, 55);
       this.ctx.fillStyle = "white";
       this.ctx.fillText("x", 90, 55);
+
       this.ctx.font = "45px 'Silkscreen', sans-serif";
       this.ctx.strokeStyle = "black";
       this.ctx.strokeText(this.bullets.toString(), 130, 60);
       this.ctx.fillStyle = "white";
       this.ctx.fillText(this.bullets.toString(), 130, 60);
 
-      // DRAW LIFE ICON
-      // this.ctx.drawImage(this.assets.life, 20, 100, 60, 50);
+      // DRAW SCORE
+      this.ctx.textAlign = "right";
+
+      this.ctx.font = "35px 'Silkscreen', sans-serif";
+      this.ctx.strokeStyle = "black";
+      this.ctx.strokeText(`score: ${this.score.getScore()}`, this.ctx.canvas.width - 35, 45);
+      this.ctx.fillStyle = "white";
+      this.ctx.fillText(`score: ${this.score.getScore()}`, this.ctx.canvas.width - 35, 45);
+
+      this.ctx.strokeStyle = "black";
+      this.ctx.strokeText(`high score: ${this.score.getHighScore()}`, this.ctx.canvas.width - 35, 85);
+      this.ctx.fillStyle = "white";
+      this.ctx.fillText(`high score: ${this.score.getHighScore()}`, this.ctx.canvas.width - 35, 85);
     } else {
       ////
     }

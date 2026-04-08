@@ -26,6 +26,6 @@ export class ZombieDeath {
   }
 
   public draw(ctx: CanvasRenderingContext2D, worldOffset: number): void {
-    ctx.drawImage(this.image, this.coordX + worldOffset, this.coordY, this.width, this.height);
+    ctx.drawImage(this.image, this.coordX + worldOffset - this.width / 4, this.coordY, this.width, this.height);
   }
 }
