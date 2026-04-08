@@ -2,6 +2,8 @@
 
 Inspired by zombie games. Stay alive, slay zombies.
 
+![Gameplay](screen.jpg)
+
 ## ✨ Game Features
 
 - **Unique assets:** Simple but original assets made by me in a MS Paint
