@@ -461,6 +461,7 @@ export class Game {
         ) {
           this.showBlood(zombie.getCoordX(), zombie.getCoordY());
           this.strike.setDealtDamage();
+          zombie.decreaseLife(1);
         }
       }
     }
@@ -491,6 +492,7 @@ export class Game {
               this.showBlood(zombie.getCoordX(), projectile.getCoordY() - projectile.getHeight() / 2);
               projectile.setDealtDamage();
               projectile.setDead();
+              zombie.decreaseLife(999);
               console.log("SHOOT!");
             }
           }
@@ -516,7 +518,7 @@ export class Game {
     }
 
     if (this.zombies.length > 0) {
-      this.zombies.forEach((z) => z.draw(this.ctx, this.worldOffset));
+      this.zombies.filter((z) => z.getLifePoins() > 0).forEach((z) => z.draw(this.ctx, this.worldOffset));
     }
     if (this.survivorKnifeTimer > 0 && this.strike) {
       this.strike.draw(this.ctx);

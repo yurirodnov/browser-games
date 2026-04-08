@@ -38,6 +38,18 @@ export class Zombie {
     this.side = side;
     this.zombieType = zombieType;
 
+    switch (zombieType) {
+      case "yellow":
+        this.life = 1;
+        this.speed += this.speed * 2;
+        break;
+      case "green":
+        this.life = 2;
+        break;
+      case "red":
+        this.life = 5;
+    }
+
     this.currentImage = this.zombieImages[this.getAccessKey(1)] ?? this.zombieImages.zombieGreenLeft1;
     if (this.side === "left") {
       this.coordX = spawnCoords;
@@ -51,8 +63,8 @@ export class Zombie {
     this.height = h;
   }
 
-  public decreaseLife(): void {
-    this.life -= 1;
+  public decreaseLife(lifeAmount: number): void {
+    this.life -= lifeAmount;
   }
 
   public move(delta: number): void {
@@ -87,6 +99,10 @@ export class Zombie {
 
   public getWidth(): number {
     return this.width;
+  }
+
+  public getLifePoins(): number {
+    return this.life;
   }
 
   private getAccessKey(frame: 1 | 2): keyof ZombiesAssets {
