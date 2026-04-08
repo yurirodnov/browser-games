@@ -10,6 +10,7 @@ import { Zombie } from "./Zombie";
 import { Projectile } from "./Projectile";
 import { Blood } from "./Blood";
 import { getRandomNumber } from "../lib/GetRandomNumber";
+import type { Ammo } from "./Ammo";
 
 export class Game {
   private ctx: CanvasRenderingContext2D;
@@ -53,6 +54,7 @@ export class Game {
   private shoot: Shoot | null = null;
   private projectiles: Projectile[] = [];
   private bloods: Blood[] = [];
+  private ammo: Ammo[] = [];
 
   constructor(ctx: CanvasRenderingContext2D, assets: Assets, constants: Constants) {
     this.ctx = ctx;
@@ -435,8 +437,7 @@ export class Game {
       );
     }
 
-    // STRIKE COLLISION
-
+    // KNIFE COLLISION
     if (this.strike && this.zombies.length > 0 && this.strike.ableToDealDamage()) {
       const strikeWorldX = this.strike.getCoordX() - this.worldOffset;
       const strikeWorldY = this.strike.getCoordY();
@@ -464,8 +465,44 @@ export class Game {
       }
     }
 
+    // PROJECTILE COLLISION
+    if (this.projectiles.length > 0 && this.zombies.length > 0) {
+      for (const projectile of this.projectiles) {
+        if (projectile.ableToDealDamage()) {
+          const projectileWorldX = projectile.getCoordX() - this.worldOffset;
+
+          const projectileLeft = projectileWorldX;
+          const projectileRight = projectileWorldX + projectile.getWidth();
+          const projectileTop = projectile.getCoordY();
+          const projectileBottom = projectile.getCoordY() + projectile.getHeight();
+
+          for (const zombie of this.zombies) {
+            const zombieLeft = zombie.getCoordX();
+            const zombieRight = zombie.getCoordX() + zombie.getWidth();
+            const zombieTop = zombie.getCoordY();
+            const zombieBottom = zombie.getCoordY() + zombie.getHeight();
+
+            if (
+              projectileLeft < zombieRight &&
+              projectileRight > zombieLeft &&
+              projectileTop < zombieBottom &&
+              projectileBottom > zombieTop
+            ) {
+              this.showBlood(zombie.getCoordX(), projectile.getCoordY() - projectile.getHeight() / 2);
+              projectile.setDealtDamage();
+              projectile.setDead();
+              console.log("SHOOT!");
+            }
+          }
+        }
+      }
+    }
+
     this.bloods.forEach((b) => b.startLifeTimer(delta));
     this.bloods = this.bloods.filter((b) => Math.floor(b.getLifeTimer()) !== 0);
+
+    // UPDATE PROJECTILES STATE
+    this.projectiles = this.projectiles.filter((p) => p.checkAlive());
 
     // DRAW ASSETS
     this.background.draw(this.ctx, this.worldOffset);

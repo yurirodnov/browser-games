@@ -8,6 +8,8 @@ export class Projectile {
   private direction: string;
   private alive: boolean;
 
+  private hasDealtDamage: boolean = true;
+
   constructor(img: HTMLImageElement, x: number, y: number, w: number, h: number, direction: string) {
     this.image = img;
     this.coordX = x;
@@ -19,12 +21,36 @@ export class Projectile {
     this.alive = true;
   }
 
+  public setDealtDamage(): void {
+    this.hasDealtDamage = !this.hasDealtDamage;
+  }
+
   public setDead(): void {
-    this.alive = !this.alive;
+    this.alive = false;
+  }
+
+  public ableToDealDamage(): boolean {
+    return this.hasDealtDamage;
   }
 
   public checkAlive(): boolean {
     return this.alive;
+  }
+
+  public getCoordX(): number {
+    return this.coordX;
+  }
+
+  public getCoordY(): number {
+    return this.coordY;
+  }
+
+  public getWidth(): number {
+    return this.width;
+  }
+
+  public getHeight(): number {
+    return this.height;
   }
 
   public move(delta: number, worldSpeed: number = 0): void {
