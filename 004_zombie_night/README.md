@@ -11,7 +11,7 @@ Inspired by zombie games. Stay alive, slay zombies.
 
 ## 🕹️ Controls
 
-- **Arrows** - Move
+- **Left, Right** - Move
 - **A** - Shotgun
 - **D** - Knife
 
