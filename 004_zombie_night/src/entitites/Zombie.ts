@@ -38,13 +38,14 @@ export class Zombie {
     this.side = side;
     this.zombieType = zombieType;
 
+    // SET DIFFRENT AMOUNT LIFE FOR A ZOMBIE
     switch (zombieType) {
       case "yellow":
         this.life = 1;
         this.speed += this.speed * 2;
         break;
       case "green":
-        this.life = 2;
+        this.life = 3;
         break;
       case "red":
         this.life = 5;
@@ -63,8 +64,8 @@ export class Zombie {
     this.height = h;
   }
 
-  public decreaseLife(lifeAmount: number): void {
-    this.life -= lifeAmount;
+  public getDamage(damageAmount: number): void {
+    this.life -= damageAmount;
   }
 
   public move(delta: number): void {
@@ -101,8 +102,12 @@ export class Zombie {
     return this.width;
   }
 
-  public getLifePoins(): number {
+  public getLifePoints(): number {
     return this.life;
+  }
+
+  public isAlive(): boolean {
+    return this.life > 0;
   }
 
   private getAccessKey(frame: 1 | 2): keyof ZombiesAssets {

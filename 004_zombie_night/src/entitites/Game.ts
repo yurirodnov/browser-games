@@ -11,6 +11,7 @@ import { Projectile } from "./Projectile";
 import { Blood } from "./Blood";
 import { getRandomNumber } from "../lib/GetRandomNumber";
 import type { Ammo } from "./Ammo";
+import type { ZombieDeath } from "./ZombieDeath";
 
 export class Game {
   private ctx: CanvasRenderingContext2D;
@@ -55,6 +56,7 @@ export class Game {
   private projectiles: Projectile[] = [];
   private bloods: Blood[] = [];
   private ammo: Ammo[] = [];
+  private zombieDeathAnimation: ZombieDeath[] = [];
 
   constructor(ctx: CanvasRenderingContext2D, assets: Assets, constants: Constants) {
     this.ctx = ctx;
@@ -461,7 +463,8 @@ export class Game {
         ) {
           this.showBlood(zombie.getCoordX(), zombie.getCoordY());
           this.strike.setDealtDamage();
-          zombie.decreaseLife(1);
+          zombie.getDamage(1);
+          console.log("ZOMBIES ALIVE", this.zombies);
         }
       }
     }
@@ -492,8 +495,9 @@ export class Game {
               this.showBlood(zombie.getCoordX(), projectile.getCoordY() - projectile.getHeight() / 2);
               projectile.setDealtDamage();
               projectile.setDead();
-              zombie.decreaseLife(999);
+              zombie.getDamage(999);
               console.log("SHOOT!");
+              console.log("ZOMBIES ALIVE", this.zombies);
             }
           }
         }
@@ -501,10 +505,11 @@ export class Game {
     }
 
     this.bloods.forEach((b) => b.startLifeTimer(delta));
-    this.bloods = this.bloods.filter((b) => Math.floor(b.getLifeTimer()) !== 0);
 
-    // UPDATE PROJECTILES STATE
+    // CLEAR DEAD ENTITIES LISTS
+    this.bloods = this.bloods.filter((b) => Math.floor(b.getLifeTimer()) !== 0);
     this.projectiles = this.projectiles.filter((p) => p.checkAlive());
+    this.zombies = this.zombies.filter((z) => z.isAlive());
 
     // DRAW ASSETS
     this.background.draw(this.ctx, this.worldOffset);
@@ -518,7 +523,7 @@ export class Game {
     }
 
     if (this.zombies.length > 0) {
-      this.zombies.filter((z) => z.getLifePoins() > 0).forEach((z) => z.draw(this.ctx, this.worldOffset));
+      this.zombies.filter((z) => z.getLifePoints() > 0).forEach((z) => z.draw(this.ctx, this.worldOffset));
     }
     if (this.survivorKnifeTimer > 0 && this.strike) {
       this.strike.draw(this.ctx);
@@ -528,7 +533,7 @@ export class Game {
     }
 
     if (this.bloods.length > 0) {
-      this.bloods.filter((b) => b.getLifeTimer() !== 0).forEach((b) => b.draw(this.ctx, this.worldOffset));
+      this.bloods.forEach((b) => b.draw(this.ctx, this.worldOffset));
     }
 
     // DRAW UI
