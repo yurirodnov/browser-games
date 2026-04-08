@@ -10,7 +10,7 @@ import { Zombie } from "./Zombie";
 import { Projectile } from "./Projectile";
 import { Blood } from "./Blood";
 import { getRandomNumber } from "../lib/GetRandomNumber";
-import type { Ammo } from "./Ammo";
+import { Ammo } from "./Ammo";
 import { ZombieDeath } from "./ZombieDeath";
 
 export class Game {
@@ -26,6 +26,7 @@ export class Game {
   private worldOffset: number = 0;
   private maxWorldOffset: number = 0;
 
+  private isSurvivorSurvived: boolean;
   private survivorMovementState: SurvivorMovementState = "stop";
   private survivorMovementSpeed: number = 280;
   private lastDirection: string = "left";
@@ -37,10 +38,11 @@ export class Game {
   private survivorShootTimer: number = 0;
   private survivorShootCooldown: number = 0;
   private bullets: number;
+  private zombieBufferHibox: number = 40;
 
   private zombies: Zombie[] = [];
   private zombieDeathAnimation: ZombieDeath[] = [];
-  private zombieSpawnInterval: number = 70;
+  private zombieSpawnInterval: number = 35;
   private zombieSpawnTimer: number = 0;
   private zombieSpawnSpeed: number = 10;
   private zombieSpawnSides: string[] = ["left", "right"];
@@ -106,21 +108,22 @@ export class Game {
       this.constants.playerHeight,
       this.constants.shootSize,
     );
+    this.isSurvivorSurvived = true;
 
     window.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
+      if (e.key === "ArrowLeft" && this.isSurvivorSurvived) {
         this.lastDirection = "left";
         this.survivorMovementState = "left";
       }
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") {
+      if (e.key === "ArrowRight" && this.isSurvivorSurvived) {
         this.lastDirection = "right";
         this.survivorMovementState = "right";
       }
     });
     window.addEventListener("keyup", (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+      if (e.key === "ArrowLeft" || (e.key === "ArrowRight" && this.isSurvivorSurvived)) {
         this.survivorMovementState = "stop";
       }
     });
@@ -129,6 +132,7 @@ export class Game {
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (
         e.key === "d" &&
+        this.isSurvivorSurvived &&
         this.survivorMovementState === "stop" &&
         this.survivorWeaponState === "shotgun" &&
         this.survivorKnifeCooldown <= 0
@@ -141,6 +145,7 @@ export class Game {
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (
         e.key === "a" &&
+        this.isSurvivorSurvived &&
         this.survivorMovementState === "stop" &&
         this.survivorWeaponState === "shotgun" &&
         this.survivorShootCooldown <= 0 &&
@@ -160,10 +165,33 @@ export class Game {
     this.loop(0);
   }
 
+  private dropAmmo(chance: number, x: number, y: number): void {
+    const randomNumber: number = getRandomNumber(1, 100);
+
+    if (randomNumber <= chance) {
+      const ammoBox = new Ammo(this.assets.ammo, x, y, this.constants.ammoSize);
+      this.ammo.push(ammoBox);
+
+      console.log(`AMMO DROPPED AT X ${ammoBox.getCoordX()} AND ITS WIDTH IS ${ammoBox.getWidth()}`);
+    }
+
+    return;
+  }
+
+  private pickAmmo(ammoBox: Ammo): void {
+    this.bullets += 1;
+    ammoBox.setPicked();
+  }
+
   private showBlood(coordX: number, coordY: number): void {
     const blood = new Blood(this.assets.blood, coordX, coordY, this.constants.bloodSize);
     this.bloods.push(blood);
     console.log("BLOODZ", this.bloods);
+  }
+
+  private handleSurvivorDeath(): void {
+    this.isSurvivorSurvived = false;
+    this.survivorMovementState = "stop";
   }
 
   private showZombieDeath(x: number, y: number): void {
@@ -432,7 +460,13 @@ export class Game {
     this.survivor.changeDirection(this.survivorMovementState);
 
     // ANIMATE SURVIVOR
-    this.survivor.changeAnimation(this.survivorWeaponState, this.survivorMovementState, delta, this.lastDirection);
+    this.survivor.changeAnimation(
+      this.survivorWeaponState,
+      this.survivorMovementState,
+      delta,
+      this.lastDirection,
+      this.isSurvivorSurvived,
+    );
 
     // MOVE SURVIVOR
     if (this.worldOffset >= 0 || this.worldOffset <= this.maxWorldOffset) {
@@ -472,7 +506,13 @@ export class Game {
           const zombieStillAlive = zombie.isAlive();
           if (!zombieStillAlive) {
             this.showZombieDeath(zombie.getCoordX(), zombie.getCoordY());
+            this.dropAmmo(
+              zombie.getDropChance(),
+              zombieLeft + zombie.getWidth() / 2,
+              zombieBottom - this.constants.ammoSize,
+            );
           }
+
           console.log("ZOMBIES ALIVE", this.zombies);
         }
       }
@@ -508,7 +548,13 @@ export class Game {
               const zombieStillAlive = zombie.isAlive();
               if (!zombieStillAlive) {
                 this.showZombieDeath(zombie.getCoordX(), zombie.getCoordY());
+                this.dropAmmo(
+                  zombie.getDropChance(),
+                  zombieLeft + zombie.getWidth() / 2,
+                  zombieBottom - this.constants.ammoSize,
+                );
               }
+
               console.log("SHOOT!");
               console.log("ZOMBIES ALIVE", this.zombies);
             }
@@ -517,6 +563,45 @@ export class Game {
       }
     }
 
+    // SURVIVOR COLLISION
+
+    if (this.survivor && this.isSurvivorSurvived && this.zombies.length > 0) {
+      const survivorLeft = this.survivor.getCoordX() - this.worldOffset;
+      const survivorRight = this.survivor.getCoordX() - this.worldOffset + this.survivor.getWidth();
+
+      for (const zombie of this.zombies) {
+        const zombieLeft = zombie.getCoordX();
+        const zombieRight = zombie.getCoordX() + zombie.getWidth();
+
+        if (
+          (zombieLeft > survivorLeft && zombieLeft < survivorRight - this.zombieBufferHibox) ||
+          (zombieRight > survivorLeft + this.zombieBufferHibox && zombieRight < survivorRight)
+        ) {
+          this.handleSurvivorDeath();
+          console.log("DEATH DEATH DEATH");
+        }
+      }
+    }
+
+    // AMMO BOX COLLSION
+    if (this.ammo.length > 0 && this.survivor && this.isSurvivorSurvived) {
+      const survivorLeft = this.survivor.getCoordX() - this.worldOffset;
+      const survivorRight = this.survivor.getCoordX() - this.worldOffset + this.survivor.getWidth();
+
+      for (const ammoBox of this.ammo) {
+        const ammoBoxLeft = ammoBox.getCoordX();
+        const ammoBoxRight = ammoBox.getCoordX() + ammoBox.getWidth();
+
+        if (
+          (ammoBoxLeft < survivorLeft && ammoBoxRight > survivorLeft) ||
+          (ammoBoxLeft < survivorRight && ammoBoxLeft > survivorLeft)
+        ) {
+          this.pickAmmo(ammoBox);
+        }
+      }
+    }
+
+    // SET EFFECTS TIMER
     this.bloods.forEach((b) => b.startLifeTimer(delta));
     this.zombieDeathAnimation.forEach((animation) => animation.startLifeTimer(delta));
 
@@ -527,6 +612,7 @@ export class Game {
     );
     this.projectiles = this.projectiles.filter((p) => p.checkAlive());
     this.zombies = this.zombies.filter((z) => z.isAlive());
+    this.ammo = this.ammo.filter((a) => !a.getWasPicked());
 
     // DRAW ASSETS
     this.background.draw(this.ctx, this.worldOffset);
@@ -559,6 +645,10 @@ export class Game {
 
     if (this.zombieDeathAnimation.length > 0) {
       this.zombieDeathAnimation.forEach((death) => death.draw(this.ctx, this.worldOffset));
+    }
+
+    if (this.ammo.length > 0) {
+      this.ammo.forEach((a) => a.draw(this.ctx, this.worldOffset));
     }
 
     // DRAW UI

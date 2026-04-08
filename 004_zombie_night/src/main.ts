@@ -19,6 +19,7 @@ const constants: Constants = {
   shootSize: 40,
   bloodSize: 80,
   zombieDeathSize: 200,
+  ammoSize: 50,
 };
 
 canvas.width = constants.tileSize * 18;
@@ -57,6 +58,8 @@ export const main = async () => {
     AssetsLoader.loadAsset("zombieRedRight2", "assets/zombie_red_right_2.png"),
     AssetsLoader.loadAsset("blood", "assets/blood.png"),
     AssetsLoader.loadAsset("zombieDeath", "assets/zombie_death.png"),
+    AssetsLoader.loadAsset("survivorDeath", "assets/survivor_dead.png"),
+    AssetsLoader.loadAsset("ammo", "assets/ammo.png"),
   ]);
 
   const survivorAssets: SurvivorAssets = {
@@ -68,6 +71,7 @@ export const main = async () => {
     survivorKnifeRight: AssetsLoader.getAsset("survivorKnifeRight"),
     survivorWalk1Right: AssetsLoader.getAsset("survivorWalk1Right"),
     survivorWalk2Right: AssetsLoader.getAsset("survivorWalk2Right"),
+    survivorDeath: AssetsLoader.getAsset("survivorDeath"),
   };
 
   const strikeAssets: StrikeAssets = {
@@ -107,6 +111,7 @@ export const main = async () => {
     projectile: AssetsLoader.getAsset("projectile"),
     blood: AssetsLoader.getAsset("blood"),
     zombieDeath: AssetsLoader.getAsset("zombieDeath"),
+    ammo: AssetsLoader.getAsset("ammo"),
   };
 
   new Game(ctx, assets, constants);

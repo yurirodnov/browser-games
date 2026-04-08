@@ -84,28 +84,38 @@ export class Survivor {
     }
   }
 
-  public changeAnimation(weaponState: string, movementState: string, delta: number, lastDirection: string): void {
-    // WALK ANIMATION
-    if (movementState === "left" || movementState === "right") {
-      this.walkTimer += this.WALK_ANIMATION_SPEED * delta;
-      const frameIndex = Math.floor(this.walkTimer / this.WALK_FRAME_DURATION) % this.WALK_TOTAL_FRAMES;
-      const isLeft = movementState === "left";
-      if (frameIndex === 0) {
-        this.currentImage = isLeft ? this.survivorImages.survivorWalk1Left : this.survivorImages.survivorWalk1Right;
+  public changeAnimation(
+    weaponState: string,
+    movementState: string,
+    delta: number,
+    lastDirection: string,
+    alive: boolean,
+  ): void {
+    if (alive) {
+      // WALK ANIMATION
+      if (movementState === "left" || movementState === "right") {
+        this.walkTimer += this.WALK_ANIMATION_SPEED * delta;
+        const frameIndex = Math.floor(this.walkTimer / this.WALK_FRAME_DURATION) % this.WALK_TOTAL_FRAMES;
+        const isLeft = movementState === "left";
+        if (frameIndex === 0) {
+          this.currentImage = isLeft ? this.survivorImages.survivorWalk1Left : this.survivorImages.survivorWalk1Right;
+        } else {
+          this.currentImage = isLeft ? this.survivorImages.survivorWalk2Left : this.survivorImages.survivorWalk2Right;
+        }
+
+        // KNIFE ANIMATION
+      } else if (weaponState === "knife") {
+        this.currentImage =
+          lastDirection === "left" ? this.survivorImages.survivorKnifeLeft : this.survivorImages.survivorKnifeRight;
+
+        // JUST STOP ANIMATION
       } else {
-        this.currentImage = isLeft ? this.survivorImages.survivorWalk2Left : this.survivorImages.survivorWalk2Right;
+        this.walkTimer = 0;
+        this.currentImage =
+          lastDirection === "left" ? this.survivorImages.survivorLeft : this.survivorImages.survivorRight;
       }
-
-      // KNIFE ANIMATION
-    } else if (weaponState === "knife") {
-      this.currentImage =
-        lastDirection === "left" ? this.survivorImages.survivorKnifeLeft : this.survivorImages.survivorKnifeRight;
-
-      // JUST STOP ANIMATION
     } else {
-      this.walkTimer = 0;
-      this.currentImage =
-        lastDirection === "left" ? this.survivorImages.survivorLeft : this.survivorImages.survivorRight;
+      this.currentImage = this.survivorImages.survivorDeath;
     }
   }
 

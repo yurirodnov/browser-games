@@ -65,6 +65,10 @@ export class Zombie {
     this.height = h;
   }
 
+  public getDropChance(): number {
+    return this.ammoDropChance;
+  }
+
   public getDamage(damageAmount: number): void {
     this.life -= damageAmount;
   }

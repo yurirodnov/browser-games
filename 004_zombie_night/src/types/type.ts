@@ -7,6 +7,7 @@ export interface SurvivorAssets {
   survivorKnifeRight: HTMLImageElement;
   survivorWalk1Right: HTMLImageElement;
   survivorWalk2Right: HTMLImageElement;
+  survivorDeath: HTMLImageElement;
 }
 
 export interface ZombiesAssets {
@@ -46,6 +47,7 @@ export interface Assets {
   projectile: HTMLImageElement;
   blood: HTMLImageElement;
   zombieDeath: HTMLImageElement;
+  ammo: HTMLImageElement;
 }
 
 export interface Constants {
@@ -57,6 +59,7 @@ export interface Constants {
   shootSize: number;
   bloodSize: number;
   zombieDeathSize: number;
+  ammoSize: number;
 }
 
 export interface ZombyBodySize {
