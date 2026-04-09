@@ -1,4 +1,4 @@
-# :green_square::green_square::green_square: Tetris
+# :green_square::red_square::yellow_square::blue_square: Tetris
 
 Inspired by zombie games. Stay alive, slay zombies.
 
