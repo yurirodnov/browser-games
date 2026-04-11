@@ -1,4 +1,4 @@
-export class AssetsLoader {
+export class ImagesLoader {
   private static images: Map<string, HTMLImageElement> = new Map();
 
   static async loadAsset(key: string, src: string): Promise<void> {
