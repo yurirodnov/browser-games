@@ -16,7 +16,7 @@ export class ImagesLoader {
     });
   }
 
-  static getAsset(key: string) {
+  static getAsset(key: string): HTMLImageElement {
     const img = this.images.get(key);
     if (!img) {
       throw new Error(`No image "${key}"`);
