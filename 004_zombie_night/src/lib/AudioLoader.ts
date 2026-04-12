@@ -2,10 +2,10 @@ export class AudioLoader {
   private static sounds: Map<string, HTMLAudioElement> = new Map();
 
   static async loadAsset(key: string, src: string): Promise<void> {
-    return new Promise((reject, resolve) => {
+    return new Promise((resolve, reject) => {
       const audio = new Audio();
 
-      audio.onload = () => {
+      audio.oncanplaythrough = () => {
         this.sounds.set(key, audio);
         return resolve();
       };

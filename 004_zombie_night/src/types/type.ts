@@ -48,6 +48,7 @@ export interface Assets {
   blood: HTMLImageElement;
   zombieDeath: HTMLImageElement;
   ammo: HTMLImageElement;
+  sounds: SoundsAssets;
 }
 
 export interface Constants {
@@ -65,6 +66,11 @@ export interface Constants {
 export interface ZombyBodySize {
   leftEdge: number;
   rightEdge: number;
+}
+
+export interface SoundsAssets {
+  shootSound: HTMLAudioElement;
+  zombiePunchSound: HTMLAudioElement;
 }
 
 export type GameState = "menu" | "play" | "dying" | "gameOver";

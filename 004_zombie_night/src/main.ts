@@ -1,6 +1,15 @@
-import type { Assets, Constants, StrikeAssets, ShootAssets, SurvivorAssets, ZombiesAssets } from "./types/type";
+import type {
+  Assets,
+  Constants,
+  StrikeAssets,
+  ShootAssets,
+  SurvivorAssets,
+  ZombiesAssets,
+  SoundsAssets,
+} from "./types/type";
 import { Game } from "./entitites/Game";
 import { ImagesLoader } from "./lib/ImagesLoader";
+import { AudioLoader } from "./lib/AudioLoader";
 import "./style.css";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `<canvas id="canvas"></canvas>`;
@@ -60,6 +69,8 @@ export const main = async () => {
     ImagesLoader.loadAsset("zombieDeath", "assets/zombie_death.png"),
     ImagesLoader.loadAsset("survivorDeath", "assets/survivor_dead.png"),
     ImagesLoader.loadAsset("ammo", "assets/ammo.png"),
+    AudioLoader.loadAsset("shootSound", "sounds/shoot.wav"),
+    AudioLoader.loadAsset("zombiePunchSound", "sounds/zombie_punch.wav"),
   ]);
 
   const survivorAssets: SurvivorAssets = {
@@ -99,6 +110,11 @@ export const main = async () => {
     zombieRedRight2: ImagesLoader.getAsset("zombieRedRight2"),
   };
 
+  const soundsAssets: SoundsAssets = {
+    shootSound: AudioLoader.getAsset("shootSound"),
+    zombiePunchSound: AudioLoader.getAsset("zombiePunchSound"),
+  };
+
   const assets: Assets = {
     survivor: survivorAssets,
     zombies: zombiesAssets,
@@ -112,6 +128,7 @@ export const main = async () => {
     blood: ImagesLoader.getAsset("blood"),
     zombieDeath: ImagesLoader.getAsset("zombieDeath"),
     ammo: ImagesLoader.getAsset("ammo"),
+    sounds: soundsAssets,
   };
 
   new Game(ctx, assets, constants);

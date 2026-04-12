@@ -1,6 +1,13 @@
 // 004_zombie_night/src/entities/Game.ts
 
-import type { Assets, Constants, GameState, SurvivorMovementState, SurvivorWeaponState } from "../types/type";
+import type {
+  Assets,
+  Constants,
+  GameState,
+  SoundsAssets,
+  SurvivorMovementState,
+  SurvivorWeaponState,
+} from "../types/type";
 import { Background } from "./Background";
 import { GroundTile } from "./GroundTile";
 import { Survivor } from "./Survivor";
@@ -68,6 +75,7 @@ export class Game {
   constructor(ctx: CanvasRenderingContext2D, assets: Assets, constants: Constants) {
     this.ctx = ctx;
     this.assets = assets;
+
     this.constants = constants;
 
     // SET CHARACTER RESOURCES
@@ -135,7 +143,8 @@ export class Game {
         this.isSurvivorSurvived &&
         this.survivorMovementState === "stop" &&
         this.survivorWeaponState === "shotgun" &&
-        this.survivorKnifeCooldown <= 0
+        this.survivorKnifeCooldown <= 0 &&
+        this.gameState === "play"
       ) {
         this.useKnife();
         // console.log("Last direction", this.lastDirection);
@@ -149,7 +158,8 @@ export class Game {
         this.survivorMovementState === "stop" &&
         this.survivorWeaponState === "shotgun" &&
         this.survivorShootCooldown <= 0 &&
-        this.bullets > 0
+        this.bullets > 0 &&
+        this.gameState === "play"
       ) {
         this.useShotgun();
       }
@@ -319,6 +329,9 @@ export class Game {
       this.projectiles.push(projectile);
     }
 
+    const shootSound = this.assets.sounds.shootSound;
+    shootSound.play();
+
     this.bullets -= 1;
   }
 
@@ -372,15 +385,15 @@ export class Game {
 
       this.ctx.font = "75px 'Silkscreen', sans-serif";
       this.ctx.strokeStyle = "white";
-      this.ctx.strokeText(`ZOMBIE NIGHT`, this.ctx.canvas.width / 2, this.ctx.canvas.height / 4);
+      this.ctx.strokeText(`ZOMBIE NIGHT`, this.ctx.canvas.width / 2, this.ctx.canvas.height / 2);
       this.ctx.fillStyle = "red";
-      this.ctx.fillText(`ZOMBIE NIGHT`, this.ctx.canvas.width / 2, this.ctx.canvas.height / 4);
+      this.ctx.fillText(`ZOMBIE NIGHT`, this.ctx.canvas.width / 2, this.ctx.canvas.height / 2);
 
       this.ctx.font = "25px 'Silkscreen', sans-serif";
       this.ctx.strokeStyle = "black";
-      this.ctx.strokeText(`click to play`, this.ctx.canvas.width / 2, this.ctx.canvas.height / 4 + 50);
+      this.ctx.strokeText(`click to play`, this.ctx.canvas.width / 2, this.ctx.canvas.height / 2 + 50);
       this.ctx.fillStyle = "white";
-      this.ctx.fillText(`click to play`, this.ctx.canvas.width / 2, this.ctx.canvas.height / 4 + 50);
+      this.ctx.fillText(`click to play`, this.ctx.canvas.width / 2, this.ctx.canvas.height / 2 + 50);
     } else if (this.gameState === "play") {
       // DRAW BULLET ICON
       this.ctx.textAlign = "left";
@@ -592,6 +605,8 @@ export class Game {
             strikeTop < zombieBottom
           ) {
             this.showBlood(zombie.getCoordX(), zombie.getCoordY());
+            const zombiePunchSound = this.assets.sounds.zombiePunchSound;
+            zombiePunchSound.play();
             this.strike.setDealtDamage();
             zombie.getDamage(1);
             const zombieStillAlive = zombie.isAlive();
