@@ -6,7 +6,7 @@ Inspired by zombie games. Stay alive, slay zombies.
 
 ## ✨ Game Features
 
-- **Unique assets:** Simple but original pics assets made by me in a MS Paint. Thank for sounds to https://pixabay.com/ :heart:
+- **Unique graphic assets:** Pics assets made by me in a MS Paint. Thanks for sounds to https://pixabay.com/ :heart:
 - **Score:** High scores are saved to browser local storage
 - **Survival horror:** Lack of bullets, hordes of enemies and you have only one life
 - **Diffrent zombies:** Reds are tanky, yellows fast and greens are chill average guys

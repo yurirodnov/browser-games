@@ -8,7 +8,7 @@ I copy famous arcade games like a Flappy Bird, Alien Invasion etc. and also crea
 
 ## ✨ Key Features
 
-- **Original assets:** Starting from Zombie Night game i paint my own in GIMP, Paint etc.
+- **Original graphic assets:** Starting from Zombie Night game i paint my own in GIMP, Paint etc.
 - **Hand-written code:** No AI generated code in games. Only this README :robot:
 - **State Management:** LocalStorage integration for high scores and persistent game state.
 - **Minimum tools:** No frameworks, no extra libraries. Only HTML5, CSS, TypeScript and Vite.
