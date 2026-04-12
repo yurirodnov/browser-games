@@ -214,6 +214,9 @@ export class Game {
   private handleSurvivorDeath(): void {
     const survivorScreamSound = this.assets.sounds.survivorScreamSound;
     survivorScreamSound.play();
+    const zombieEatSound = this.assets.sounds.zombieEatSound;
+    zombieEatSound.play();
+
     this.isSurvivorSurvived = false;
     this.survivorMovementState = "stop";
     this.gameState = "dying";
@@ -723,6 +726,8 @@ export class Game {
             (ammoBoxLeft < survivorLeft && ammoBoxRight > survivorLeft) ||
             (ammoBoxLeft < survivorRight && ammoBoxLeft > survivorLeft)
           ) {
+            const ammoPickupSound = this.assets.sounds.ammoPickupSound;
+            ammoPickupSound.play();
             this.pickAmmo(ammoBox);
           }
         }
