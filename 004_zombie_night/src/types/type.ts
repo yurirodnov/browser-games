@@ -72,6 +72,8 @@ export interface SoundsAssets {
   shootSound: HTMLAudioElement;
   zombiePunchSound: HTMLAudioElement;
   knifeSwingSound: HTMLAudioElement;
+  survivorScreamSound: HTMLAudioElement;
+  zombieScreamSound: HTMLAudioElement;
 }
 
 export type GameState = "menu" | "play" | "dying" | "gameOver";

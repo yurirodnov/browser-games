@@ -212,6 +212,8 @@ export class Game {
   }
 
   private handleSurvivorDeath(): void {
+    const survivorScreamSound = this.assets.sounds.survivorScreamSound;
+    survivorScreamSound.play();
     this.isSurvivorSurvived = false;
     this.survivorMovementState = "stop";
     this.gameState = "dying";
@@ -607,8 +609,12 @@ export class Game {
             strikeTop < zombieBottom
           ) {
             this.showBlood(zombie.getCoordX(), zombie.getCoordY());
+            // SOUNDS PLAY
             const zombiePunchSound = this.assets.sounds.zombiePunchSound;
             zombiePunchSound.play();
+            const zombieScreamSound = this.assets.sounds.zombieScreamSound;
+            zombieScreamSound.play();
+
             this.strike.setDealtDamage();
             zombie.getDamage(1);
             const zombieStillAlive = zombie.isAlive();
@@ -655,6 +661,11 @@ export class Game {
                 projectileBottom > zombieTop
               ) {
                 this.showBlood(zombie.getCoordX(), projectile.getCoordY() - projectile.getHeight() / 2);
+                // SOUNDS PLAY
+                const zombiePunchSound = this.assets.sounds.zombiePunchSound;
+                zombiePunchSound.play();
+                const zombieScreamSound = this.assets.sounds.zombieScreamSound;
+                zombieScreamSound.play();
                 projectile.setDealtDamage();
                 projectile.setDead();
                 zombie.getDamage(999);
