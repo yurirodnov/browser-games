@@ -245,6 +245,8 @@ export class Game {
 
   // USE WEAPON METHODS
   private useKnife(): void {
+    const knifeSwingSound = this.assets.sounds.knifeSwingSound;
+    knifeSwingSound.play();
     this.survivorWeaponState = "knife";
     this.survivorKnifeTimer = 0.2;
     this.survivorKnifeCooldown = 1.3;

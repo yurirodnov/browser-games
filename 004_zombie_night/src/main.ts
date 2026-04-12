@@ -71,6 +71,7 @@ export const main = async () => {
     ImagesLoader.loadAsset("ammo", "assets/ammo.png"),
     AudioLoader.loadAsset("shootSound", "sounds/shoot.wav"),
     AudioLoader.loadAsset("zombiePunchSound", "sounds/zombie_punch.wav"),
+    AudioLoader.loadAsset("knifeSwingSound", "sounds/knife_swing.wav"),
   ]);
 
   const survivorAssets: SurvivorAssets = {
@@ -113,6 +114,7 @@ export const main = async () => {
   const soundsAssets: SoundsAssets = {
     shootSound: AudioLoader.getAsset("shootSound"),
     zombiePunchSound: AudioLoader.getAsset("zombiePunchSound"),
+    knifeSwingSound: AudioLoader.getAsset("knifeSwingSound"),
   };
 
   const assets: Assets = {

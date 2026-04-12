@@ -71,6 +71,7 @@ export interface ZombyBodySize {
 export interface SoundsAssets {
   shootSound: HTMLAudioElement;
   zombiePunchSound: HTMLAudioElement;
+  knifeSwingSound: HTMLAudioElement;
 }
 
 export type GameState = "menu" | "play" | "dying" | "gameOver";
