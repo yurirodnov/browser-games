@@ -5,5 +5,8 @@ export class Figure {
   private brick: Brick;
   private figureType: FigureType;
 
-  constructor() {}
+  constructor(brick: Brick, figureType: FigureType) {
+    this.brick = brick;
+    this.figureType = figureType;
+  }
 }
