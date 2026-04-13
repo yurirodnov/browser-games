@@ -2,8 +2,17 @@ export interface GameConstants {
   brickSize: number;
 }
 
+export interface BricksAssets {
+  red: HTMLImageElement;
+  green: HTMLImageElement;
+  blue: HTMLImageElement;
+  yellow: HTMLImageElement;
+  purple: HTMLImageElement;
+  orange: HTMLImageElement;
+}
+
 export interface PicsAssets {
-  brick: HTMLImageElement;
+  bricks: BricksAssets;
 }
 
 export interface SoundsAssets {}
