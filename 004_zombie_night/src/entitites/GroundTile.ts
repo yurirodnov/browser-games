@@ -1,5 +1,3 @@
-import type { MovementState } from "../types/type";
-
 export class GroundTile {
   private image: HTMLImageElement;
   private coordX: number;
@@ -7,13 +5,7 @@ export class GroundTile {
   private width: number;
   private height: number;
 
-  constructor(
-    img: HTMLImageElement,
-    x: number,
-    y: number,
-    w: number,
-    h: number,
-  ) {
+  constructor(img: HTMLImageElement, x: number, y: number, w: number, h: number) {
     this.image = img;
     this.coordX = x;
     this.coordY = y;
@@ -21,19 +13,7 @@ export class GroundTile {
     this.height = h;
   }
 
-  // public update(delta: number, movementState: MovementState) {
-  //   if(movementState === "left"){
-
-  //   }
-  // }
-
   public draw(ctx: CanvasRenderingContext2D, offset: number) {
-    ctx.drawImage(
-      this.image,
-      this.coordX + offset,
-      this.coordY,
-      this.width,
-      this.height,
-    );
+    ctx.drawImage(this.image, this.coordX + offset, this.coordY, this.width, this.height);
   }
 }

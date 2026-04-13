@@ -1,13 +1,6 @@
 // 004_zombie_night/src/entities/Game.ts
 
-import type {
-  Assets,
-  Constants,
-  GameState,
-  SoundsAssets,
-  SurvivorMovementState,
-  SurvivorWeaponState,
-} from "../types/type";
+import type { Assets, Constants, GameState, SurvivorMovementState, SurvivorWeaponState } from "../types/type";
 import { Background } from "./Background";
 import { GroundTile } from "./GroundTile";
 import { Survivor } from "./Survivor";
