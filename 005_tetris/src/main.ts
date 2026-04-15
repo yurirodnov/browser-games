@@ -13,12 +13,12 @@ if (!ctx) {
 }
 
 const gameConstants: GameConstants = {
-  brickSize: 30,
+  brickSize: 20,
   infoBoardSize: 100,
 };
 
 canvas.width = gameConstants.brickSize * 10 + gameConstants.infoBoardSize;
-canvas.height = gameConstants.brickSize * 17;
+canvas.height = gameConstants.brickSize * 20;
 
 const main = async () => {
   await Promise.all([
