@@ -1,7 +1,7 @@
-export class AssetsLoader {
+export class ImagesLoader {
   private static images: Map<string, HTMLImageElement> = new Map();
 
-  static async loadAssets(key: string, src: string): Promise<void> {
+  static async loadAsset(key: string, src: string): Promise<void> {
     return new Promise((resolve, reject) => {
       const img = new Image();
 
@@ -17,5 +17,15 @@ export class AssetsLoader {
 
       img.src = src;
     });
+  }
+
+  static getAsset(key: string): HTMLImageElement {
+    const img = this.images.get(key);
+
+    if (!img) {
+      throw new Error(`No image ${key}`);
+    }
+
+    return img;
   }
 }

@@ -1,5 +1,6 @@
 export interface GameConstants {
   brickSize: number;
+  infoBoardSize: number;
 }
 
 export interface BricksAssets {
@@ -25,4 +26,4 @@ export type GameScreenState = "menu" | "play" | "gameOver";
 
 export type BrickColor = "red" | "green" | "blue" | "yellow" | "orange" | "purple";
 
-export type FigureType = "S" | "Z" | "O" | "L" | "R" | "I";
+export type FigureType = "S" | "Z" | "O" | "L" | "J" | "I" | "T";

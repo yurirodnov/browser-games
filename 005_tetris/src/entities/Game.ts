@@ -1,6 +1,6 @@
 import type { GameAssets, GameConstants, GameScreenState } from "../types/types";
 
-export class Games {
+export class Game {
   private assets: GameAssets;
   private constants: GameConstants;
   private ctx: CanvasRenderingContext2D;
