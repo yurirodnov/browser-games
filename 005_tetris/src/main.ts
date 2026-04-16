@@ -28,6 +28,7 @@ const main = async () => {
     ImagesLoader.loadAsset("brick_yellow", "assets/pics/brick_yellow.png"),
     ImagesLoader.loadAsset("brick_purple", "assets/pics/brick_purple.png"),
     ImagesLoader.loadAsset("brick_orange", "assets/pics/brick_orange.png"),
+    ImagesLoader.loadAsset("background", "assets/pics/background.png"),
   ]);
 
   const brickAssets: BricksAssets = {
@@ -41,6 +42,7 @@ const main = async () => {
 
   const picsAssets: PicsAssets = {
     bricks: brickAssets,
+    background: ImagesLoader.getAsset("background"),
   };
 
   const gameAssets: GameAssets = {

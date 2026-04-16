@@ -14,6 +14,7 @@ export interface BricksAssets {
 
 export interface PicsAssets {
   bricks: BricksAssets;
+  background: HTMLImageElement;
 }
 
 export interface SoundsAssets {}
