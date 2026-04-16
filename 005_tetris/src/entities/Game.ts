@@ -1,5 +1,6 @@
 import type { GameAssets, GameConstants, GameScreenState } from "../types/types";
 import type { Brick } from "./Brick";
+import { Background } from "./Background";
 
 export class Game {
   private assets: GameAssets;
@@ -11,18 +12,31 @@ export class Game {
   private lastAnimationFrameTime: number = 0;
   private bricks: Brick[] = [];
 
+  private background: Background;
+
   constructor(assets: GameAssets, constants: GameConstants, ctx: CanvasRenderingContext2D) {
     this.assets = assets;
     this.constants = constants;
     this.ctx = ctx;
 
-    window.addEventListener("keydown", (e: KeyboardEvent) => {});
+    this.background = new Background(
+      this.assets.picsAssets.background,
+      0,
+      0,
+      this.ctx.canvas.width,
+      this.ctx.canvas.height,
+    );
 
     window.addEventListener("keydown", (e: KeyboardEvent) => {});
 
     window.addEventListener("keydown", (e: KeyboardEvent) => {});
 
     window.addEventListener("keydown", (e: KeyboardEvent) => {});
+
+    window.addEventListener("keydown", (e: KeyboardEvent) => {});
+
+    this.isRunningGameplay = true;
+    this.loop(0);
   }
 
   public createFigure(): void {}
@@ -41,6 +55,9 @@ export class Game {
     if (!this.isRunningGameplay) {
       return;
     }
+
+    // DRAW OBJECTS
+    this.background.draw(this.ctx);
 
     this.animationID = requestAnimationFrame(this.loop);
   }

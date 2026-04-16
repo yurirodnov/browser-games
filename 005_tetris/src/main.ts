@@ -13,7 +13,7 @@ if (!ctx) {
 }
 
 const gameConstants: GameConstants = {
-  brickSize: 20,
+  brickSize: 25,
   infoBoardSize: 100,
 };
 
