@@ -27,7 +27,26 @@ export class Game {
       this.ctx.canvas.height,
     );
 
-    window.addEventListener("keydown", (e: KeyboardEvent) => {});
+    window.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") {
+        console.log("Left");
+      }
+    });
+    window.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") {
+        console.log("Right");
+      }
+    });
+    window.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.key === "ArrowUp") {
+        console.log("Rotate");
+      }
+    });
+    window.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.key === "ArrowDown") {
+        console.log("Fall");
+      }
+    });
 
     window.addEventListener("keydown", (e: KeyboardEvent) => {});
 
@@ -51,7 +70,7 @@ export class Game {
     this.isRunningGameplay = false;
   }
 
-  public loop(timestamp: number): void {
+  public loop = (timestamp: number): void => {
     if (!this.isRunningGameplay) {
       return;
     }
@@ -60,5 +79,5 @@ export class Game {
     this.background.draw(this.ctx);
 
     this.animationID = requestAnimationFrame(this.loop);
-  }
+  };
 }
