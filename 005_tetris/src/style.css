@@ -21,7 +21,7 @@ body {
   font-family: "Silkscreen";
 }
 
-#appWrapper {
+#app-wrapper {
   margin-top: 30px;
   display: flex;
   flex-direction: column;
@@ -29,14 +29,18 @@ body {
   gap: 20px;
 }
 
+#game-wrapper {
+  display: flex;
+}
+
 #app {
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 1px solid #fff;
 }
 
 #canvas {
-  border: 1px solid #fff;
   display: block;
   cursor: pointer;
   image-rendering: pixelated;

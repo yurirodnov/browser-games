@@ -1,6 +1,5 @@
 export interface GameConstants {
   brickSize: number;
-  infoBoardSize: number;
 }
 
 export interface BricksAssets {
@@ -15,6 +14,7 @@ export interface BricksAssets {
 export interface PicsAssets {
   bricks: BricksAssets;
   background: HTMLImageElement;
+  HUD: HTMLImageElement;
 }
 
 export interface SoundsAssets {}

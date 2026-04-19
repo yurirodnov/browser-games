@@ -1,24 +1,32 @@
+// 005_tetris/src/main.ts
+
 import { ImagesLoader } from "./lib/ImagesLoader";
 import type { BricksAssets, GameAssets, GameConstants, PicsAssets } from "./types/types";
 import { Game } from "./entities/Game";
 import "./style.css";
 
-document.querySelector<HTMLDivElement>("#app")!.innerHTML = `<canvas id="canvas"></canvas>`;
+document.querySelector<HTMLDivElement>("#game")!.innerHTML = `<canvas id="game-canvas"></canvas>`;
+const gameCanvas = document.getElementById("game-canvas") as HTMLCanvasElement;
+const gameCtx = gameCanvas.getContext("2d");
+if (!gameCtx) {
+  throw new Error("No game 2D context");
+}
 
-const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-const ctx = canvas.getContext("2d");
-
-if (!ctx) {
-  throw new Error("No 2D context");
+document.querySelector<HTMLDivElement>("#hud")!.innerHTML = `<canvas id="hud-canvas"></canvas>`;
+const hudCanvas = document.getElementById("hud-canvas") as HTMLCanvasElement;
+const hudCtx = hudCanvas.getContext("2d");
+if (!hudCtx) {
+  throw new Error("No HUD 2D context!");
 }
 
 const gameConstants: GameConstants = {
   brickSize: 25,
-  infoBoardSize: 100,
 };
 
-canvas.width = gameConstants.brickSize * 10 + gameConstants.infoBoardSize;
-canvas.height = gameConstants.brickSize * 20;
+gameCanvas.width = gameConstants.brickSize * 10;
+gameCanvas.height = gameConstants.brickSize * 20;
+hudCanvas.width = gameConstants.brickSize * 5;
+hudCanvas.height = gameConstants.brickSize * 20;
 
 const main = async () => {
   await Promise.all([
@@ -29,6 +37,7 @@ const main = async () => {
     ImagesLoader.loadAsset("brick_purple", "assets/pics/brick_purple.png"),
     ImagesLoader.loadAsset("brick_orange", "assets/pics/brick_orange.png"),
     ImagesLoader.loadAsset("background", "assets/pics/background.png"),
+    ImagesLoader.loadAsset("hud", "assets/pics/hud.png"),
   ]);
 
   const brickAssets: BricksAssets = {
@@ -43,13 +52,14 @@ const main = async () => {
   const picsAssets: PicsAssets = {
     bricks: brickAssets,
     background: ImagesLoader.getAsset("background"),
+    HUD: ImagesLoader.getAsset("hud"),
   };
 
   const gameAssets: GameAssets = {
     picsAssets: picsAssets,
   };
 
-  new Game(gameAssets, gameConstants, ctx);
+  new Game(gameAssets, gameConstants, gameCtx, hudCtx);
 };
 
 main();
