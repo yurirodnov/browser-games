@@ -25,7 +25,7 @@ const gameConstants: GameConstants = {
 
 gameCanvas.width = gameConstants.brickSize * 10;
 gameCanvas.height = gameConstants.brickSize * 20;
-hudCanvas.width = gameConstants.brickSize * 5;
+hudCanvas.width = gameConstants.brickSize * 7;
 hudCanvas.height = gameConstants.brickSize * 20;
 
 const main = async () => {

@@ -4,6 +4,7 @@ import type { GameAssets, GameConstants, GameScreenState } from "../types/types"
 import type { Brick } from "./Brick";
 import { Background } from "./Background";
 import { HUD } from "./HUD";
+import { drawText } from "../lib/drawText";
 
 export class Game {
   private assets: GameAssets;
@@ -73,7 +74,35 @@ export class Game {
 
   public createFigure(): void {}
 
-  public drawUI(): void {}
+  public drawUI(): void {
+    // DRAW HUD
+    this.hudCtx.textAlign = "center";
+    this.hudCtx.lineJoin = "round";
+    this.hudCtx.lineWidth = 1;
+
+    const lettersFont: string = "30px 'Silkscreen', sans-serif";
+
+    const letters: string[] = ["T", "E", "T", "R", "I", "S"];
+    const letterColors: string[] = ["#2D09F4", "#07B213", "#E7690F", "#DE13D9", "#F80A0A", "#EBDF0D"];
+    const lettersGap: number = 25;
+    let letterCoordX: number = 20;
+    const letterCoordY: number = 50;
+
+    for (let i = 0; i < letters.length; i += 1) {
+      this.hudCtx.font = lettersFont;
+      this.hudCtx.strokeStyle = "#ffffff";
+      this.hudCtx.strokeText(letters[i], letterCoordX, letterCoordY);
+      this.hudCtx.fillStyle = letterColors[i];
+      this.hudCtx.fillText(letters[i], letterCoordX, letterCoordY);
+
+      letterCoordX += lettersGap;
+    }
+
+    drawText(this.hudCtx, "left", "score", lettersFont, "#000000", "#ffffff", 20, 120);
+    drawText(this.hudCtx, "left", "high-score", lettersFont, "#000000", "#ffffff", 20, 160);
+
+    // DRAW GAME STATE INFO
+  }
 
   public start(): void {
     this.isRunningGameplay = true;
@@ -88,9 +117,14 @@ export class Game {
       return;
     }
 
+    this.gameCtx.clearRect(0, 0, this.gameCtx.canvas.width, this.gameCtx.canvas.height);
+    this.hudCtx.clearRect(0, 0, this.hudCtx.canvas.width, this.hudCtx.canvas.height);
+
     // DRAW OBJECTS
     this.background.draw(this.gameCtx);
     this.HUD.draw(this.hudCtx);
+
+    this.drawUI();
 
     this.animationID = requestAnimationFrame(this.loop);
   };
