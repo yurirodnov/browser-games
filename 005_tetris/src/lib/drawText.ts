@@ -1,7 +1,7 @@
 export const drawText = (
   ctx: CanvasRenderingContext2D,
   align: CanvasTextAlign,
-  text: string,
+  text: string | number,
   font: string,
   strokeColor: string,
   fillColor: string,

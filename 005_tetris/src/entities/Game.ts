@@ -4,6 +4,7 @@ import type { GameAssets, GameConstants, GameScreenState } from "../types/types"
 import type { Brick } from "./Brick";
 import { Background } from "./Background";
 import { HUD } from "./HUD";
+import { Score } from "./Score";
 import { drawText } from "../lib/drawText";
 
 export class Game {
@@ -16,6 +17,7 @@ export class Game {
   private animationID: number = 0;
   private lastAnimationFrameTime: number = 0;
   private bricks: Brick[] = [];
+  private score: Score;
 
   private background: Background;
   private HUD: HUD;
@@ -38,6 +40,8 @@ export class Game {
       this.gameCtx.canvas.width,
       this.gameCtx.canvas.height,
     );
+
+    this.score = new Score();
 
     this.HUD = new HUD(this.assets.picsAssets.HUD, 0, 0, this.hudCtx.canvas.width, this.hudCtx.canvas.height);
 
@@ -80,13 +84,14 @@ export class Game {
     this.hudCtx.lineJoin = "round";
     this.hudCtx.lineWidth = 1;
 
-    const lettersFont: string = "30px 'Silkscreen', sans-serif";
+    const lettersFont: string = "20px 'Silkscreen', sans-serif";
 
     const letters: string[] = ["T", "E", "T", "R", "I", "S"];
     const letterColors: string[] = ["#2D09F4", "#07B213", "#E7690F", "#DE13D9", "#F80A0A", "#EBDF0D"];
     const lettersGap: number = 25;
     let letterCoordX: number = 20;
     const letterCoordY: number = 50;
+    const hudCanvasWidth = this.hudCtx.canvas.width;
 
     for (let i = 0; i < letters.length; i += 1) {
       this.hudCtx.font = lettersFont;
@@ -98,8 +103,19 @@ export class Game {
       letterCoordX += lettersGap;
     }
 
-    drawText(this.hudCtx, "left", "score", lettersFont, "#000000", "#ffffff", 20, 120);
-    drawText(this.hudCtx, "left", "high-score", lettersFont, "#000000", "#ffffff", 20, 160);
+    drawText(this.hudCtx, "center", "score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 120);
+    drawText(this.hudCtx, "center", this.score.getScore(), lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 140);
+    drawText(this.hudCtx, "center", "high-score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 170);
+    drawText(
+      this.hudCtx,
+      "center",
+      this.score.getHighScore(),
+      lettersFont,
+      "#000000",
+      "#ffffff",
+      hudCanvasWidth / 2,
+      190,
+    );
 
     // DRAW GAME STATE INFO
   }
