@@ -1,11 +1,11 @@
 // 005_tetris/src/entities/Game.ts
 
-import type { GameAssets, GameConstants, GameScreenState } from "../types/types";
+import type { FigureType, GameAssets, GameConstants, GameScreenState } from "../types/types";
 import type { Brick } from "./Brick";
 import { Background } from "./Background";
 import { HUD } from "./HUD";
 import { Score } from "./Score";
-import { drawText } from "../lib/drawText";
+import { drawText, drawLetters } from "../lib/drawText";
 
 export class Game {
   private assets: GameAssets;
@@ -16,9 +16,13 @@ export class Game {
   private gameScreenState: GameScreenState = "menu";
   private animationID: number = 0;
   private lastAnimationFrameTime: number = 0;
+
+  // private previousFigure: FigureType;
+  // private currentFigure: FigureType;
+  // private nextFigure: FigureType;
+
   private bricks: Brick[] = [];
   private score: Score;
-
   private background: Background;
   private HUD: HUD;
 
@@ -93,23 +97,44 @@ export class Game {
     const letterCoordY: number = 50;
     const hudCanvasWidth = this.hudCtx.canvas.width;
 
-    for (let i = 0; i < letters.length; i += 1) {
-      this.hudCtx.font = lettersFont;
-      this.hudCtx.strokeStyle = "#ffffff";
-      this.hudCtx.strokeText(letters[i], letterCoordX, letterCoordY);
-      this.hudCtx.fillStyle = letterColors[i];
-      this.hudCtx.fillText(letters[i], letterCoordX, letterCoordY);
+    // for (let i = 0; i < letters.length; i += 1) {
+    //   this.hudCtx.font = lettersFont;
+    //   this.hudCtx.strokeStyle = "#ffffff";
+    //   this.hudCtx.strokeText(letters[i], letterCoordX, letterCoordY);
+    //   this.hudCtx.fillStyle = letterColors[i];
+    //   this.hudCtx.fillText(letters[i], letterCoordX, letterCoordY);
 
-      letterCoordX += lettersGap;
-    }
+    //   letterCoordX += lettersGap;
+    // }
+
+    drawLetters(
+      this.hudCtx,
+      "center",
+      letters,
+      lettersFont,
+      "#ffffff",
+      letterColors,
+      letterCoordX,
+      letterCoordY,
+      lettersGap,
+    );
 
     drawText(this.hudCtx, "center", "score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 120);
-    drawText(this.hudCtx, "center", this.score.getScore(), lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 140);
+    drawText(
+      this.hudCtx,
+      "center",
+      String(this.score.getScore()),
+      lettersFont,
+      "#000000",
+      "#ffffff",
+      hudCanvasWidth / 2,
+      140,
+    );
     drawText(this.hudCtx, "center", "high-score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 170);
     drawText(
       this.hudCtx,
       "center",
-      this.score.getHighScore(),
+      String(this.score.getHighScore()),
       lettersFont,
       "#000000",
       "#ffffff",
@@ -131,6 +156,16 @@ export class Game {
   public loop = (timestamp: number): void => {
     if (!this.isRunningGameplay) {
       return;
+    }
+
+    // CALCULATING DELTA
+    if (this.lastAnimationFrameTime === 0) {
+      this.lastAnimationFrameTime = timestamp;
+    }
+    const deltaTimeMS = timestamp - this.lastAnimationFrameTime;
+    let delta = deltaTimeMS / 1000;
+    if (delta > 0.1) {
+      delta = 0.1;
     }
 
     this.gameCtx.clearRect(0, 0, this.gameCtx.canvas.width, this.gameCtx.canvas.height);
