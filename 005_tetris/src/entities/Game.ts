@@ -17,9 +17,12 @@ export class Game {
   private animationID: number = 0;
   private lastAnimationFrameTime: number = 0;
 
-  // private previousFigure: FigureType;
-  // private currentFigure: FigureType;
-  // private nextFigure: FigureType;
+  private previousFigure: FigureType;
+  private currentFigure: FigureType;
+  private nextFigure: FigureType;
+
+  private figureMoveSpeed: number = 2;
+  private figureMoveTimer: number = 0;
 
   private bricks: Brick[] = [];
   private score: Score;
@@ -97,16 +100,6 @@ export class Game {
     const letterCoordY: number = 50;
     const hudCanvasWidth = this.hudCtx.canvas.width;
 
-    // for (let i = 0; i < letters.length; i += 1) {
-    //   this.hudCtx.font = lettersFont;
-    //   this.hudCtx.strokeStyle = "#ffffff";
-    //   this.hudCtx.strokeText(letters[i], letterCoordX, letterCoordY);
-    //   this.hudCtx.fillStyle = letterColors[i];
-    //   this.hudCtx.fillText(letters[i], letterCoordX, letterCoordY);
-
-    //   letterCoordX += lettersGap;
-    // }
-
     drawLetters(
       this.hudCtx,
       "center",
@@ -128,9 +121,9 @@ export class Game {
       "#000000",
       "#ffffff",
       hudCanvasWidth / 2,
-      140,
+      145,
     );
-    drawText(this.hudCtx, "center", "high-score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 170);
+    drawText(this.hudCtx, "center", "high-score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 175);
     drawText(
       this.hudCtx,
       "center",
@@ -139,7 +132,7 @@ export class Game {
       "#000000",
       "#ffffff",
       hudCanvasWidth / 2,
-      190,
+      200,
     );
 
     // DRAW GAME STATE INFO
@@ -151,6 +144,9 @@ export class Game {
 
   public stop(): void {
     this.isRunningGameplay = false;
+    if (this.animationID !== null) {
+      cancelAnimationFrame(this.animationID);
+    }
   }
 
   public loop = (timestamp: number): void => {
