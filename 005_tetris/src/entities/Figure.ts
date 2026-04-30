@@ -9,4 +9,8 @@ export class Figure {
     this.brick = brick;
     this.figureType = figureType;
   }
+
+  public draw(ctx: CanvasRenderingContext2D): void {
+    ctx.drawImage();
+  }
 }

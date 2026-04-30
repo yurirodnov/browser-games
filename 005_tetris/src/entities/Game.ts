@@ -52,6 +52,8 @@ export class Game {
 
     this.HUD = new HUD(this.assets.picsAssets.HUD, 0, 0, this.hudCtx.canvas.width, this.hudCtx.canvas.height);
 
+    const figuresSet = new Set<FigureType>(["I", "J", "L", "O", "S", "T", "Z"]);
+
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") {
         console.log("Left");
@@ -166,6 +168,8 @@ export class Game {
 
     this.gameCtx.clearRect(0, 0, this.gameCtx.canvas.width, this.gameCtx.canvas.height);
     this.hudCtx.clearRect(0, 0, this.hudCtx.canvas.width, this.hudCtx.canvas.height);
+
+    // SPAWN FIGURE
 
     // DRAW OBJECTS
     this.background.draw(this.gameCtx);
