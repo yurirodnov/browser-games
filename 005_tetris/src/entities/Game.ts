@@ -1,11 +1,12 @@
 // 005_tetris/src/entities/Game.ts
 
-import type { FigureType, GameAssets, GameConstants, GameScreenState } from "../types/types";
-import type { Brick } from "./Brick";
+import type { BrickColor, FigureType, GameAssets, GameConstants, GameScreenState } from "../types/types";
+
 import { Background } from "./Background";
 import { HUD } from "./HUD";
 import { Score } from "./Score";
 import { drawText, drawLetters } from "../lib/drawText";
+import { getRandomNumber } from "../lib/RandomNumber";
 
 export class Game {
   private assets: GameAssets;
@@ -17,9 +18,11 @@ export class Game {
   private animationID: number = 0;
   private lastAnimationFrameTime: number = 0;
 
-  private previousFigure: FigureType;
-  private currentFigure: FigureType;
-  private nextFigure: FigureType;
+  private figuresSet: FigureType[];
+  private figuresColorsSet: BrickColor[];
+  // private previousFigure: FigureType;
+  // private currentFigure: FigureType;
+  // private nextFigure: FigureType;
 
   private figureMoveSpeed: number = 2;
   private figureMoveTimer: number = 0;
@@ -52,7 +55,8 @@ export class Game {
 
     this.HUD = new HUD(this.assets.picsAssets.HUD, 0, 0, this.hudCtx.canvas.width, this.hudCtx.canvas.height);
 
-    const figuresSet = new Set<FigureType>(["I", "J", "L", "O", "S", "T", "Z"]);
+    this.figuresSet = ["I", "J", "L", "O", "S", "T", "Z", "."];
+    this.figuresColorsSet = ["blue", "green", "orange", "purple", "red", "yellow"];
 
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") {
@@ -85,7 +89,14 @@ export class Game {
     this.loop(0);
   }
 
-  public createFigure(): void {}
+  public checkCollision(): boolean {
+    return true;
+  }
+
+  public createFigure(): void {
+    const newFigureType = this.figuresSet[getRandomNumber(0, this.figuresSet.length - 1)];
+    const newFigureColor = this.figuresColorsSet[getRandomNumber(0, this.figuresColorsSet.length - 1)];
+  }
 
   public drawUI(): void {
     // DRAW HUD

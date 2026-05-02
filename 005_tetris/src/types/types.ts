@@ -1,3 +1,5 @@
+// 005_tetris/src/types/types.ts
+
 export interface GameConstants {
   brickSize: number;
 }
@@ -27,4 +29,4 @@ export type GameScreenState = "menu" | "play" | "gameOver";
 
 export type BrickColor = "red" | "green" | "blue" | "yellow" | "orange" | "purple";
 
-export type FigureType = "S" | "Z" | "O" | "L" | "J" | "I" | "T";
+export type FigureType = "S" | "Z" | "O" | "L" | "J" | "I" | "T" | ".";
