@@ -21,12 +21,16 @@ if (!hudCtx) {
 
 const gameConstants: GameConstants = {
   brickSize: 25,
+  gameGridWidth: 10,
+  gameGridHeight: 20,
+  hudGridWidth: 7,
+  hudGridHeight: 20,
 };
 
-gameCanvas.width = gameConstants.brickSize * 10;
-gameCanvas.height = gameConstants.brickSize * 20;
-hudCanvas.width = gameConstants.brickSize * 7;
-hudCanvas.height = gameConstants.brickSize * 20;
+gameCanvas.width = gameConstants.brickSize * gameConstants.gameGridWidth;
+gameCanvas.height = gameConstants.brickSize * gameConstants.gameGridHeight;
+hudCanvas.width = gameConstants.brickSize * gameConstants.hudGridWidth;
+hudCanvas.height = gameConstants.brickSize * gameConstants.hudGridHeight;
 
 const main = async () => {
   await Promise.all([

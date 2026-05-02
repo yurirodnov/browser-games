@@ -18,16 +18,19 @@ export class Game {
   private animationID: number = 0;
   private lastAnimationFrameTime: number = 0;
 
+  private gameGrid: string[][];
+
   private figuresSet: FigureType[];
   private figuresColorsSet: BrickColor[];
-  // private previousFigure: FigureType;
-  // private currentFigure: FigureType;
-  // private nextFigure: FigureType;
+  private figureStartX: number;
+  private figureStartY: number;
+  private previousFigure: FigureType;
+  private currentFigure: FigureType;
+  private nextFigure: FigureType;
 
   private figureMoveSpeed: number = 2;
   private figureMoveTimer: number = 0;
 
-  private bricks: Brick[] = [];
   private score: Score;
   private background: Background;
   private HUD: HUD;
@@ -55,9 +58,17 @@ export class Game {
 
     this.HUD = new HUD(this.assets.picsAssets.HUD, 0, 0, this.hudCtx.canvas.width, this.hudCtx.canvas.height);
 
+    // INIT FIELD
+    this.gameGrid = this.initGameGrid(this.constants.gameGridWidth, this.constants.gameGridHeight);
+    console.log("GAME FIELD", this.gameGrid);
+
     this.figuresSet = ["I", "J", "L", "O", "S", "T", "Z", "."];
     this.figuresColorsSet = ["blue", "green", "orange", "purple", "red", "yellow"];
 
+    this.figureStartX = gameCtx.canvas.width / 2;
+    this.figureStartY = 0;
+
+    // CONTROL LISTENERS
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") {
         console.log("Left");
@@ -87,6 +98,20 @@ export class Game {
 
     this.isRunningGameplay = true;
     this.loop(0);
+  }
+
+  private initGameGrid(gridW: number, gridH: number): string[][] {
+    const grid: string[][] = [];
+
+    for (let i = 0; i < gridH; i += 1) {
+      const gridRow: string[] = [];
+      for (let j = 0; j < gridW; j += 1) {
+        gridRow.push("0");
+      }
+      grid.push(gridRow);
+    }
+
+    return grid;
   }
 
   public checkCollision(): boolean {
