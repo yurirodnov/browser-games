@@ -7,6 +7,7 @@ import { HUD } from "./HUD";
 import { Score } from "./Score";
 import { drawText, drawLetters } from "../lib/drawText";
 import { getRandomNumber } from "../lib/RandomNumber";
+import { Figure } from "./Figure";
 
 export class Game {
   private assets: GameAssets;
@@ -24,9 +25,9 @@ export class Game {
   private figuresColorsSet: BrickColor[];
   private figureStartX: number;
   private figureStartY: number;
-  private previousFigure: FigureType;
-  private currentFigure: FigureType;
-  private nextFigure: FigureType;
+  private previousFigure: Figure | null;
+  private currentFigure: Figure | null;
+  private nextFigure: Figure | null;
 
   private figureMoveSpeed: number = 2;
   private figureMoveTimer: number = 0;
@@ -121,6 +122,8 @@ export class Game {
   public createFigure(): void {
     const newFigureType = this.figuresSet[getRandomNumber(0, this.figuresSet.length - 1)];
     const newFigureColor = this.figuresColorsSet[getRandomNumber(0, this.figuresColorsSet.length - 1)];
+
+    this.currentFigure = new Figure(newFigureType, newFigureColor, this.assets.picsAssets.bricks);
   }
 
   public drawUI(): void {
