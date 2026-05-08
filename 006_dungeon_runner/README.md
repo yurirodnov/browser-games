@@ -1,3 +1,3 @@
-# :castle: Dungeon Runner
+# 🏰 Dungeon Runner
 
 In progress... :hourglass:
