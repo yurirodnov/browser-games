@@ -2,6 +2,7 @@
 
 export interface GameConstants {
   brickSize: number;
+  backgroundTileSize: number;
   gameGridWidth: number;
   gameGridHeight: number;
   hudGridWidth: number;
@@ -19,7 +20,7 @@ export interface BricksAssets {
 
 export interface PicsAssets {
   bricks: BricksAssets;
-  background: HTMLImageElement;
+  backgroundTile: HTMLImageElement;
   HUD: HTMLImageElement;
 }
 

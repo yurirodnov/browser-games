@@ -2,7 +2,7 @@
 
 import type { BrickColor, FigureType, GameAssets, GameConstants, GameScreenState } from "../types/types";
 
-import { Background } from "./Background";
+import { BackgroundTile } from "./BackgroundTile";
 import { HUD } from "./HUD";
 import { Score } from "./Score";
 import { drawText, drawLetters } from "../lib/drawText";
@@ -33,7 +33,8 @@ export class Game {
   private figureMoveTimer: number = 0;
 
   private score: Score;
-  private background: Background;
+  private backgroundTiles: BackgroundTile[][];
+  private backgroundTilesCache: HTMLCanvasElement | null = null;
   private HUD: HUD;
 
   constructor(
@@ -47,21 +48,33 @@ export class Game {
     this.gameCtx = gameCtx;
     this.hudCtx = hudCtx;
 
-    this.background = new Background(
-      this.assets.picsAssets.background,
-      0,
-      0,
-      this.gameCtx.canvas.width,
-      this.gameCtx.canvas.height,
-    );
+    // INIT GAME GRID
+    this.gameGrid = this.initGameGrid(this.constants.gameGridWidth, this.constants.gameGridHeight);
+
+    // INIT BACKGROUND TILES
+    const tilesArray: BackgroundTile[][] = [];
+    for (let row = 0; row < this.constants.backgroundTileSize * this.constants.gameGridHeight; row += 1) {
+      const tilesRow: BackgroundTile[] = [];
+      for (let column = 0; column < this.constants.backgroundTileSize * this.constants.gameGridWidth; column += 1) {
+        const positionX = column * this.constants.backgroundTileSize;
+        const positionY = row * this.constants.backgroundTileSize;
+
+        const backgroundTile = new BackgroundTile(
+          this.assets.picsAssets.backgroundTile,
+          positionX,
+          positionY,
+          this.constants.backgroundTileSize,
+        );
+        tilesRow.push(backgroundTile);
+      }
+      tilesArray.push(tilesRow);
+    }
+    this.backgroundTiles = tilesArray;
+    this.createBackgroundCache();
 
     this.score = new Score();
 
     this.HUD = new HUD(this.assets.picsAssets.HUD, 0, 0, this.hudCtx.canvas.width, this.hudCtx.canvas.height);
-
-    // INIT FIELD
-    this.gameGrid = this.initGameGrid(this.constants.gameGridWidth, this.constants.gameGridHeight);
-    console.log("GAME FIELD", this.gameGrid);
 
     this.figuresSet = ["I", "J", "L", "O", "S", "T", "Z", "."];
     this.figuresColorsSet = ["blue", "green", "orange", "purple", "red", "yellow"];
@@ -99,6 +112,24 @@ export class Game {
 
     this.isRunningGameplay = true;
     this.loop(0);
+  }
+
+  private createBackgroundCache() {
+    this.backgroundTilesCache = document.createElement("canvas");
+    this.backgroundTilesCache.width = this.gameCtx.canvas.width;
+    this.backgroundTilesCache.height = this.gameCtx.canvas.height;
+
+    const cacheCTX = this.backgroundTilesCache.getContext("2d");
+
+    if (!cacheCTX) {
+      throw Error("No chache context");
+    }
+
+    for (let row of this.backgroundTiles) {
+      for (let tile of row) {
+        tile.draw(cacheCTX);
+      }
+    }
   }
 
   private initGameGrid(gridW: number, gridH: number): string[][] {
@@ -211,7 +242,10 @@ export class Game {
     // SPAWN FIGURE
 
     // DRAW OBJECTS
-    this.background.draw(this.gameCtx);
+    if (this.backgroundTilesCache) {
+      this.gameCtx.drawImage(this.backgroundTilesCache, 0, 0, this.gameCtx.canvas.width, this.gameCtx.canvas.height);
+    }
+
     this.HUD.draw(this.hudCtx);
 
     this.drawUI();

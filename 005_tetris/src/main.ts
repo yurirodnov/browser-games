@@ -21,6 +21,7 @@ if (!hudCtx) {
 
 const gameConstants: GameConstants = {
   brickSize: 25,
+  backgroundTileSize: 25,
   gameGridWidth: 10,
   gameGridHeight: 20,
   hudGridWidth: 7,
@@ -40,7 +41,7 @@ const main = async () => {
     ImagesLoader.loadAsset("brick_yellow", "assets/pics/brick_yellow.png"),
     ImagesLoader.loadAsset("brick_purple", "assets/pics/brick_purple.png"),
     ImagesLoader.loadAsset("brick_orange", "assets/pics/brick_orange.png"),
-    ImagesLoader.loadAsset("background", "assets/pics/background.png"),
+    ImagesLoader.loadAsset("backgroundTile", "assets/pics/tile.png"),
     ImagesLoader.loadAsset("hud", "assets/pics/hud.png"),
   ]);
 
@@ -55,7 +56,7 @@ const main = async () => {
 
   const picsAssets: PicsAssets = {
     bricks: brickAssets,
-    background: ImagesLoader.getAsset("background"),
+    backgroundTile: ImagesLoader.getAsset("backgroundTile"),
     HUD: ImagesLoader.getAsset("hud"),
   };
 
