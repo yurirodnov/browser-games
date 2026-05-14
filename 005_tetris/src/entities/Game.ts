@@ -76,11 +76,13 @@ export class Game {
 
     this.HUD = new HUD(this.assets.picsAssets.HUD, 0, 0, this.hudCtx.canvas.width, this.hudCtx.canvas.height);
 
-    this.figuresSet = ["I", "J", "L", "O", "S", "T", "Z", "."];
+    this.figuresSet = ["I", "J", "L", "O", "S", "T", "Z"];
     this.figuresColorsSet = ["blue", "green", "orange", "purple", "red", "yellow"];
 
     this.figureStartX = gameCtx.canvas.width / 2;
     this.figureStartY = 0;
+
+    this.createFigure();
 
     // CONTROL LISTENERS
     window.addEventListener("keydown", (e: KeyboardEvent) => {
@@ -154,7 +156,8 @@ export class Game {
     const newFigureType = this.figuresSet[getRandomNumber(0, this.figuresSet.length - 1)];
     const newFigureColor = this.figuresColorsSet[getRandomNumber(0, this.figuresColorsSet.length - 1)];
 
-    this.currentFigure = new Figure(newFigureType, newFigureColor, this.assets.picsAssets.bricks);
+    this.currentFigure = new Figure(newFigureType, newFigureColor, this.assets.picsAssets.bricks, this.constants);
+    console.log("Current figure: ", newFigureType);
   }
 
   public drawUI(): void {
@@ -245,6 +248,8 @@ export class Game {
     if (this.backgroundTilesCache) {
       this.gameCtx.drawImage(this.backgroundTilesCache, 0, 0, this.gameCtx.canvas.width, this.gameCtx.canvas.height);
     }
+
+    this.currentFigure?.draw(this.gameCtx);
 
     this.HUD.draw(this.hudCtx);
 

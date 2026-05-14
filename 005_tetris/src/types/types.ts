@@ -30,6 +30,8 @@ export interface GameAssets {
   picsAssets: PicsAssets;
 }
 
+export type FigureMatrix = number[][];
+
 export interface MatrixFigureMapType {
   S: FigureMatrix;
   Z: FigureMatrix;
@@ -44,6 +46,4 @@ export type GameScreenState = "menu" | "play" | "gameOver";
 
 export type BrickColor = "red" | "green" | "blue" | "yellow" | "orange" | "purple";
 
-export type FigureType = "S" | "Z" | "O" | "L" | "J" | "I" | "T" | ".";
-
-export type FigureMatrix = number[][];
+export type FigureType = "S" | "Z" | "O" | "L" | "J" | "I" | "T";
