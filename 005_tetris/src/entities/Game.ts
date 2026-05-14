@@ -156,7 +156,14 @@ export class Game {
     const newFigureType = this.figuresSet[getRandomNumber(0, this.figuresSet.length - 1)];
     const newFigureColor = this.figuresColorsSet[getRandomNumber(0, this.figuresColorsSet.length - 1)];
 
-    this.currentFigure = new Figure(newFigureType, newFigureColor, this.assets.picsAssets.bricks, this.constants);
+    this.currentFigure = new Figure(
+      newFigureType,
+      newFigureColor,
+      this.assets.picsAssets.bricks,
+      this.constants,
+      this.figureStartX,
+      this.figureStartY,
+    );
     console.log("Current figure: ", newFigureType);
   }
 
