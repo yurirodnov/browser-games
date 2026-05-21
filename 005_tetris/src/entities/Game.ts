@@ -21,16 +21,16 @@ export class Game {
 
   private gameGrid: string[][];
 
+  private previousFigure: Figure;
+  private currentFigure: Figure;
+  private nextFigure: Figure;
   private figuresSet: FigureType[];
   private figuresColorsSet: BrickColor[];
-  private figureStartX: number;
-  private figureStartY: number;
-  private previousFigure: Figure | null;
-  private currentFigure: Figure | null;
-  private nextFigure: Figure | null;
-
-  private figureMoveSpeed: number = 2;
+  private figureOffsetX: number;
+  private figureOffsetY: number;
+  private figureMoveSpeed: number = 1;
   private figureMoveTimer: number = 0;
+  private figureMoveStep: number;
 
   private score: Score;
   private backgroundTiles: BackgroundTile[][];
@@ -78,9 +78,9 @@ export class Game {
 
     this.figuresSet = ["I", "J", "L", "O", "S", "T", "Z"];
     this.figuresColorsSet = ["blue", "green", "orange", "purple", "red", "yellow"];
-
-    this.figureStartX = gameCtx.canvas.width / 2;
-    this.figureStartY = 0;
+    this.figureMoveStep = constants.brickSize;
+    this.figureOffsetX = gameCtx.canvas.width / 2;
+    this.figureOffsetY = 0;
 
     this.createFigure();
 
@@ -161,8 +161,8 @@ export class Game {
       newFigureColor,
       this.assets.picsAssets.bricks,
       this.constants,
-      this.figureStartX,
-      this.figureStartY,
+      this.figureOffsetX,
+      this.figureOffsetY,
     );
     console.log("Current figure: ", newFigureType);
   }
@@ -249,7 +249,14 @@ export class Game {
     this.gameCtx.clearRect(0, 0, this.gameCtx.canvas.width, this.gameCtx.canvas.height);
     this.hudCtx.clearRect(0, 0, this.hudCtx.canvas.width, this.hudCtx.canvas.height);
 
-    // SPAWN FIGURE
+    // DROP FIGURE
+    this.figureMoveTimer += this.figureMoveSpeed * delta;
+    console.log("Figure timer", this.figureMoveTimer);
+    if (this.figureMoveTimer >= 10) {
+      this.figureOffsetY += this.figureMoveStep;
+      this.currentFigure?.drop(this.figureOffsetY);
+      this.figureMoveTimer = 0;
+    }
 
     // DRAW OBJECTS
     if (this.backgroundTilesCache) {

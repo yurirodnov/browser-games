@@ -9,8 +9,8 @@ export class Figure {
   private figureType: FigureType;
   private matrix: FigureMatrix;
   private constatnts: GameConstants;
-  private startX: number;
-  private startY: number;
+  private positionX: number;
+  private positionY: number;
 
   constructor(
     figureType: FigureType,
@@ -24,15 +24,18 @@ export class Figure {
     this.brickColor = brickColor;
     this.bricksAssets = bricksAssets;
     this.constatnts = constants;
-    this.startX = startX;
-    this.startY = startY;
+    this.positionX = startX;
+    this.positionY = startY;
 
     this.matrix = MatrixFigureMap[this.figureType as keyof typeof MatrixFigureMap];
   }
 
   public rotate(): void {}
 
-  public move(): void {}
+  public drop(offsetY: number): void {
+    console.log("changed position");
+    this.positionY += offsetY;
+  }
 
   public draw(ctx: CanvasRenderingContext2D): void {
     for (let i = 0; i < this.matrix.length; i += 1) {
@@ -40,8 +43,8 @@ export class Figure {
         if (this.matrix[i][j] === 1) {
           ctx.drawImage(
             this.bricksAssets[this.brickColor],
-            j * this.constatnts.brickSize + this.startX,
-            i * this.constatnts.brickSize + this.startY,
+            j * this.constatnts.brickSize + this.positionX,
+            i * this.constatnts.brickSize + this.positionY,
             this.constatnts.brickSize,
             this.constatnts.brickSize,
           );
