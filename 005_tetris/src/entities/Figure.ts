@@ -37,6 +37,14 @@ export class Figure {
     this.positionY += step;
   }
 
+  public moveLeft(step: number): void {
+    this.positionX -= step;
+  }
+
+  public moveRight(step: number): void {
+    this.positionX += step;
+  }
+
   public draw(ctx: CanvasRenderingContext2D): void {
     for (let i = 0; i < this.matrix.length; i += 1) {
       for (let j = 0; j < this.matrix[i].length; j += 1) {

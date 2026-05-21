@@ -87,12 +87,12 @@ export class Game {
     // CONTROL LISTENERS
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") {
-        console.log("Left");
+        this.currentFigure.moveLeft(this.figureMoveStep);
       }
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") {
-        console.log("Right");
+        this.currentFigure.moveRight(this.figureMoveStep);
       }
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {
