@@ -254,7 +254,7 @@ export class Game {
     console.log("Figure timer", this.figureMoveTimer);
     if (this.figureMoveTimer >= 10) {
       this.figureOffsetY += this.figureMoveStep;
-      this.currentFigure?.drop(this.figureOffsetY);
+      this.currentFigure?.drop(this.figureMoveStep);
       this.figureMoveTimer = 0;
     }
 

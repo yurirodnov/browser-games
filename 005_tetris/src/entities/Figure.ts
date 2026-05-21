@@ -32,9 +32,9 @@ export class Figure {
 
   public rotate(): void {}
 
-  public drop(offsetY: number): void {
+  public drop(step: number): void {
     console.log("changed position");
-    this.positionY += offsetY;
+    this.positionY += step;
   }
 
   public draw(ctx: CanvasRenderingContext2D): void {
