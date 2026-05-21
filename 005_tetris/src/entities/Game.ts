@@ -19,7 +19,7 @@ export class Game {
   private animationID: number = 0;
   private lastAnimationFrameTime: number = 0;
 
-  private gameGrid: string[][];
+  private gameGrid: number[][];
 
   private previousFigure: Figure;
   private currentFigure: Figure;
@@ -80,7 +80,7 @@ export class Game {
     this.figuresColorsSet = ["blue", "green", "orange", "purple", "red", "yellow"];
     this.figureMoveStep = constants.brickSize;
     this.figureOffsetX = gameCtx.canvas.width / 2;
-    this.figureOffsetY = 0;
+    this.figureOffsetY = 0 - constants.brickSize * 4;
 
     this.createFigure();
 
@@ -134,13 +134,13 @@ export class Game {
     }
   }
 
-  private initGameGrid(gridW: number, gridH: number): string[][] {
-    const grid: string[][] = [];
+  private initGameGrid(gridW: number, gridH: number): number[][] {
+    const grid: number[][] = [];
 
     for (let i = 0; i < gridH; i += 1) {
-      const gridRow: string[] = [];
+      const gridRow: number[] = [];
       for (let j = 0; j < gridW; j += 1) {
-        gridRow.push("0");
+        gridRow.push(0);
       }
       grid.push(gridRow);
     }
@@ -253,7 +253,7 @@ export class Game {
     this.figureMoveTimer += this.figureMoveSpeed * delta;
     console.log("Figure timer", this.figureMoveTimer);
     if (this.figureMoveTimer >= 10) {
-      this.figureOffsetY += this.figureMoveStep;
+      // this.figureOffsetY += this.figureMoveStep;
       this.currentFigure?.drop(this.figureMoveStep);
       this.figureMoveTimer = 0;
     }
