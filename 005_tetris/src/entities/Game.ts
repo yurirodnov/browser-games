@@ -28,7 +28,7 @@ export class Game {
   private figuresColorsSet: BrickColor[];
   private figureOffsetX: number;
   private figureOffsetY: number;
-  private figureMoveSpeed: number = 1;
+  private figureMoveSpeed: number = 3;
   private figureMoveTimer: number = 0;
   private figureMoveStep: number;
 
@@ -96,8 +96,8 @@ export class Game {
       }
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key === "ArrowUp") {
-        console.log("Rotate");
+      if (e.key === "ArrowUp" && this.currentFigure.getFigureType() !== "O") {
+        this.currentFigure.rotate();
       }
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {
@@ -107,7 +107,7 @@ export class Game {
     });
     window.addEventListener("keyup", (e: KeyboardEvent) => {
       if (e.key === "ArrowDown") {
-        this.figureMoveSpeed = 1;
+        this.figureMoveSpeed = 3;
       }
     });
 

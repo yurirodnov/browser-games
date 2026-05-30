@@ -30,7 +30,24 @@ export class Figure {
     this.matrix = MatrixFigureMap[this.figureType as keyof typeof MatrixFigureMap];
   }
 
-  public rotate(): void {}
+  public getFigureType(): string {
+    return this.figureType;
+  }
+
+  public rotate(): void {
+    const w: number = this.matrix[0].length;
+    const h: number = this.matrix.length;
+    let rotated = [];
+
+    for (let i = 0; i < h; i += 1) {
+      rotated[i] = [];
+      for (let j = 0; j < w; j += 1) {
+        rotated[i][j] = this.matrix[h - 1 - j][i];
+      }
+    }
+
+    this.matrix = rotated;
+  }
 
   public drop(step: number): void {
     console.log("changed position");
