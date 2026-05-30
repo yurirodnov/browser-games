@@ -102,15 +102,14 @@ export class Game {
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "ArrowDown") {
-        console.log("Fall");
+        this.figureMoveSpeed = 20;
       }
     });
-
-    window.addEventListener("keydown", (e: KeyboardEvent) => {});
-
-    window.addEventListener("keydown", (e: KeyboardEvent) => {});
-
-    window.addEventListener("keydown", (e: KeyboardEvent) => {});
+    window.addEventListener("keyup", (e: KeyboardEvent) => {
+      if (e.key === "ArrowDown") {
+        this.figureMoveSpeed = 1;
+      }
+    });
 
     this.isRunningGameplay = true;
     this.loop(0);
