@@ -30,7 +30,7 @@ export interface GameAssets {
   picsAssets: PicsAssets;
 }
 
-export type FigureMatrix = number[][];
+export type FigureMatrix = number[][][];
 
 export interface MatrixFigureMapType {
   S: FigureMatrix;

@@ -50,6 +50,7 @@ export class Game {
 
     // INIT GAME GRID
     this.gameGrid = this.initGameGrid(this.constants.gameGridWidth, this.constants.gameGridHeight);
+    console.log("GAME GRID", this.gameGrid);
 
     // INIT BACKGROUND TILES
     const tilesArray: BackgroundTile[][] = [];
@@ -115,6 +116,10 @@ export class Game {
     this.loop(0);
   }
 
+  public checkMoveAble(): true {
+    return true;
+  }
+
   private createBackgroundCache() {
     this.backgroundTilesCache = document.createElement("canvas");
     this.backgroundTilesCache.width = this.gameCtx.canvas.width;
@@ -145,10 +150,6 @@ export class Game {
     }
 
     return grid;
-  }
-
-  public checkCollision(): boolean {
-    return true;
   }
 
   public createFigure(): void {
@@ -250,7 +251,7 @@ export class Game {
 
     // DROP FIGURE
     this.figureMoveTimer += this.figureMoveSpeed * delta;
-    console.log("Figure timer", this.figureMoveTimer);
+    //console.log("Figure timer", this.figureMoveTimer);
     if (this.figureMoveTimer >= 10) {
       // this.figureOffsetY += this.figureMoveStep;
       this.currentFigure?.drop(this.figureMoveStep);

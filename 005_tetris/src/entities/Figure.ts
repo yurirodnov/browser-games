@@ -7,7 +7,9 @@ export class Figure {
   private bricksAssets: BricksAssets;
   private brickColor: BrickColor;
   private figureType: FigureType;
-  private matrix: FigureMatrix;
+  private matrixOptions: FigureMatrix;
+  private currentMatrix: FigureMatrix;
+  private matrixOptionNumber: number;
   private constatnts: GameConstants;
   private positionX: number;
   private positionY: number;
@@ -27,30 +29,36 @@ export class Figure {
     this.positionX = startX;
     this.positionY = startY;
 
-    this.matrix = MatrixFigureMap[this.figureType as keyof typeof MatrixFigureMap];
+    
+    this.matrixOptions = MatrixFigureMap[this.figureType as keyof typeof MatrixFigureMap];
+    this.matrixOptionNumber = this.matrixOptions.;
   }
 
   public getFigureType(): string {
     return this.figureType;
   }
 
+  public getFigureMatrix(): number[][] {
+    return this.currentMatrix;
+  }
+
   public rotate(): void {
-    const w: number = this.matrix[0].length;
-    const h: number = this.matrix.length;
+    const w: number = this.currentMatrix[0].length;
+    const h: number = this.currentMatrix.length;
     let rotated = [];
 
     for (let i = 0; i < h; i += 1) {
       rotated[i] = [];
       for (let j = 0; j < w; j += 1) {
-        rotated[i][j] = this.matrix[h - 1 - j][i];
+        rotated[i][j] = this.currentMatrix[h - 1 - j][i];
       }
     }
 
-    this.matrix = rotated;
+    this.currentMatrix = rotated;
   }
 
   public drop(step: number): void {
-    console.log("changed position");
+    //console.log("changed position");
     this.positionY += step;
   }
 
@@ -63,9 +71,9 @@ export class Figure {
   }
 
   public draw(ctx: CanvasRenderingContext2D): void {
-    for (let i = 0; i < this.matrix.length; i += 1) {
-      for (let j = 0; j < this.matrix[i].length; j += 1) {
-        if (this.matrix[i][j] === 1) {
+    for (let i = 0; i < this.currentMatrix.length; i += 1) {
+      for (let j = 0; j < this.currentMatrix[i].length; j += 1) {
+        if (this.currentMatrix[i][j] === 1) {
           ctx.drawImage(
             this.bricksAssets[this.brickColor],
             j * this.constatnts.brickSize + this.positionX,
