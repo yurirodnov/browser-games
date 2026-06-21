@@ -8,8 +8,9 @@ export class Figure {
   private brickColor: BrickColor;
   private figureType: FigureType;
   private matrixOptions: FigureMatrix;
-  private currentMatrix: FigureMatrix;
-  private matrixOptionNumber: number;
+  private currentMatrix: number[][];
+  private matrixOptionMaxNumber: number;
+  private matrixStartOPtion: number = 0;
   private constatnts: GameConstants;
   private positionX: number;
   private positionY: number;
@@ -29,9 +30,10 @@ export class Figure {
     this.positionX = startX;
     this.positionY = startY;
 
-    
     this.matrixOptions = MatrixFigureMap[this.figureType as keyof typeof MatrixFigureMap];
-    this.matrixOptionNumber = this.matrixOptions.;
+    this.matrixOptionMaxNumber = this.matrixOptions.length - 1;
+
+    this.currentMatrix = this.matrixOptions[this.matrixStartOPtion];
   }
 
   public getFigureType(): string {
@@ -43,18 +45,15 @@ export class Figure {
   }
 
   public rotate(): void {
-    const w: number = this.currentMatrix[0].length;
-    const h: number = this.currentMatrix.length;
-    let rotated = [];
-
-    for (let i = 0; i < h; i += 1) {
-      rotated[i] = [];
-      for (let j = 0; j < w; j += 1) {
-        rotated[i][j] = this.currentMatrix[h - 1 - j][i];
-      }
+    if (this.matrixStartOPtion < this.matrixOptionMaxNumber) {
+      this.matrixStartOPtion += 1;
+    } else {
+      this.matrixStartOPtion = 0;
     }
 
-    this.currentMatrix = rotated;
+    this.currentMatrix = this.matrixOptions[this.matrixStartOPtion];
+
+    console.log("MATRIX POSITION", this.matrixStartOPtion);
   }
 
   public drop(step: number): void {
