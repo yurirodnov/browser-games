@@ -22,12 +22,12 @@ export class Game {
   private gameGrid: number[][];
 
   private previousFigure: Figure;
-  private currentFigure: Figure;
+  private currentFigure: Figure | null = null;
   private nextFigure: Figure;
   private figuresSet: FigureType[];
   private figuresColorsSet: BrickColor[];
-  private figureOffsetX: number;
-  private figureOffsetY: number;
+  private figureStartPositionX: number;
+  private figureStartPositionY: number;
   private figureMoveSpeed: number = 3;
   private figureMoveTimer: number = 0;
   private figureMoveStep: number;
@@ -80,25 +80,27 @@ export class Game {
     this.figuresSet = ["I", "J", "L", "O", "S", "T", "Z"];
     this.figuresColorsSet = ["blue", "green", "orange", "purple", "red", "yellow"];
     this.figureMoveStep = constants.brickSize;
-    this.figureOffsetX = gameCtx.canvas.width / 2;
-    this.figureOffsetY = 0 - constants.brickSize * 4;
+    this.figureStartPositionX = gameCtx.canvas.width / 2;
+    this.figureStartPositionY = 0 - constants.brickSize * 4;
 
     this.createFigure();
 
     // CONTROL LISTENERS
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") {
-        this.currentFigure.moveLeft(this.figureMoveStep);
+        this.currentFigure?.moveLeft(this.figureMoveStep);
+        console.log("OFFSET:", this.figureStartPositionX);
       }
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") {
-        this.currentFigure.moveRight(this.figureMoveStep);
+        this.currentFigure?.moveRight(this.figureMoveStep);
+        console.log("OFFSET:", this.figureStartPositionX);
       }
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key === "ArrowUp" && this.currentFigure.getFigureType() !== "O") {
-        this.currentFigure.rotate();
+      if (e.key === "ArrowUp" && this.currentFigure?.getFigureType() !== "O") {
+        this.currentFigure?.rotate();
       }
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {
@@ -161,8 +163,8 @@ export class Game {
       newFigureColor,
       this.assets.picsAssets.bricks,
       this.constants,
-      this.figureOffsetX,
-      this.figureOffsetY,
+      this.figureStartPositionX,
+      this.figureStartPositionY,
     );
     console.log("Current figure: ", newFigureType);
   }
@@ -253,7 +255,7 @@ export class Game {
     this.figureMoveTimer += this.figureMoveSpeed * delta;
     //console.log("Figure timer", this.figureMoveTimer);
     if (this.figureMoveTimer >= 10) {
-      // this.figureOffsetY += this.figureMoveStep;
+      // this.figureStartPositionY += this.figureMoveStep;
       this.currentFigure?.drop(this.figureMoveStep);
       this.figureMoveTimer = 0;
     }

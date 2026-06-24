@@ -69,6 +69,14 @@ export class Figure {
     this.positionX += step;
   }
 
+  public getPositionX(): number {
+    return this.positionX;
+  }
+
+  public getPositionY(): number {
+    return this.positionY;
+  }
+
   public draw(ctx: CanvasRenderingContext2D): void {
     for (let i = 0; i < this.currentMatrix.length; i += 1) {
       for (let j = 0; j < this.currentMatrix[i].length; j += 1) {
