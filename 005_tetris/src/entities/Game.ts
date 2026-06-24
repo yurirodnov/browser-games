@@ -87,20 +87,22 @@ export class Game {
 
     // CONTROL LISTENERS
     window.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
-        this.currentFigure?.moveLeft(this.figureMoveStep);
-        console.log("OFFSET:", this.figureStartPositionX);
+      if (this.currentFigure && this.currentFigure.canMoveLeft() && e.key === "ArrowLeft") {
+        this.currentFigure.moveLeft(this.figureMoveStep);
+        console.log("Figure position X:", this.currentFigure.getPositionX());
+        console.log("Figure matrix:", this.currentFigure.getFigureMatrix());
       }
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") {
-        this.currentFigure?.moveRight(this.figureMoveStep);
-        console.log("OFFSET:", this.figureStartPositionX);
+      if (this.currentFigure && this.currentFigure.canMoveRight() && e.key === "ArrowRight") {
+        this.currentFigure.moveRight(this.figureMoveStep);
+        console.log("Figure position X:", this.currentFigure.getPositionX());
+        console.log("Figure matrix:", this.currentFigure.getFigureMatrix());
       }
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key === "ArrowUp" && this.currentFigure?.getFigureType() !== "O") {
-        this.currentFigure?.rotate();
+      if (this.currentFigure && e.key === "ArrowUp" && this.currentFigure.getFigureType() !== "O") {
+        this.currentFigure.rotate();
       }
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {

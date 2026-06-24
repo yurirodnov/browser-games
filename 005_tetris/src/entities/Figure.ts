@@ -12,8 +12,8 @@ export class Figure {
   private matrixOptionMaxNumber: number;
   private matrixStartOPtion: number = 0;
   private constatnts: GameConstants;
-  private positionX: number;
-  private positionY: number;
+  private gridPositionX: number;
+  private gridPositionY: number;
 
   constructor(
     figureType: FigureType,
@@ -27,8 +27,8 @@ export class Figure {
     this.brickColor = brickColor;
     this.bricksAssets = bricksAssets;
     this.constatnts = constants;
-    this.positionX = startX;
-    this.positionY = startY;
+    this.gridPositionX = startX;
+    this.gridPositionY = startY;
 
     this.matrixOptions = MatrixFigureMap[this.figureType as keyof typeof MatrixFigureMap];
     this.matrixOptionMaxNumber = this.matrixOptions.length - 1;
@@ -58,23 +58,50 @@ export class Figure {
 
   public drop(step: number): void {
     //console.log("changed position");
-    this.positionY += step;
+    this.gridPositionY += step;
   }
 
   public moveLeft(step: number): void {
-    this.positionX -= step;
+    this.gridPositionX -= step;
   }
 
   public moveRight(step: number): void {
-    this.positionX += step;
+    this.gridPositionX += step;
   }
 
   public getPositionX(): number {
-    return this.positionX;
+    return this.gridPositionX;
   }
 
   public getPositionY(): number {
-    return this.positionY;
+    return this.gridPositionY;
+  }
+
+  public canMoveLeft(): boolean {
+    for (let i = 0; i < this.currentMatrix.length; i += 1) {
+      for (let j = 0; j < this.currentMatrix[i].length; j += 1) {
+        if (this.currentMatrix[i][j] === 1) {
+          const futureX = this.gridPositionX + j * this.constatnts.brickSize - this.constatnts.brickSize;
+          if (futureX < 0) return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  public canMoveRight(): boolean {
+    for (let i = 0; i < this.currentMatrix.length; i += 1) {
+      for (let j = 0; j < this.currentMatrix[i].length; j += 1) {
+        if (this.currentMatrix[i][j] === 1) {
+          const futureX = this.gridPositionX + j * this.constatnts.brickSize + this.constatnts.brickSize;
+          if (futureX > this.constatnts.gameGridWidth * this.constatnts.brickSize - this.constatnts.brickSize)
+            return false;
+        }
+      }
+    }
+
+    return true;
   }
 
   public draw(ctx: CanvasRenderingContext2D): void {
@@ -83,8 +110,8 @@ export class Figure {
         if (this.currentMatrix[i][j] === 1) {
           ctx.drawImage(
             this.bricksAssets[this.brickColor],
-            j * this.constatnts.brickSize + this.positionX,
-            i * this.constatnts.brickSize + this.positionY,
+            j * this.constatnts.brickSize + this.gridPositionX,
+            i * this.constatnts.brickSize + this.gridPositionY,
             this.constatnts.brickSize,
             this.constatnts.brickSize,
           );
