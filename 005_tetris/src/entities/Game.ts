@@ -28,7 +28,7 @@ export class Game {
   private figuresColorsSet: BrickColor[];
   private figureStartPositionX: number;
   private figureStartPositionY: number;
-  private figureMoveSpeed: number = 3;
+  private figureMoveSpeed: number = 2;
   private figureMoveTimer: number = 0;
   private figureMoveStep: number;
 
@@ -112,7 +112,7 @@ export class Game {
     });
     window.addEventListener("keyup", (e: KeyboardEvent) => {
       if (e.key === "ArrowDown") {
-        this.figureMoveSpeed = 3;
+        this.figureMoveSpeed = 2;
       }
     });
 
@@ -256,10 +256,15 @@ export class Game {
     // DROP FIGURE
     this.figureMoveTimer += this.figureMoveSpeed * delta;
     //console.log("Figure timer", this.figureMoveTimer);
-    if (this.figureMoveTimer >= 10) {
+    if (this.figureMoveTimer >= 10 && this.currentFigure) {
       // this.figureStartPositionY += this.figureMoveStep;
-      this.currentFigure?.drop(this.figureMoveStep);
+      this.currentFigure.drop(this.figureMoveStep);
       this.figureMoveTimer = 0;
+    }
+
+    // CONTROL IF FIGURE BEYOND WALL
+    if (this.currentFigure) {
+      this.currentFigure.shiftFigureIfBeyond();
     }
 
     // DRAW OBJECTS

@@ -104,6 +104,17 @@ export class Figure {
     return true;
   }
 
+  public shiftFigureIfBeyond(): void {
+    for (let i = 0; i < this.currentMatrix.length; i += 1) {
+      for (let j = 0; j < this.currentMatrix[i].length; j += 1) {
+        if (this.currentMatrix[i][j] === 1) {
+          const currentX = this.gridPositionX + j * this.constatnts.brickSize;
+          if (currentX < 0) this.gridPositionX += this.constatnts.brickSize;
+        }
+      }
+    }
+  }
+
   public draw(ctx: CanvasRenderingContext2D): void {
     for (let i = 0; i < this.currentMatrix.length; i += 1) {
       for (let j = 0; j < this.currentMatrix[i].length; j += 1) {
