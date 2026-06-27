@@ -256,7 +256,7 @@ export class Game {
     // DROP FIGURE
     this.figureMoveTimer += this.figureMoveSpeed * delta;
     //console.log("Figure timer", this.figureMoveTimer);
-    if (this.figureMoveTimer >= 10 && this.currentFigure) {
+    if (this.figureMoveTimer >= 10 && this.currentFigure && this.currentFigure.canMoveDown()) {
       // this.figureStartPositionY += this.figureMoveStep;
       this.currentFigure.drop(this.figureMoveStep);
       this.figureMoveTimer = 0;

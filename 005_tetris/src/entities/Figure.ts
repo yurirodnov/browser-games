@@ -104,6 +104,20 @@ export class Figure {
     return true;
   }
 
+  public canMoveDown(): boolean {
+    for (let i = 0; i < this.currentMatrix.length; i += 1) {
+      for (let j = 0; j < this.currentMatrix[i].length; j += 1) {
+        if (this.currentMatrix[i][j] === 1) {
+          const futureY = this.gridPositionY + i * this.constatnts.brickSize + this.constatnts.brickSize;
+          if (futureY > this.constatnts.gameGridHeight * this.constatnts.brickSize - this.constatnts.brickSize)
+            return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
   public shiftFigureIfBeyond(): void {
     for (let i = 0; i < this.currentMatrix.length; i += 1) {
       for (let j = 0; j < this.currentMatrix[i].length; j += 1) {
