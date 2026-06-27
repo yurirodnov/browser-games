@@ -109,7 +109,11 @@ export class Figure {
       for (let j = 0; j < this.currentMatrix[i].length; j += 1) {
         if (this.currentMatrix[i][j] === 1) {
           const currentX = this.gridPositionX + j * this.constatnts.brickSize;
-          if (currentX < 0) this.gridPositionX += this.constatnts.brickSize;
+          if (currentX < 0) {
+            this.gridPositionX += this.constatnts.brickSize;
+          } else if (currentX > this.constatnts.gameGridWidth * this.constatnts.brickSize - this.constatnts.brickSize) {
+            this.gridPositionX -= this.constatnts.brickSize;
+          }
         }
       }
     }
