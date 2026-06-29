@@ -30,6 +30,10 @@ export interface GameAssets {
   picsAssets: PicsAssets;
 }
 
+export type GameGridCellColor = "";
+
+export type GameGridMatrix = string[][];
+
 export type FigureMatrix = number[][][];
 
 export interface MatrixFigureMapType {
@@ -47,3 +51,7 @@ export type GameScreenState = "menu" | "play" | "gameOver";
 export type BrickColor = "red" | "green" | "blue" | "yellow" | "orange" | "purple";
 
 export type FigureType = "S" | "Z" | "O" | "L" | "J" | "I" | "T";
+
+export interface GameGridColorMap {
+  string: BrickColor;
+}

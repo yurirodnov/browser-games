@@ -1,6 +1,13 @@
 // 005_tetris/src/entities/Game.ts
 
-import type { BrickColor, FigureType, GameAssets, GameConstants, GameScreenState } from "../types/types";
+import type {
+  BrickColor,
+  FigureType,
+  GameAssets,
+  GameConstants,
+  GameScreenState,
+  GameGridMatrix,
+} from "../types/types";
 
 import { BackgroundTile } from "./BackgroundTile";
 import { HUD } from "./HUD";
@@ -21,9 +28,8 @@ export class Game {
 
   private gameGrid: number[][];
 
-  private previousFigure: Figure;
   private currentFigure: Figure | null = null;
-  private nextFigure: Figure;
+  //private nextFigure: Figure;
   private figuresSet: FigureType[];
   private figuresColorsSet: BrickColor[];
   private figureStartPositionX: number;
@@ -142,13 +148,13 @@ export class Game {
     }
   }
 
-  private initGameGrid(gridW: number, gridH: number): number[][] {
-    const grid: number[][] = [];
+  private initGameGrid(gridW: number, gridH: number): GameGridMatrix {
+    const grid: GameGridMatrix = [];
 
     for (let i = 0; i < gridH; i += 1) {
-      const gridRow: number[] = [];
+      const gridRow: string[] = [];
       for (let j = 0; j < gridW; j += 1) {
-        gridRow.push(0);
+        gridRow.push("0");
       }
       grid.push(gridRow);
     }
