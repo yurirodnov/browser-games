@@ -1,6 +1,6 @@
 // 005_tetris/src/entities/Figure.ts
 
-import type { BrickColor, BricksAssets, FigureMatrix, FigureType, GameConstants } from "../types/types";
+import type { BrickColor, BricksAssets, FigureMatrix, FigureType, GameConstants, GameGridMatrix } from "../types/types";
 import { MatrixFigureMap } from "../lib/MatrixFigureMap";
 
 export class Figure {
@@ -132,6 +132,18 @@ export class Figure {
       }
     }
   }
+
+  // public landFigure(gameGrid: GameGridMatrix): void {
+  //   for (let i = 0; i < this.currentMatrix.length; i += 1) {
+  //     for (let j = 0; j < this.currentMatrix[i].length; j += 1) {
+  //       if (this.currentMatrix[i][j] === 1 && gameGrid) {
+  //         gameGrid[this.gridPositionY + i * this.constatnts.brickSize][
+  //           this.gridPositionX + j * this.constatnts.brickSize
+  //         ] = "1";
+  //       }
+  //     }
+  //   }
+  // }
 
   public draw(ctx: CanvasRenderingContext2D): void {
     for (let i = 0; i < this.currentMatrix.length; i += 1) {

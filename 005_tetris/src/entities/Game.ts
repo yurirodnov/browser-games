@@ -26,7 +26,7 @@ export class Game {
   private animationID: number = 0;
   private lastAnimationFrameTime: number = 0;
 
-  private gameGrid: number[][];
+  private gameGrid: GameGridMatrix;
 
   private currentFigure: Figure | null = null;
   //private nextFigure: Figure;
@@ -126,10 +126,6 @@ export class Game {
     this.loop(0);
   }
 
-  public checkMoveAble(): true {
-    return true;
-  }
-
   private createBackgroundCache() {
     this.backgroundTilesCache = document.createElement("canvas");
     this.backgroundTilesCache.width = this.gameCtx.canvas.width;
@@ -175,6 +171,22 @@ export class Game {
       this.figureStartPositionY,
     );
     console.log("Current figure: ", newFigureType);
+  }
+
+  public landFigure(): void {
+    if (this.currentFigure && this.gameGrid) {
+      const gridY = Math.floor(this.currentFigure.getPositionY() / this.constants.brickSize);
+      const gridX = Math.floor(this.currentFigure.getPositionX() / this.constants.brickSize);
+      for (let i = 0; i < this.currentFigure.getFigureMatrix().length; i += 1) {
+        for (let j = 0; j < this.currentFigure.getFigureMatrix()[i].length; j += 1) {
+          if (this.currentFigure.getFigureMatrix()[i][j] === 1) {
+            this.gameGrid[gridY + i][gridX + j] = "1";
+          }
+        }
+      }
+    }
+
+    console.log("New grid:", this.gameGrid);
   }
 
   public drawUI(): void {
@@ -262,10 +274,15 @@ export class Game {
     // DROP FIGURE
     this.figureMoveTimer += this.figureMoveSpeed * delta;
     //console.log("Figure timer", this.figureMoveTimer);
-    if (this.figureMoveTimer >= 10 && this.currentFigure && this.currentFigure.canMoveDown()) {
-      // this.figureStartPositionY += this.figureMoveStep;
-      this.currentFigure.drop(this.figureMoveStep);
-      this.figureMoveTimer = 0;
+    if (this.figureMoveTimer >= 10) {
+      if (this.currentFigure && this.currentFigure.canMoveDown()) {
+        // this.figureStartPositionY += this.figureMoveStep;
+        this.currentFigure.drop(this.figureMoveStep);
+        this.figureMoveTimer = 0;
+      } else {
+        this.landFigure();
+        this.figureMoveTimer = 0;
+      }
     }
 
     // CONTROL IF FIGURE BEYOND WALL
@@ -277,6 +294,8 @@ export class Game {
     if (this.backgroundTilesCache) {
       this.gameCtx.drawImage(this.backgroundTilesCache, 0, 0, this.gameCtx.canvas.width, this.gameCtx.canvas.height);
     }
+
+    //
 
     this.currentFigure?.draw(this.gameCtx);
 
