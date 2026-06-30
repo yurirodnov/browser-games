@@ -50,8 +50,24 @@ export type GameScreenState = "menu" | "play" | "gameOver";
 
 export type BrickColor = "red" | "green" | "blue" | "yellow" | "orange" | "purple";
 
+export type ColorNumber = "1" | "2" | "3" | "4" | "5" | "6";
+
 export type FigureType = "S" | "Z" | "O" | "L" | "J" | "I" | "T";
 
-export interface GameGridColorMap {
-  string: BrickColor;
+export interface ColorNumberMapType {
+  red: ColorNumber;
+  green: ColorNumber;
+  blue: ColorNumber;
+  yellow: ColorNumber;
+  orange: ColorNumber;
+  purple: ColorNumber;
+}
+
+export interface NumberColorMapType {
+  1: BrickColor;
+  2: BrickColor;
+  3: BrickColor;
+  4: BrickColor;
+  5: BrickColor;
+  6: BrickColor;
 }
