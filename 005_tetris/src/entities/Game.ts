@@ -282,6 +282,8 @@ export class Game {
       } else {
         this.landFigure();
         this.figureMoveTimer = 0;
+        this.currentFigure = null;
+        this.createFigure();
       }
     }
 
