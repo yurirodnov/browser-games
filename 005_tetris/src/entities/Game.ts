@@ -7,6 +7,7 @@ import type {
   GameConstants,
   GameScreenState,
   GameGridMatrix,
+  ColorNumberMapType,
 } from "../types/types";
 
 import { BackgroundTile } from "./BackgroundTile";
@@ -14,6 +15,7 @@ import { HUD } from "./HUD";
 import { Score } from "./Score";
 import { drawText, drawLetters } from "../lib/drawText";
 import { getRandomNumber } from "../lib/RandomNumber";
+import { colorNumberMap, numberColorMap } from "../lib/ColorNumberMaps";
 import { Figure } from "./Figure";
 
 export class Game {
@@ -180,7 +182,8 @@ export class Game {
       for (let i = 0; i < this.currentFigure.getFigureMatrix().length; i += 1) {
         for (let j = 0; j < this.currentFigure.getFigureMatrix()[i].length; j += 1) {
           if (this.currentFigure.getFigureMatrix()[i][j] === 1) {
-            this.gameGrid[gridY + i][gridX + j] = "1";
+            this.gameGrid[gridY + i][gridX + j] =
+              colorNumberMap[this.currentFigure.getFigureColor() as keyof ColorNumberMapType];
           }
         }
       }

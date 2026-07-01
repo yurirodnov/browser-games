@@ -5,7 +5,7 @@ import { MatrixFigureMap } from "../lib/MatrixFigureMap";
 
 export class Figure {
   private bricksAssets: BricksAssets;
-  private brickColor: BrickColor;
+  private figureColor: BrickColor;
   private figureType: FigureType;
   private matrixOptions: FigureMatrix;
   private currentMatrix: number[][];
@@ -24,7 +24,7 @@ export class Figure {
     startY: number,
   ) {
     this.figureType = figureType;
-    this.brickColor = brickColor;
+    this.figureColor = brickColor;
     this.bricksAssets = bricksAssets;
     this.constatnts = constants;
     this.gridPositionX = startX;
@@ -38,6 +38,10 @@ export class Figure {
 
   public getFigureType(): string {
     return this.figureType;
+  }
+
+  public getFigureColor(): string {
+    return this.figureColor;
   }
 
   public getFigureMatrix(): number[][] {
@@ -133,24 +137,12 @@ export class Figure {
     }
   }
 
-  // public landFigure(gameGrid: GameGridMatrix): void {
-  //   for (let i = 0; i < this.currentMatrix.length; i += 1) {
-  //     for (let j = 0; j < this.currentMatrix[i].length; j += 1) {
-  //       if (this.currentMatrix[i][j] === 1 && gameGrid) {
-  //         gameGrid[this.gridPositionY + i * this.constatnts.brickSize][
-  //           this.gridPositionX + j * this.constatnts.brickSize
-  //         ] = "1";
-  //       }
-  //     }
-  //   }
-  // }
-
   public draw(ctx: CanvasRenderingContext2D): void {
     for (let i = 0; i < this.currentMatrix.length; i += 1) {
       for (let j = 0; j < this.currentMatrix[i].length; j += 1) {
         if (this.currentMatrix[i][j] === 1) {
           ctx.drawImage(
-            this.bricksAssets[this.brickColor],
+            this.bricksAssets[this.figureColor],
             j * this.constatnts.brickSize + this.gridPositionX,
             i * this.constatnts.brickSize + this.gridPositionY,
             this.constatnts.brickSize,

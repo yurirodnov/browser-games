@@ -9,7 +9,7 @@ export const colorNumberMap: ColorNumberMapType = {
   purple: "6",
 };
 
-export const NumberColorMap: NumberColorMapType = {
+export const numberColorMap: NumberColorMapType = {
   1: "yellow",
   2: "green",
   3: "red",
