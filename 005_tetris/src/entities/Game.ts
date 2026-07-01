@@ -8,6 +8,7 @@ import type {
   GameScreenState,
   GameGridMatrix,
   ColorNumberMapType,
+  NumberColorMapType,
 } from "../types/types";
 
 import { BackgroundTile } from "./BackgroundTile";
@@ -58,7 +59,7 @@ export class Game {
 
     // INIT GAME GRID
     this.gameGrid = this.initGameGrid(this.constants.gameGridWidth, this.constants.gameGridHeight);
-    console.log("GAME GRID", this.gameGrid);
+    //console.log("GAME GRID", this.gameGrid);
 
     // INIT BACKGROUND TILES
     const tilesArray: BackgroundTile[][] = [];
@@ -192,6 +193,24 @@ export class Game {
     console.log("New grid:", this.gameGrid);
   }
 
+  public drawDeadFigures(ctx: CanvasRenderingContext2D): void {
+    for (let i = 0; i < this.gameGrid.length; i += 1) {
+      for (let j = 0; j < this.gameGrid[i].length; j += 1) {
+        if (this.gameGrid[i][j] !== "0") {
+          ctx.drawImage(
+            this.assets.picsAssets.bricks[
+              numberColorMap[this.gameGrid[i][j] as keyof NumberColorMapType] as keyof NumberColorMapType
+            ],
+            j * this.constants.brickSize,
+            i * this.constants.brickSize,
+            this.constants.brickSize,
+            this.constants.brickSize,
+          );
+        }
+      }
+    }
+  }
+
   public drawUI(): void {
     // DRAW HUD
     this.hudCtx.textAlign = "center";
@@ -300,9 +319,9 @@ export class Game {
       this.gameCtx.drawImage(this.backgroundTilesCache, 0, 0, this.gameCtx.canvas.width, this.gameCtx.canvas.height);
     }
 
-    //
-
     this.currentFigure?.draw(this.gameCtx);
+
+    this.drawDeadFigures(this.gameCtx);
 
     this.HUD.draw(this.hudCtx);
 
