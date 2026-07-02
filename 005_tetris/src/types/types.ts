@@ -64,10 +64,10 @@ export interface ColorNumberMapType {
 }
 
 export interface NumberColorMapType {
-  1: BrickColor;
-  2: BrickColor;
-  3: BrickColor;
-  4: BrickColor;
-  5: BrickColor;
-  6: BrickColor;
+  "1": BrickColor;
+  "2": BrickColor;
+  "3": BrickColor;
+  "4": BrickColor;
+  "5": BrickColor;
+  "6": BrickColor;
 }

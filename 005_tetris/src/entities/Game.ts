@@ -9,6 +9,7 @@ import type {
   GameGridMatrix,
   ColorNumberMapType,
   NumberColorMapType,
+  BricksAssets,
 } from "../types/types";
 
 import { BackgroundTile } from "./BackgroundTile";
@@ -199,7 +200,7 @@ export class Game {
         if (this.gameGrid[i][j] !== "0") {
           ctx.drawImage(
             this.assets.picsAssets.bricks[
-              numberColorMap[this.gameGrid[i][j] as keyof NumberColorMapType] as keyof NumberColorMapType
+              numberColorMap[this.gameGrid[i][j] as keyof NumberColorMapType] as keyof BricksAssets
             ],
             j * this.constants.brickSize,
             i * this.constants.brickSize,
