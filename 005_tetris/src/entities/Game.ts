@@ -173,6 +173,7 @@ export class Game {
       this.constants,
       this.figureStartPositionX,
       this.figureStartPositionY,
+      this.gameGrid,
     );
     console.log("Current figure: ", newFigureType);
   }

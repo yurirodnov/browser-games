@@ -14,6 +14,7 @@ export class Figure {
   private constatnts: GameConstants;
   private gridPositionX: number;
   private gridPositionY: number;
+  private gameGrid: GameGridMatrix;
 
   constructor(
     figureType: FigureType,
@@ -22,6 +23,7 @@ export class Figure {
     constants: GameConstants,
     startX: number,
     startY: number,
+    gameGrid: GameGridMatrix,
   ) {
     this.figureType = figureType;
     this.figureColor = brickColor;
@@ -34,6 +36,7 @@ export class Figure {
     this.matrixOptionMaxNumber = this.matrixOptions.length - 1;
 
     this.currentMatrix = this.matrixOptions[this.matrixStartOPtion];
+    this.gameGrid = gameGrid;
   }
 
   public getFigureType(): string {
@@ -109,12 +112,26 @@ export class Figure {
   }
 
   public canMoveDown(): boolean {
+    const brickSize = this.constatnts.brickSize;
     for (let i = 0; i < this.currentMatrix.length; i += 1) {
       for (let j = 0; j < this.currentMatrix[i].length; j += 1) {
         if (this.currentMatrix[i][j] === 1) {
-          const futureY = this.gridPositionY + i * this.constatnts.brickSize + this.constatnts.brickSize;
-          if (futureY > this.constatnts.gameGridHeight * this.constatnts.brickSize - this.constatnts.brickSize)
-            return false;
+          const futureY = this.gridPositionY + i * brickSize + brickSize;
+          if (futureY > this.constatnts.gameGridHeight * brickSize - brickSize) return false;
+
+          const futureGridXIndex = Math.floor((this.gridPositionX + j * brickSize) / brickSize);
+          const futureGridYIndex = Math.floor(futureY / brickSize);
+
+          if (
+            futureGridXIndex >= 0 &&
+            futureGridXIndex <= this.constatnts.gameGridWidth * brickSize &&
+            futureGridYIndex >= 0 &&
+            futureGridYIndex <= this.constatnts.gameGridHeight * brickSize
+          ) {
+            if (this.gameGrid[futureGridYIndex][futureGridXIndex] !== "0") {
+              return false;
+            }
+          }
         }
       }
     }
