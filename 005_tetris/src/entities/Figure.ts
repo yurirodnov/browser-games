@@ -85,11 +85,26 @@ export class Figure {
   }
 
   public canMoveLeft(): boolean {
+    const brickSize = this.constatnts.brickSize;
     for (let i = 0; i < this.currentMatrix.length; i += 1) {
       for (let j = 0; j < this.currentMatrix[i].length; j += 1) {
         if (this.currentMatrix[i][j] === 1) {
           const futureX = this.gridPositionX + j * this.constatnts.brickSize - this.constatnts.brickSize;
           if (futureX < 0) return false;
+
+          const futureGridIndexJ = Math.floor(futureX / brickSize);
+          const futureGridIndexI = Math.floor((this.gridPositionY + i * brickSize) / brickSize);
+
+          if (
+            futureGridIndexI >= 0 &&
+            futureGridIndexI < this.constatnts.gameGridHeight &&
+            futureGridIndexJ >= 0 &&
+            futureGridIndexJ < this.constatnts.gameGridWidth
+          ) {
+            if (this.gameGrid[futureGridIndexI][futureGridIndexJ] !== "0") {
+              return false;
+            }
+          }
         }
       }
     }
@@ -98,12 +113,27 @@ export class Figure {
   }
 
   public canMoveRight(): boolean {
+    const brickSize = this.constatnts.brickSize;
     for (let i = 0; i < this.currentMatrix.length; i += 1) {
       for (let j = 0; j < this.currentMatrix[i].length; j += 1) {
         if (this.currentMatrix[i][j] === 1) {
           const futureX = this.gridPositionX + j * this.constatnts.brickSize + this.constatnts.brickSize;
           if (futureX > this.constatnts.gameGridWidth * this.constatnts.brickSize - this.constatnts.brickSize)
             return false;
+
+          const futureGridIndexJ = Math.floor(futureX / brickSize);
+          const futureGridIndexI = Math.floor((this.gridPositionY + i * brickSize) / brickSize);
+
+          if (
+            futureGridIndexI >= 0 &&
+            futureGridIndexI < this.constatnts.gameGridHeight &&
+            futureGridIndexJ >= 0 &&
+            futureGridIndexJ < this.constatnts.gameGridWidth
+          ) {
+            if (this.gameGrid[futureGridIndexI][futureGridIndexJ] !== "0") {
+              return false;
+            }
+          }
         }
       }
     }
@@ -119,16 +149,16 @@ export class Figure {
           const futureY = this.gridPositionY + i * brickSize + brickSize;
           if (futureY > this.constatnts.gameGridHeight * brickSize - brickSize) return false;
 
-          const futureGridXIndex = Math.floor((this.gridPositionX + j * brickSize) / brickSize);
-          const futureGridYIndex = Math.floor(futureY / brickSize);
+          const futureGridIndexI = Math.floor(futureY / brickSize);
+          const futureGridIndexJ = Math.floor((this.gridPositionX + j * brickSize) / brickSize);
 
           if (
-            futureGridXIndex >= 0 &&
-            futureGridXIndex <= this.constatnts.gameGridWidth * brickSize &&
-            futureGridYIndex >= 0 &&
-            futureGridYIndex <= this.constatnts.gameGridHeight * brickSize
+            futureGridIndexI >= 0 &&
+            futureGridIndexI < this.constatnts.gameGridHeight &&
+            futureGridIndexJ >= 0 &&
+            futureGridIndexJ < this.constatnts.gameGridWidth
           ) {
-            if (this.gameGrid[futureGridYIndex][futureGridXIndex] !== "0") {
+            if (this.gameGrid[futureGridIndexI][futureGridIndexJ] !== "0") {
               return false;
             }
           }
