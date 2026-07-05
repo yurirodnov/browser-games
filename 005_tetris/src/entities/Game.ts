@@ -213,6 +213,21 @@ export class Game {
     }
   }
 
+  public clearFullRows(): void {
+    let rowsRemoved = 0;
+
+    for (let i = this.gameGrid.length - 1; i >= 0; i -= 1) {
+      if (!this.gameGrid[i].includes("0")) {
+        this.gameGrid.splice(i, 1);
+        rowsRemoved += 1;
+      }
+    }
+
+    for (let i = 0; i < rowsRemoved; i += 1) {
+      this.gameGrid.unshift(new Array(this.constants.gameGridWidth).fill("0"));
+    }
+  }
+
   public drawUI(): void {
     // DRAW HUD
     this.hudCtx.textAlign = "center";
@@ -305,6 +320,7 @@ export class Game {
         this.figureMoveTimer = 0;
       } else {
         this.landFigure();
+        this.clearFullRows();
         this.figureMoveTimer = 0;
         this.currentFigure = null;
         this.createFigure();
@@ -321,9 +337,9 @@ export class Game {
       this.gameCtx.drawImage(this.backgroundTilesCache, 0, 0, this.gameCtx.canvas.width, this.gameCtx.canvas.height);
     }
 
-    this.currentFigure?.draw(this.gameCtx);
-
     this.drawDeadFigures(this.gameCtx);
+
+    this.currentFigure?.draw(this.gameCtx);
 
     this.HUD.draw(this.hudCtx);
 
