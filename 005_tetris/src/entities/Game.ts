@@ -312,9 +312,9 @@ export class Game {
     }
 
     // CONTROL IF FIGURE BEYOND WALL
-    if (this.currentFigure) {
-      this.currentFigure.shiftFigureIfBeyond();
-    }
+    // if (this.currentFigure) {
+    //   this.currentFigure.shiftFigureIfBeyond();
+    // }
 
     // DRAW OBJECTS
     if (this.backgroundTilesCache) {

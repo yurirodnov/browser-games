@@ -51,13 +51,10 @@ export class Figure {
     return this.currentMatrix;
   }
 
-  public rotate(): void | null {
+  public rotate(): void {
     const previousMatrixBackup = this.currentMatrix;
     const previousMatrixPosition = this.matrixStartOPtion;
-
-    if (this.checkGridCollision() && this.checkWallCollision()) {
-      return null;
-    }
+    const previousGridPosition = this.gridPositionX;
 
     if (this.matrixStartOPtion < this.matrixOptionMaxNumber) {
       this.matrixStartOPtion += 1;
@@ -66,6 +63,29 @@ export class Figure {
     }
 
     this.currentMatrix = this.matrixOptions[this.matrixStartOPtion];
+
+    const kickOffsets = [
+      0,
+      -this.constatnts.brickSize,
+      this.constatnts.brickSize,
+      -this.constatnts.brickSize * 2,
+      this.constatnts.brickSize * 2,
+    ];
+
+    for (let offset of kickOffsets) {
+      this.gridPositionX = previousGridPosition + offset;
+
+      const hasGridCollision = this.checkGridCollision();
+      const hasWallCollision = this.checkWallCollision();
+
+      if (!hasGridCollision && !hasWallCollision) {
+        return;
+      }
+    }
+
+    this.currentMatrix = previousMatrixBackup;
+    this.gridPositionX = previousGridPosition;
+    this.matrixStartOPtion = previousMatrixPosition;
   }
 
   public drop(step: number): void {
