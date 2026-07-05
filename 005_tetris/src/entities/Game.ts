@@ -99,15 +99,15 @@ export class Game {
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (this.currentFigure && this.currentFigure.canMoveLeft() && e.key === "ArrowLeft") {
         this.currentFigure.moveLeft(this.figureMoveStep);
-        console.log("Figure position X:", this.currentFigure.getPositionX());
-        console.log("Figure matrix:", this.currentFigure.getFigureMatrix());
+        // console.log("Figure position X:", this.currentFigure.getPositionX());
+        // console.log("Figure matrix:", this.currentFigure.getFigureMatrix());
       }
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (this.currentFigure && this.currentFigure.canMoveRight() && e.key === "ArrowRight") {
         this.currentFigure.moveRight(this.figureMoveStep);
-        console.log("Figure position X:", this.currentFigure.getPositionX());
-        console.log("Figure matrix:", this.currentFigure.getFigureMatrix());
+        // console.log("Figure position X:", this.currentFigure.getPositionX());
+        // console.log("Figure matrix:", this.currentFigure.getFigureMatrix());
       }
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {

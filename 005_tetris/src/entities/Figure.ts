@@ -51,7 +51,14 @@ export class Figure {
     return this.currentMatrix;
   }
 
-  public rotate(): void {
+  public rotate(): void | null {
+    const previousMatrixBackup = this.currentMatrix;
+    const previousMatrixPosition = this.matrixStartOPtion;
+
+    if (this.checkGridCollision() && this.checkWallCollision()) {
+      return null;
+    }
+
     if (this.matrixStartOPtion < this.matrixOptionMaxNumber) {
       this.matrixStartOPtion += 1;
     } else {
@@ -59,8 +66,6 @@ export class Figure {
     }
 
     this.currentMatrix = this.matrixOptions[this.matrixStartOPtion];
-
-    console.log("MATRIX POSITION", this.matrixStartOPtion);
   }
 
   public drop(step: number): void {
@@ -167,6 +172,47 @@ export class Figure {
     }
 
     return true;
+  }
+
+  public checkWallCollision(): boolean {
+    for (let i = 0; i < this.currentMatrix.length; i += 1) {
+      for (let j = 0; j < this.currentMatrix[i].length; j += 1) {
+        if (this.currentMatrix[i][j] === 1) {
+          const cell = this.gridPositionX + j * this.constatnts.brickSize;
+          if (cell < 0 || cell >= this.constatnts.gameGridWidth * this.constatnts.brickSize) {
+            console.log("wall collision");
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
+  }
+
+  public checkGridCollision(): boolean {
+    for (let i = 0; i < this.currentMatrix.length; i += 1) {
+      for (let j = 0; j < this.currentMatrix[i].length; j += 1) {
+        if (this.currentMatrix[i][j] === 1) {
+          const gridX = Math.floor((this.gridPositionX + j * this.constatnts.brickSize) / this.constatnts.brickSize);
+          const gridY = Math.floor((this.gridPositionY + i * this.constatnts.brickSize) / this.constatnts.brickSize);
+
+          if (
+            gridX >= 0 &&
+            gridX < this.constatnts.gameGridWidth &&
+            gridY >= 0 &&
+            gridY < this.constatnts.gameGridHeight
+          ) {
+            if (this.gameGrid[gridY][gridX] !== "0") {
+              console.log("grid collision");
+              return true;
+            }
+          }
+        }
+      }
+    }
+
+    return false;
   }
 
   public shiftFigureIfBeyond(): void {
