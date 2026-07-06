@@ -186,8 +186,6 @@ export class Game {
     if (randomNumber <= chance) {
       const ammoBox = new Ammo(this.assets.ammo, x, y, this.constants.ammoSize);
       this.ammo.push(ammoBox);
-
-      console.log(`AMMO DROPPED AT X ${ammoBox.getCoordX()} AND ITS WIDTH IS ${ammoBox.getWidth()}`);
     }
 
     return;
@@ -201,7 +199,6 @@ export class Game {
   private showBlood(coordX: number, coordY: number): void {
     const blood = new Blood(this.assets.blood, coordX, coordY, this.constants.bloodSize);
     this.bloods.push(blood);
-    console.log("BLOODZ", this.bloods);
   }
 
   private handleSurvivorDeath(): void {
@@ -236,8 +233,6 @@ export class Game {
       spawnZombieType,
     );
 
-    console.log(`Spawn ${spawnZombieType} ${spawnSide} zombie at ${zombie.getCoordX()}`, zombie);
-
     this.zombies.push(zombie);
   }
 
@@ -268,8 +263,6 @@ export class Game {
         this.lastDirection,
       );
     }
-
-    console.log(`Strike x is ${this.strike?.getCoordX()} and worldOffset is ${this.worldOffset}`);
   }
 
   private useShotgun(): void {

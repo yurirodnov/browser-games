@@ -95,6 +95,11 @@ export class Game {
 
     this.createFigure();
 
+    window.addEventListener("mousedown", (e: MouseEvent) => {
+      e.preventDefault();
+      this.handleScrenClick();
+    });
+
     // CONTROL LISTENERS
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (this.currentFigure && this.currentFigure.canMoveLeft() && e.key === "ArrowLeft") {
@@ -128,6 +133,17 @@ export class Game {
 
     this.isRunningGameplay = true;
     this.loop(0);
+  }
+
+  private handleScrenClick(): void {
+    switch (this.gameScreenState) {
+      case "menu":
+        this.start();
+        break;
+      case "gameOver":
+        this.restart();
+        break;
+    }
   }
 
   private createBackgroundCache() {
@@ -288,13 +304,23 @@ export class Game {
 
   public start(): void {
     this.isRunningGameplay = true;
+    this.gameScreenState = "play";
+    this.lastAnimationFrameTime = 0;
+    this.animationID = requestAnimationFrame(this.loop);
   }
 
   public stop(): void {
     this.isRunningGameplay = false;
+    this.gameScreenState = "gameOver";
     if (this.animationID !== null) {
       cancelAnimationFrame(this.animationID);
     }
+  }
+
+  public restart(): void {
+    this.isRunningGameplay = true;
+    this.gameScreenState = "play";
+    this.gameGrid = this.initGameGrid(this.constants.gameGridWidth, this.constants.hudGridHeight);
   }
 
   public loop = (timestamp: number): void => {
