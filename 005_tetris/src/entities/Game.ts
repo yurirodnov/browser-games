@@ -38,7 +38,7 @@ export class Game {
   private figuresColorsSet: BrickColor[];
   private figureStartPositionX: number;
   private figureStartPositionY: number;
-  private figureMoveSpeed: number = 2;
+  private figureMoveSpeed: number = 1;
   private figureMoveTimer: number = 0;
   private figureMoveStep: number;
 
@@ -127,7 +127,7 @@ export class Game {
     });
     window.addEventListener("keyup", (e: KeyboardEvent) => {
       if (e.key === "ArrowDown") {
-        this.figureMoveSpeed = 2;
+        this.figureMoveSpeed = 1;
       }
     });
 
@@ -254,50 +254,53 @@ export class Game {
     this.hudCtx.textAlign = "center";
     this.hudCtx.lineJoin = "round";
     this.hudCtx.lineWidth = 1;
-
     const lettersFont: string = "20px 'Silkscreen', sans-serif";
 
-    const letters: string[] = ["T", "E", "T", "R", "I", "S"];
-    const letterColors: string[] = ["#2D09F4", "#07B213", "#E7690F", "#DE13D9", "#F80A0A", "#EBDF0D"];
-    const lettersGap: number = 25;
-    let letterCoordX: number = 20;
-    const letterCoordY: number = 50;
-    const hudCanvasWidth = this.hudCtx.canvas.width;
+    if (this.gameScreenState === "menu") {
+    } else if (this.gameScreenState === "play") {
+      const letters: string[] = ["T", "E", "T", "R", "I", "S"];
+      const letterColors: string[] = ["#2D09F4", "#07B213", "#E7690F", "#DE13D9", "#F80A0A", "#EBDF0D"];
+      const lettersGap: number = 25;
+      let letterCoordX: number = 20;
+      const letterCoordY: number = 50;
+      const hudCanvasWidth = this.hudCtx.canvas.width;
 
-    drawLetters(
-      this.hudCtx,
-      "center",
-      letters,
-      lettersFont,
-      "#ffffff",
-      letterColors,
-      letterCoordX,
-      letterCoordY,
-      lettersGap,
-    );
+      drawLetters(
+        this.hudCtx,
+        "center",
+        letters,
+        lettersFont,
+        "#ffffff",
+        letterColors,
+        letterCoordX,
+        letterCoordY,
+        lettersGap,
+      );
 
-    drawText(this.hudCtx, "center", "score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 120);
-    drawText(
-      this.hudCtx,
-      "center",
-      String(this.score.getScore()),
-      lettersFont,
-      "#000000",
-      "#ffffff",
-      hudCanvasWidth / 2,
-      145,
-    );
-    drawText(this.hudCtx, "center", "high-score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 175);
-    drawText(
-      this.hudCtx,
-      "center",
-      String(this.score.getHighScore()),
-      lettersFont,
-      "#000000",
-      "#ffffff",
-      hudCanvasWidth / 2,
-      200,
-    );
+      drawText(this.hudCtx, "center", "score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 120);
+      drawText(
+        this.hudCtx,
+        "center",
+        String(this.score.getScore()),
+        lettersFont,
+        "#000000",
+        "#ffffff",
+        hudCanvasWidth / 2,
+        145,
+      );
+      drawText(this.hudCtx, "center", "high-score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 175);
+      drawText(
+        this.hudCtx,
+        "center",
+        String(this.score.getHighScore()),
+        lettersFont,
+        "#000000",
+        "#ffffff",
+        hudCanvasWidth / 2,
+        200,
+      );
+    } else if (this.gameScreenState === "gameOver") {
+    }
 
     // DRAW GAME STATE INFO
   }
@@ -341,38 +344,41 @@ export class Game {
     this.gameCtx.clearRect(0, 0, this.gameCtx.canvas.width, this.gameCtx.canvas.height);
     this.hudCtx.clearRect(0, 0, this.hudCtx.canvas.width, this.hudCtx.canvas.height);
 
-    // DROP FIGURE
-    this.figureMoveTimer += this.figureMoveSpeed * delta;
-    //console.log("Figure timer", this.figureMoveTimer);
-    if (this.figureMoveTimer >= 10) {
-      if (this.currentFigure && this.currentFigure.canMoveDown()) {
-        // this.figureStartPositionY += this.figureMoveStep;
-        this.currentFigure.drop(this.figureMoveStep);
-        this.figureMoveTimer = 0;
-      } else {
-        this.landFigure();
-        this.clearFullRows();
-        this.figureMoveTimer = 0;
-        this.currentFigure = null;
-        this.createFigure();
-      }
-    }
-
-    // CONTROL IF FIGURE BEYOND WALL
-    // if (this.currentFigure) {
-    //   this.currentFigure.shiftFigureIfBeyond();
-    // }
-
-    // DRAW OBJECTS
     if (this.backgroundTilesCache) {
       this.gameCtx.drawImage(this.backgroundTilesCache, 0, 0, this.gameCtx.canvas.width, this.gameCtx.canvas.height);
     }
 
-    this.drawDeadFigures(this.gameCtx);
-
-    this.currentFigure?.draw(this.gameCtx);
-
     this.HUD.draw(this.hudCtx);
+
+    if (this.gameScreenState === "play") {
+      // DROP FIGURE
+      this.figureMoveTimer += this.figureMoveSpeed * delta;
+      //console.log("Figure timer", this.figureMoveTimer);
+      if (this.figureMoveTimer >= 10) {
+        if (this.currentFigure && this.currentFigure.canMoveDown()) {
+          // this.figureStartPositionY += this.figureMoveStep;
+          this.currentFigure.drop(this.figureMoveStep);
+          this.figureMoveTimer = 0;
+        } else {
+          this.landFigure();
+          this.clearFullRows();
+          this.figureMoveTimer = 0;
+          this.currentFigure = null;
+          this.createFigure();
+        }
+      }
+
+      // CONTROL IF FIGURE BEYOND WALL
+      // if (this.currentFigure) {
+      //   this.currentFigure.shiftFigureIfBeyond();
+      // }
+
+      // DRAW OBJECTS
+
+      this.drawDeadFigures(this.gameCtx);
+
+      this.currentFigure?.draw(this.gameCtx);
+    }
 
     this.drawUI();
 

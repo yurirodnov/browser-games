@@ -620,8 +620,6 @@ export class Game {
                 zombieBottom - this.constants.ammoSize,
               );
             }
-
-            console.log("ZOMBIES ALIVE", this.zombies);
           }
         }
       }
@@ -672,9 +670,6 @@ export class Game {
                     zombieBottom - this.constants.ammoSize,
                   );
                 }
-
-                console.log("SHOOT!");
-                console.log("ZOMBIES ALIVE", this.zombies);
               }
             }
           }
