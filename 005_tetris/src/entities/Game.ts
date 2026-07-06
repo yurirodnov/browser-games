@@ -122,7 +122,7 @@ export class Game {
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "ArrowDown") {
-        this.figureMoveSpeed = 20;
+        this.figureMoveSpeed = 30;
       }
     });
     window.addEventListener("keyup", (e: KeyboardEvent) => {
@@ -191,7 +191,7 @@ export class Game {
       this.figureStartPositionY,
       this.gameGrid,
     );
-    console.log("Current figure: ", newFigureType);
+    //console.log("Current figure: ", newFigureType);
   }
 
   public landFigure(): void {
@@ -201,8 +201,20 @@ export class Game {
       for (let i = 0; i < this.currentFigure.getFigureMatrix().length; i += 1) {
         for (let j = 0; j < this.currentFigure.getFigureMatrix()[i].length; j += 1) {
           if (this.currentFigure.getFigureMatrix()[i][j] === 1) {
-            this.gameGrid[gridY + i][gridX + j] =
-              colorNumberMap[this.currentFigure.getFigureColor() as keyof ColorNumberMapType];
+            const cellX = gridX + j;
+            const cellY = gridY + i;
+
+            if (
+              cellX >= 0 &&
+              cellX < this.constants.gameGridWidth &&
+              cellY >= 0 &&
+              cellY < this.constants.gameGridHeight
+            ) {
+              this.gameGrid[cellY][cellX] =
+                colorNumberMap[this.currentFigure.getFigureColor() as keyof ColorNumberMapType];
+            } else if (cellY < 0) {
+              this.stop();
+            }
           }
         }
       }
@@ -254,7 +266,7 @@ export class Game {
     this.gameCtx.lineJoin = "round";
     this.gameCtx.lineWidth = 3;
     const tetrisLettersFont: string = "50px 'Silkscreen', sans-serif";
-    const callLettersFont: string = "20px 'Silkscreen', sans-serif";
+    const textLettersFont: string = "20px 'Silkscreen', sans-serif";
     const gameCanvasWidth = this.gameCtx.canvas.width;
 
     if (this.gameScreenState === "menu") {
@@ -280,14 +292,14 @@ export class Game {
         this.gameCtx,
         "center",
         "click to start",
-        callLettersFont,
+        textLettersFont,
         "#000000",
         "#ffffff",
         gameCanvasWidth / 2,
         190,
       );
     } else if (this.gameScreenState === "gameOver") {
-      drawText(this.gameCtx, "center", "GAME OVER", tetrisLettersFont, "#000000", "#ffffff", gameCanvasWidth / 2, 120);
+      drawText(this.gameCtx, "center", "GAME OVER", textLettersFont, "#000000", "#ffffff", gameCanvasWidth / 2, 120);
     }
   }
 
@@ -347,6 +359,12 @@ export class Game {
     this.isRunningGameplay = true;
     this.gameScreenState = "play";
     this.lastAnimationFrameTime = 0;
+    this.figureMoveSpeed = 1;
+
+    if (this.animationID !== null) {
+      cancelAnimationFrame(this.animationID);
+    }
+
     this.animationID = requestAnimationFrame(this.loop);
   }
 
@@ -360,14 +378,29 @@ export class Game {
 
   public restart(): void {
     this.isRunningGameplay = true;
-    this.gameScreenState = "play";
-    this.gameGrid = this.initGameGrid(this.constants.gameGridWidth, this.constants.hudGridHeight);
+    this.gameGrid = [];
+    this.gameGrid = this.initGameGrid(this.constants.gameGridWidth, this.constants.gameGridHeight);
+    this.figureStartPositionX = this.gameCtx.canvas.width / 2;
+    this.figureStartPositionY = 0 - this.constants.brickSize * 4;
+    this.score.resetScore();
+    this.figureMoveTimer = 0;
+    this.figureMoveSpeed = 1;
+    this.lastAnimationFrameTime = 0;
+    this.createFigure();
+    console.log("NEW GRID", this.gameGrid);
+    this.start();
   }
 
   public loop = (timestamp: number): void => {
     if (!this.isRunningGameplay) {
       return;
     }
+
+    this.gameCtx.clearRect(0, 0, this.gameCtx.canvas.width, this.gameCtx.canvas.height);
+    this.hudCtx.clearRect(0, 0, this.hudCtx.canvas.width, this.hudCtx.canvas.height);
+
+    this.gameCtx.imageSmoothingEnabled = true;
+    this.hudCtx.imageSmoothingEnabled = true;
 
     // CALCULATING DELTA
     if (this.lastAnimationFrameTime === 0) {
@@ -379,9 +412,6 @@ export class Game {
       delta = 0.1;
     }
 
-    this.gameCtx.clearRect(0, 0, this.gameCtx.canvas.width, this.gameCtx.canvas.height);
-    this.hudCtx.clearRect(0, 0, this.hudCtx.canvas.width, this.hudCtx.canvas.height);
-
     if (this.backgroundTilesCache) {
       this.gameCtx.drawImage(this.backgroundTilesCache, 0, 0, this.gameCtx.canvas.width, this.gameCtx.canvas.height);
     }
@@ -391,18 +421,20 @@ export class Game {
     if (this.gameScreenState === "play") {
       // DROP FIGURE
       this.figureMoveTimer += this.figureMoveSpeed * delta;
-      //console.log("Figure timer", this.figureMoveTimer);
+
       if (this.figureMoveTimer >= 10) {
         if (this.currentFigure && this.currentFigure.canMoveDown()) {
-          // this.figureStartPositionY += this.figureMoveStep;
           this.currentFigure.drop(this.figureMoveStep);
           this.figureMoveTimer = 0;
         } else {
           this.landFigure();
           this.clearFullRows();
           this.figureMoveTimer = 0;
-          this.currentFigure = null;
-          this.createFigure();
+
+          if (this.isRunningGameplay) {
+            this.currentFigure = null;
+            this.createFigure();
+          }
         }
       }
 
