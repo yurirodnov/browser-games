@@ -226,6 +226,10 @@ export class Game {
     for (let i = 0; i < rowsRemoved; i += 1) {
       this.gameGrid.unshift(new Array(this.constants.gameGridWidth).fill("0"));
       this.score.addScore(100);
+      if (this.score.getScore() > this.score.getHighScore()) {
+        this.score.addHighScore();
+      }
+      this.score.saveHighScore();
     }
   }
 
