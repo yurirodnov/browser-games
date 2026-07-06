@@ -252,29 +252,42 @@ export class Game {
   public drawGameScreen(): void {
     this.gameCtx.textAlign = "left";
     this.gameCtx.lineJoin = "round";
-    this.gameCtx.lineWidth = 1;
-    const lettersFont: string = "40px 'Silkscreen', sans-serif";
+    this.gameCtx.lineWidth = 3;
+    const tetrisLettersFont: string = "50px 'Silkscreen', sans-serif";
+    const callLettersFont: string = "20px 'Silkscreen', sans-serif";
+    const gameCanvasWidth = this.gameCtx.canvas.width;
 
     if (this.gameScreenState === "menu") {
       const letters: string[] = ["T", "E", "T", "R", "I", "S"];
       const letterColors: string[] = ["#2D09F4", "#07B213", "#E7690F", "#DE13D9", "#F80A0A", "#EBDF0D"];
-      const lettersGap: number = 25;
-      let letterCoordX: number = 20;
-      const letterCoordY: number = 50;
+      const lettersGap: number = 35;
+      let letterCoordX: number = 40;
+      const letterCoordY: number = 150;
 
       drawLetters(
         this.gameCtx,
         "center",
         letters,
-        lettersFont,
-        "#ffffff",
+        tetrisLettersFont,
+        "#000000",
         letterColors,
         letterCoordX,
         letterCoordY,
         lettersGap,
       );
-    } else {
-      //
+
+      drawText(
+        this.gameCtx,
+        "center",
+        "click to start",
+        callLettersFont,
+        "#000000",
+        "#ffffff",
+        gameCanvasWidth / 2,
+        190,
+      );
+    } else if (this.gameScreenState === "gameOver") {
+      drawText(this.gameCtx, "center", "GAME OVER", tetrisLettersFont, "#000000", "#ffffff", gameCanvasWidth / 2, 120);
     }
   }
 
@@ -292,19 +305,19 @@ export class Game {
     const letterCoordY: number = 50;
     const hudCanvasWidth = this.hudCtx.canvas.width;
 
-    drawLetters(
-      this.hudCtx,
-      "center",
-      letters,
-      lettersFont,
-      "#ffffff",
-      letterColors,
-      letterCoordX,
-      letterCoordY,
-      lettersGap,
-    );
+    // drawLetters(
+    //   this.hudCtx,
+    //   "center",
+    //   letters,
+    //   lettersFont,
+    //   "#ffffff",
+    //   letterColors,
+    //   letterCoordX,
+    //   letterCoordY,
+    //   lettersGap,
+    // );
 
-    drawText(this.hudCtx, "center", "score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 120);
+    drawText(this.hudCtx, "center", "score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 50);
     drawText(
       this.hudCtx,
       "center",
@@ -313,9 +326,9 @@ export class Game {
       "#000000",
       "#ffffff",
       hudCanvasWidth / 2,
-      145,
+      80,
     );
-    drawText(this.hudCtx, "center", "high-score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 175);
+    drawText(this.hudCtx, "center", "high-score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 145);
     drawText(
       this.hudCtx,
       "center",
@@ -324,7 +337,7 @@ export class Game {
       "#000000",
       "#ffffff",
       hudCanvasWidth / 2,
-      200,
+      175,
     );
 
     // DRAW GAME STATE INFO
