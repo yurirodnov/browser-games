@@ -264,10 +264,12 @@ export class Game {
   public drawGameScreen(): void {
     this.gameCtx.textAlign = "left";
     this.gameCtx.lineJoin = "round";
-    this.gameCtx.lineWidth = 3;
+    this.gameCtx.lineWidth = 2;
     const tetrisLettersFont: string = "50px 'Silkscreen', sans-serif";
     const textLettersFont: string = "20px 'Silkscreen', sans-serif";
+    const gameoverLettersFont: string = "35px 'Silkscreen', sans-serif";
     const gameCanvasWidth = this.gameCtx.canvas.width;
+    const gameCanvasHeight = this.gameCtx.canvas.height;
 
     if (this.gameScreenState === "menu") {
       const letters: string[] = ["T", "E", "T", "R", "I", "S"];
@@ -299,7 +301,26 @@ export class Game {
         190,
       );
     } else if (this.gameScreenState === "gameOver") {
-      drawText(this.gameCtx, "center", "GAME OVER", textLettersFont, "#000000", "#ffffff", gameCanvasWidth / 2, 120);
+      drawText(
+        this.gameCtx,
+        "center",
+        "GAME OVER",
+        gameoverLettersFont,
+        "#ffffff",
+        "#F80A0A",
+        gameCanvasWidth / 2,
+        gameCanvasHeight / 2,
+      );
+      drawText(
+        this.gameCtx,
+        "center",
+        "click to restart",
+        textLettersFont,
+        "#000000",
+        "#ffffff",
+        gameCanvasWidth / 2,
+        gameCanvasHeight / 2 + 30,
+      );
     }
   }
 
@@ -309,25 +330,7 @@ export class Game {
     this.hudCtx.lineJoin = "round";
     this.hudCtx.lineWidth = 1;
     const lettersFont: string = "20px 'Silkscreen', sans-serif";
-
-    const letters: string[] = ["T", "E", "T", "R", "I", "S"];
-    const letterColors: string[] = ["#2D09F4", "#07B213", "#E7690F", "#DE13D9", "#F80A0A", "#EBDF0D"];
-    const lettersGap: number = 25;
-    let letterCoordX: number = 20;
-    const letterCoordY: number = 50;
     const hudCanvasWidth = this.hudCtx.canvas.width;
-
-    // drawLetters(
-    //   this.hudCtx,
-    //   "center",
-    //   letters,
-    //   lettersFont,
-    //   "#ffffff",
-    //   letterColors,
-    //   letterCoordX,
-    //   letterCoordY,
-    //   lettersGap,
-    // );
 
     drawText(this.hudCtx, "center", "score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 50);
     drawText(
@@ -351,8 +354,6 @@ export class Game {
       hudCanvasWidth / 2,
       175,
     );
-
-    // DRAW GAME STATE INFO
   }
 
   public start(): void {
