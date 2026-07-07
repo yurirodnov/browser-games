@@ -33,7 +33,7 @@ export class Game {
   private gameGrid: GameGridMatrix;
 
   private currentFigure: Figure | null = null;
-  //private nextFigure: Figure;
+
   private figuresSet: FigureType[];
   private figuresColorsSet: BrickColor[];
   private figureStartPositionX: number;
@@ -182,6 +182,9 @@ export class Game {
     const newFigureType = this.figuresSet[getRandomNumber(0, this.figuresSet.length - 1)];
     const newFigureColor = this.figuresColorsSet[getRandomNumber(0, this.figuresColorsSet.length - 1)];
 
+    const nextFigureType = this.figuresSet[getRandomNumber(0, this.figuresSet.length - 1)];
+    const nextFigureColor = this.figuresColorsSet[getRandomNumber(0, this.figuresColorsSet.length - 1)];
+
     this.currentFigure = new Figure(
       newFigureType,
       newFigureColor,
@@ -191,6 +194,7 @@ export class Game {
       this.figureStartPositionY,
       this.gameGrid,
     );
+
     //console.log("Current figure: ", newFigureType);
   }
 
@@ -296,7 +300,7 @@ export class Game {
         "click to start",
         textLettersFont,
         "#000000",
-        "#ffffff",
+        "#EBDF0D",
         gameCanvasWidth / 2,
         190,
       );
