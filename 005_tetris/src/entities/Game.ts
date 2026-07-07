@@ -19,6 +19,7 @@ import { drawText, drawLetters } from "../lib/drawText";
 import { getRandomNumber } from "../lib/RandomNumber";
 import { colorNumberMap, numberColorMap } from "../lib/ColorNumberMaps";
 import { Figure } from "./Figure";
+import { NextFigurePreview } from "./NextFigurePreview";
 
 export class Game {
   private assets: GameAssets;
@@ -33,6 +34,9 @@ export class Game {
   private gameGrid: GameGridMatrix;
 
   private currentFigure: Figure | null = null;
+  private nextFigurePreview: NextFigurePreview | null = null;
+  private nextFigureType: FigureType | null = null;
+  private nextFigureColor: BrickColor | null = null;
 
   private figuresSet: FigureType[];
   private figuresColorsSet: BrickColor[];
@@ -94,6 +98,7 @@ export class Game {
     this.figureStartPositionY = 0 - constants.brickSize * 4;
 
     this.createFigure();
+    this.createNextFigure();
 
     window.addEventListener("mousedown", (e: MouseEvent) => {
       e.preventDefault();
@@ -178,22 +183,45 @@ export class Game {
     return grid;
   }
 
-  public createFigure(): void {
-    const newFigureType = this.figuresSet[getRandomNumber(0, this.figuresSet.length - 1)];
-    const newFigureColor = this.figuresColorsSet[getRandomNumber(0, this.figuresColorsSet.length - 1)];
+  public createNextFigure(): void {
+    this.nextFigureColor = this.figuresColorsSet[getRandomNumber(0, this.figuresColorsSet.length - 1)];
+    this.nextFigureType = this.figuresSet[getRandomNumber(0, this.figuresSet.length - 1)];
 
-    const nextFigureType = this.figuresSet[getRandomNumber(0, this.figuresSet.length - 1)];
-    const nextFigureColor = this.figuresColorsSet[getRandomNumber(0, this.figuresColorsSet.length - 1)];
-
-    this.currentFigure = new Figure(
-      newFigureType,
-      newFigureColor,
+    this.nextFigurePreview = new NextFigurePreview(
       this.assets.picsAssets.bricks,
+      this.nextFigureColor,
+      this.nextFigureType,
+      30,
+      180,
       this.constants,
-      this.figureStartPositionX,
-      this.figureStartPositionY,
-      this.gameGrid,
     );
+  }
+
+  public createFigure(): void {
+    if (!this.nextFigureColor && !this.nextFigureType) {
+      const newFigureType = this.figuresSet[getRandomNumber(0, this.figuresSet.length - 1)];
+      const newFigureColor = this.figuresColorsSet[getRandomNumber(0, this.figuresColorsSet.length - 1)];
+
+      this.currentFigure = new Figure(
+        newFigureType,
+        newFigureColor,
+        this.assets.picsAssets.bricks,
+        this.constants,
+        this.figureStartPositionX,
+        this.figureStartPositionY,
+        this.gameGrid,
+      );
+    } else if (this.nextFigureType && this.nextFigureColor) {
+      this.currentFigure = new Figure(
+        this.nextFigureType,
+        this.nextFigureColor,
+        this.assets.picsAssets.bricks,
+        this.constants,
+        this.figureStartPositionX,
+        this.figureStartPositionY,
+        this.gameGrid,
+      );
+    }
 
     //console.log("Current figure: ", newFigureType);
   }
@@ -392,6 +420,7 @@ export class Game {
     this.figureMoveSpeed = 1;
     this.lastAnimationFrameTime = 0;
     this.createFigure();
+    this.createNextFigure();
     console.log("NEW GRID", this.gameGrid);
     this.start();
   }
@@ -439,6 +468,7 @@ export class Game {
           if (this.isRunningGameplay) {
             this.currentFigure = null;
             this.createFigure();
+            this.createNextFigure();
           }
         }
       }
@@ -451,6 +481,7 @@ export class Game {
       // DRAW OBJECTS
 
       this.drawDeadFigures(this.gameCtx);
+      this.nextFigurePreview?.draw(this.hudCtx);
 
       this.currentFigure?.draw(this.gameCtx);
     }
