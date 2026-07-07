@@ -64,7 +64,6 @@ export class Game {
 
     // INIT GAME GRID
     this.gameGrid = this.initGameGrid(this.constants.gameGridWidth, this.constants.gameGridHeight);
-    //console.log("GAME GRID", this.gameGrid);
 
     // INIT BACKGROUND TILES
     const tilesArray: BackgroundTile[][] = [];
@@ -109,15 +108,11 @@ export class Game {
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (this.currentFigure && this.currentFigure.canMoveLeft() && e.key === "ArrowLeft") {
         this.currentFigure.moveLeft(this.figureMoveStep);
-        // console.log("Figure position X:", this.currentFigure.getPositionX());
-        // console.log("Figure matrix:", this.currentFigure.getFigureMatrix());
       }
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (this.currentFigure && this.currentFigure.canMoveRight() && e.key === "ArrowRight") {
         this.currentFigure.moveRight(this.figureMoveStep);
-        // console.log("Figure position X:", this.currentFigure.getPositionX());
-        // console.log("Figure matrix:", this.currentFigure.getFigureMatrix());
       }
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {
@@ -210,8 +205,6 @@ export class Game {
       this.figureStartPositionY,
       this.gameGrid,
     );
-
-    //console.log("Current figure: ", newFigureType);
   }
 
   public landFigure(): void {
@@ -239,8 +232,6 @@ export class Game {
         }
       }
     }
-
-    console.log("New grid:", this.gameGrid);
   }
 
   public drawDeadFigures(ctx: CanvasRenderingContext2D): void {
@@ -411,7 +402,6 @@ export class Game {
     this.lastAnimationFrameTime = 0;
     this.createFigure();
     this.createNextFigure();
-    console.log("NEW GRID", this.gameGrid);
     this.start();
   }
 
@@ -462,11 +452,6 @@ export class Game {
           }
         }
       }
-
-      // CONTROL IF FIGURE BEYOND WALL
-      // if (this.currentFigure) {
-      //   this.currentFigure.shiftFigureIfBeyond();
-      // }
 
       // DRAW OBJECTS
 
