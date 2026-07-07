@@ -191,37 +191,25 @@ export class Game {
       this.assets.picsAssets.bricks,
       this.nextFigureColor,
       this.nextFigureType,
-      30,
-      180,
+      (this.constants.hudGridWidth * this.constants.brickSize) / 4 + this.constants.brickSize / 2,
+      235,
       this.constants,
     );
   }
 
   public createFigure(): void {
-    if (!this.nextFigureColor && !this.nextFigureType) {
-      const newFigureType = this.figuresSet[getRandomNumber(0, this.figuresSet.length - 1)];
-      const newFigureColor = this.figuresColorsSet[getRandomNumber(0, this.figuresColorsSet.length - 1)];
+    const type = this.nextFigureType || this.figuresSet[getRandomNumber(0, this.figuresSet.length - 1)];
+    const color = this.nextFigureColor || this.figuresColorsSet[getRandomNumber(0, this.figuresColorsSet.length - 1)];
 
-      this.currentFigure = new Figure(
-        newFigureType,
-        newFigureColor,
-        this.assets.picsAssets.bricks,
-        this.constants,
-        this.figureStartPositionX,
-        this.figureStartPositionY,
-        this.gameGrid,
-      );
-    } else if (this.nextFigureType && this.nextFigureColor) {
-      this.currentFigure = new Figure(
-        this.nextFigureType,
-        this.nextFigureColor,
-        this.assets.picsAssets.bricks,
-        this.constants,
-        this.figureStartPositionX,
-        this.figureStartPositionY,
-        this.gameGrid,
-      );
-    }
+    this.currentFigure = new Figure(
+      type,
+      color,
+      this.assets.picsAssets.bricks,
+      this.constants,
+      this.figureStartPositionX,
+      this.figureStartPositionY,
+      this.gameGrid,
+    );
 
     //console.log("Current figure: ", newFigureType);
   }
@@ -328,7 +316,7 @@ export class Game {
         "click to start",
         textLettersFont,
         "#000000",
-        "#EBDF0D",
+        "#ffffff",
         gameCanvasWidth / 2,
         190,
       );
@@ -371,21 +359,23 @@ export class Game {
       String(this.score.getScore()),
       lettersFont,
       "#000000",
-      "#ffffff",
+      "#EBDF0D",
       hudCanvasWidth / 2,
       80,
     );
-    drawText(this.hudCtx, "center", "high-score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 145);
+    drawText(this.hudCtx, "center", "high-score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 125);
     drawText(
       this.hudCtx,
       "center",
       String(this.score.getHighScore()),
       lettersFont,
       "#000000",
-      "#ffffff",
+      "#EBDF0D",
       hudCanvasWidth / 2,
-      175,
+      155,
     );
+
+    drawText(this.hudCtx, "center", "next", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 205);
   }
 
   public start(): void {
