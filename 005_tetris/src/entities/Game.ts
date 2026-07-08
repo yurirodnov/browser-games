@@ -192,7 +192,7 @@ export class Game {
       this.assets.picsAssets.bricks,
       this.nextFigureColor,
       this.nextFigureType,
-      (this.constants.hudGridWidth * this.constants.brickSize) / 4,
+      (this.constants.hudGridWidth * this.constants.brickSize) / 4 + this.constants.brickSize / 3,
       70,
       this.constants,
     );
