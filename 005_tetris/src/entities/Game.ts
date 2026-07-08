@@ -32,6 +32,8 @@ export class Game {
   private lastAnimationFrameTime: number = 0;
 
   private gameGrid: GameGridMatrix;
+  private gameLevel: number = 1;
+  private nextLevelScoreNeeded: number = 1500;
 
   private currentFigure: Figure | null = null;
   private nextFigurePreview: NextFigurePreview | null = null;
@@ -42,7 +44,11 @@ export class Game {
   private figuresColorsSet: BrickColor[];
   private figureStartPositionX: number;
   private figureStartPositionY: number;
-  private figureMoveSpeed: number = 1;
+
+  private figureBaseSpeed: number = 1;
+  private figureCurrentSpeed: number = this.figureBaseSpeed;
+  private figureMaxSpeed: number = 12;
+  private figureFallSpeed: number = 30;
   private figureMoveTimer: number = 0;
   private figureMoveStep: number;
 
@@ -122,12 +128,12 @@ export class Game {
     });
     window.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "ArrowDown") {
-        this.figureMoveSpeed = 30;
+        this.figureCurrentSpeed = this.figureFallSpeed;
       }
     });
     window.addEventListener("keyup", (e: KeyboardEvent) => {
       if (e.key === "ArrowDown") {
-        this.figureMoveSpeed = 1;
+        this.figureCurrentSpeed = this.figureBaseSpeed;
       }
     });
 
@@ -272,6 +278,13 @@ export class Game {
     }
   }
 
+  public increaseGameLevel(): void {
+    console.log("level increased");
+    this.gameLevel += 1;
+    this.figureBaseSpeed += 1;
+    this.nextLevelScoreNeeded += 1500;
+  }
+
   public drawGameScreen(): void {
     this.gameCtx.textAlign = "left";
     this.gameCtx.lineJoin = "round";
@@ -367,13 +380,25 @@ export class Game {
     );
 
     drawText(this.hudCtx, "center", "next", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 205);
+
+    drawText(this.hudCtx, "center", "level", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 350);
+    drawText(
+      this.hudCtx,
+      "center",
+      this.gameLevel.toString(),
+      lettersFont,
+      "#000000",
+      "#EBDF0D",
+      hudCanvasWidth / 2,
+      380,
+    );
   }
 
   public start(): void {
     this.isRunningGameplay = true;
     this.gameScreenState = "play";
     this.lastAnimationFrameTime = 0;
-    this.figureMoveSpeed = 1;
+    this.figureCurrentSpeed = this.figureBaseSpeed;
 
     if (this.animationID !== null) {
       cancelAnimationFrame(this.animationID);
@@ -396,9 +421,11 @@ export class Game {
     this.gameGrid = this.initGameGrid(this.constants.gameGridWidth, this.constants.gameGridHeight);
     this.figureStartPositionX = this.gameCtx.canvas.width / 2;
     this.figureStartPositionY = 0 - this.constants.brickSize * 4;
+    this.figureBaseSpeed = 2;
+    this.figureCurrentSpeed = this.figureBaseSpeed;
+    this.gameLevel = 1;
     this.score.resetScore();
     this.figureMoveTimer = 0;
-    this.figureMoveSpeed = 1;
     this.lastAnimationFrameTime = 0;
     this.createFigure();
     this.createNextFigure();
@@ -434,7 +461,7 @@ export class Game {
 
     if (this.gameScreenState === "play") {
       // DROP FIGURE
-      this.figureMoveTimer += this.figureMoveSpeed * delta;
+      this.figureMoveTimer += this.figureCurrentSpeed * delta;
 
       if (this.figureMoveTimer >= 10) {
         if (this.currentFigure && this.currentFigure.canMoveDown()) {
@@ -444,6 +471,10 @@ export class Game {
           this.landFigure();
           this.clearFullRows();
           this.figureMoveTimer = 0;
+          // INCREASE FIGURE SPEED
+          if (this.score.getScore() >= this.nextLevelScoreNeeded && this.figureBaseSpeed < this.figureMaxSpeed) {
+            this.increaseGameLevel();
+          }
 
           if (this.isRunningGameplay) {
             this.currentFigure = null;
@@ -460,6 +491,8 @@ export class Game {
 
       this.currentFigure?.draw(this.gameCtx);
     }
+
+    console.log("current speed", this.figureCurrentSpeed);
 
     this.drawGameScreen();
 
