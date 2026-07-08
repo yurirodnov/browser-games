@@ -192,8 +192,8 @@ export class Game {
       this.assets.picsAssets.bricks,
       this.nextFigureColor,
       this.nextFigureType,
-      (this.constants.hudGridWidth * this.constants.brickSize) / 4 + this.constants.brickSize / 2,
-      235,
+      (this.constants.hudGridWidth * this.constants.brickSize) / 4,
+      70,
       this.constants,
     );
   }
@@ -356,7 +356,9 @@ export class Game {
     const lettersFont: string = "20px 'Silkscreen', sans-serif";
     const hudCanvasWidth = this.hudCtx.canvas.width;
 
-    drawText(this.hudCtx, "center", "score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 50);
+    drawText(this.hudCtx, "center", "next", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 50);
+
+    drawText(this.hudCtx, "center", "score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 200);
     drawText(
       this.hudCtx,
       "center",
@@ -365,9 +367,9 @@ export class Game {
       "#000000",
       "#EBDF0D",
       hudCanvasWidth / 2,
-      80,
+      230,
     );
-    drawText(this.hudCtx, "center", "high-score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 125);
+    drawText(this.hudCtx, "center", "high-score", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 280);
     drawText(
       this.hudCtx,
       "center",
@@ -376,12 +378,10 @@ export class Game {
       "#000000",
       "#EBDF0D",
       hudCanvasWidth / 2,
-      155,
+      310,
     );
 
-    drawText(this.hudCtx, "center", "next", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 205);
-
-    drawText(this.hudCtx, "center", "level", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 350);
+    drawText(this.hudCtx, "center", "level", lettersFont, "#000000", "#ffffff", hudCanvasWidth / 2, 360);
     drawText(
       this.hudCtx,
       "center",
@@ -390,7 +390,7 @@ export class Game {
       "#000000",
       "#EBDF0D",
       hudCanvasWidth / 2,
-      380,
+      390,
     );
   }
 
