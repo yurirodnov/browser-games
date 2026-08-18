@@ -1,4 +1,4 @@
-export interface GameConstatns {
+export interface GameConstants {
   canvasWidth: number;
   canvasHeight: number;
 }

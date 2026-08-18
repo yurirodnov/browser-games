@@ -1,4 +1,4 @@
-import type { GameConstatns } from "./types/types";
+import type { GameConstants } from "./types/types";
 
 import "./style.css";
 
